@@ -1,0 +1,2402 @@
+{
+  "version": 1,
+  "renderingOnly": true,
+  "newIconCount": 96,
+  "baseIconCount": 48,
+  "groups": [
+    {
+      "id": "mara-base",
+      "name": "Mara Venn",
+      "affinity": "Water",
+      "palette": "muted river teal and aged bronze",
+      "file": "skill-icons-mara-v7.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "mara_oarhook",
+          "name": "Oarhook",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2",
+          "art": "Exact broad wooden OAR PADDLE head from hero master, displayed upright with its SMALL plain iron U-hook at outer tip and red wrap at neck; two short ivory attack curls, no hand. Wooden paddle silhouette must dominate.",
+          "png": "skill-icons-v7/mara/mara_oarhook.png",
+          "rect": [
+            37,
+            38,
+            380,
+            379
+          ]
+        },
+        {
+          "id": "mara_river_footing",
+          "name": "River Footing",
+          "type": "Passive",
+          "effect": "First Shift in an encounter grants Mara 5 Ward.",
+          "art": "ONE cloth-wrapped ferryman sandal/foot emblem matching master, resting within a tight river-knot shaped teal Ward curl. No modern boot, stone or ground scene.",
+          "png": "skill-icons-v7/mara/mara_river_footing.png",
+          "rect": [
+            480,
+            38,
+            378,
+            378
+          ]
+        },
+        {
+          "id": "mara_undertow",
+          "name": "Undertow",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Water · 80% ATK · Pull a surviving small enemy forward one slot when legal.",
+          "art": "ONE tightly coiled breaking river crest shaped like an inward hooked spiral. Three bold teal water lobes and ivory tips make a single powerful silhouette. No rope, boat, shoreline or target.",
+          "png": "skill-icons-v7/mara/mara_undertow.png",
+          "rect": [
+            922,
+            38,
+            380,
+            379
+          ]
+        },
+        {
+          "id": "mara_open_seam",
+          "name": "Open Seam",
+          "type": "Technique",
+          "effect": "CD 1 · Physical / Neutral · 70% ATK · Bleed 5 for 3 Round Ends.",
+          "art": "Exact WOODEN OAR PADDLE tip and its small iron U-hook angled across one thin red cut and three controlled red drops. Preserve wood blade even in closeup. No sickle, axe or bare metal crescent.",
+          "png": "skill-icons-v7/mara/mara_open_seam.png",
+          "rect": [
+            1367,
+            38,
+            378,
+            378
+          ]
+        },
+        {
+          "id": "mara_sound_the_depths",
+          "name": "Sound the Depths",
+          "type": "Technique",
+          "effect": "CD 2 · Apply Wet for 2 Round Ends and reveal one enemy's trait.",
+          "art": "ONE large brass plumb weight on short cord, an eye-shaped teal ripple surrounds its lower point. Strong pendant silhouette; no hand, water surface, underwater view or landscape.",
+          "png": "skill-icons-v7/mara/mara_sound_the_depths.png",
+          "rect": [
+            35,
+            471,
+            382,
+            379
+          ]
+        },
+        {
+          "id": "mara_ferry_line",
+          "name": "Ferry Line",
+          "type": "Technique",
+          "effect": "CD 2 · Swap two living allies when legal and grant each 8 Ward.",
+          "art": "TWO intertwined mooring-rope loops forming one compact symmetric exchange knot. Two tapered teal current strokes curl in opposite directions as secondary accent. No posts, hands, boat or map.",
+          "png": "skill-icons-v7/mara/mara_ferry_line.png",
+          "rect": [
+            480,
+            471,
+            378,
+            379
+          ]
+        },
+        {
+          "id": "mara_cut_the_current",
+          "name": "Cut the Current",
+          "type": "Technique",
+          "effect": "CD 3 · Magic / Water · 110% ATK · Consume Wet to weaken the enemy's next damaging action by 25% until Round End.",
+          "art": "Exact wooden paddle with small iron tip-hook, diagonally cutting a slender dark teal current ribbon and one split droplet. Wood paddle remains visible and recognizable, not a long metal water sword.",
+          "png": "skill-icons-v7/mara/mara_cut_the_current.png",
+          "rect": [
+            922,
+            471,
+            380,
+            379
+          ]
+        },
+        {
+          "id": "mara_safe_passage",
+          "name": "Safe Passage",
+          "type": "Technique",
+          "effect": "CD 4 · Party loses 5 Strain and gains one protection against the next eligible expedition hazard.",
+          "art": "ONE protective ferry talisman: a small shield-like wooden ferry ticket with an oar-shaped notch, enclosed by a broad calm teal shelter curl. Compact emblem, no actual ship, river or scenery.",
+          "png": "skill-icons-v7/mara/mara_safe_passage.png",
+          "rect": [
+            1367,
+            471,
+            378,
+            379
+          ]
+        }
+      ],
+      "artStatus": "Approved by user",      "weaponSpec": "Mara's exact weapon is a long WOODEN OAR: broad flattened angular wooden paddle blade, red cloth binding at neck, SMALL plain dark iron inverted-U hook attached at its outer tip with a rivet. MOST of weapon head is WOOD, not a metal axe! Match third image exactly. No crescent axe, sickle, ornamental gold hook, spear or bare iron blade. Her footwear is cloth-wrapped sandals, not armored boots.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "skill-weapon-mara-reference.png",
+      "approvedSourceSha256": "e0d06c0eee69c712f7b21f32e15f15a49830aec57d0889d2dbad339d30ab5baa",
+      "heroId": "mara",
+      "form": "base",
+      "formName": "Base"
+    },
+    {
+      "id": "rook-base",
+      "name": "Rook Calder",
+      "affinity": "Earth",
+      "palette": "ochre earth and weathered bronze",
+      "file": "skill-icons-rook-v7.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "rook_mason_s_blow",
+          "name": "Mason's Blow",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 1.",
+          "art": "Exact rectangular GREY STONE maul head with one BRASS middle band and TWO ROUND RIVETS on plain wood handle, upright weapon emblem, two thin ochre force curls. No cord wrapping around head.",
+          "png": "skill-icons-v7/rook/rook_mason_s_blow.png",
+          "rect": [
+            38,
+            41,
+            380,
+            368
+          ]
+        },
+        {
+          "id": "rook_load_bearing",
+          "name": "Load Bearing",
+          "type": "Passive",
+          "effect": "Guard grants Rook 5 additional Ward within the cap.",
+          "art": "ONE load-bearing keystone emblem gripped between two short buttress wedges; broad capped silhouette, small downward amber chevron pressure accent. No building, construction scene or detailed bridge.",
+          "png": "skill-icons-v7/rook/rook_load_bearing.png",
+          "rect": [
+            478,
+            41,
+            378,
+            368
+          ]
+        },
+        {
+          "id": "rook_brace_the_line",
+          "name": "Brace the Line",
+          "type": "Technique",
+          "effect": "CD 2 · An adjacent ally gains 18 Ward.",
+          "art": "ONE large compact folding barricade shield front view, three joined stone panels with bamboo edging, two short protective ochre spirit curls. No floor, fortification landscape or person.",
+          "png": "skill-icons-v7/rook/rook_brace_the_line.png",
+          "rect": [
+            918,
+            41,
+            379,
+            368
+          ]
+        },
+        {
+          "id": "rook_take_the_weight",
+          "name": "Take the Weight",
+          "type": "Technique",
+          "effect": "CD 2 · Intercept the next single-target hit against another ally before Round End.",
+          "art": "ONE raised armored gauntlet icon intercepting a dark falling shard; one curved ochre protection stroke behind palm. Crop at wrist. Gauntlet dominates, no second hand, ally, torso or environment.",
+          "png": "skill-icons-v7/rook/rook_take_the_weight.png",
+          "rect": [
+            1356,
+            41,
+            381,
+            368
+          ]
+        },
+        {
+          "id": "rook_split_the_seal",
+          "name": "Split the Seal",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Neutral · 100% ATK · Deal 12 extra damage to Ward only.",
+          "art": "Exact stone block and brass-band maul head intersects one cracked Ward medallion. Clear diagonal impact emblem, few ivory chips; no hands or ground.",
+          "png": "skill-icons-v7/rook/rook_split_the_seal.png",
+          "rect": [
+            39,
+            467,
+            379,
+            371
+          ]
+        },
+        {
+          "id": "rook_anchor_step",
+          "name": "Anchor Step",
+          "type": "Technique",
+          "effect": "CD 2 · Move Rook to the front when legal and resist forced movement until Round End.",
+          "art": "Wrapped plain work boot matching master presses one small anchor peg; short ochre locking crescent, no buckles, armor boot or environment.",
+          "png": "skill-icons-v7/rook/rook_anchor_step.png",
+          "rect": [
+            478,
+            467,
+            378,
+            371
+          ]
+        },
+        {
+          "id": "rook_stone_answer",
+          "name": "Stone Answer",
+          "type": "Technique",
+          "effect": "CD 3 · Physical / Earth · 80% ATK plus half of Ward spent, spending up to 20 Ward.",
+          "art": "THREE pointed falling stone shards form a compact downward fan above a single jagged amber impact-star symbol. Dominant crystal-like silhouette, no ground plane, dust cloud or scene.",
+          "png": "skill-icons-v7/rook/rook_stone_answer.png",
+          "rect": [
+            917,
+            467,
+            380,
+            371
+          ]
+        },
+        {
+          "id": "rook_hold_until_dawn",
+          "name": "Hold Until Dawn",
+          "type": "Technique",
+          "effect": "CD 5 · Party gains 12 Ward and Rook gains 8 Strain.",
+          "art": "ONE broad stone shield emblem crowned by a small dawn disk, four distinct ivory ward-ray tips around its sides. Strong symmetric signature silhouette, no mountains, sky or battlefield.",
+          "png": "skill-icons-v7/rook/rook_hold_until_dawn.png",
+          "rect": [
+            1356,
+            467,
+            381,
+            371
+          ]
+        }
+      ],
+      "artStatus": "Approved by user",      "weaponSpec": "Rook's exact maul has a squat RECTANGULAR GREY STONE block head with straight angled ends, one broad BRASS STRAP across its middle secured by TWO ROUND RIVETS, and a plain short brown wood handle. Match third image, no cord wrapped around hammer head, no ornate stone swirls, no fantasy axe or spiked club. His folding barricade is bamboo frame plus rough plain stone panels, no polished metal kite shield.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "rook-master.png",
+      "approvedSourceSha256": "d195170f19a4ede8d1067baa391ea07014b8e5ba53adc09f9db2db275b1bbeee",
+      "heroId": "rook",
+      "form": "base",
+      "formName": "Base"
+    },
+    {
+      "id": "elian-base",
+      "name": "Elian Reed",
+      "affinity": "Metal",
+      "palette": "tarnished bronze and pale ivory",
+      "file": "skill-icons-elian-v7.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "elian_tuning_strike",
+          "name": "Tuning Strike",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2.",
+          "art": "The exact small plain WOODEN rectangular tuning mallet crosses the simple uncarved brass bell from hero master, one thin ivory resonance arc. No hands or tuning fork.",
+          "png": "skill-icons-v7/elian/elian_tuning_strike.png",
+          "rect": [
+            44,
+            45,
+            377,
+            365
+          ]
+        },
+        {
+          "id": "elian_measured_breath",
+          "name": "Measured Breath",
+          "type": "Passive",
+          "effect": "The first successful cleanse each round also removes 2 Strain from its recipient.",
+          "art": "ONE small bronze bell nested inside one measured ivory breathing spiral, quiet compact asymmetric emblem. No landscape or person.",
+          "png": "skill-icons-v7/elian/elian_measured_breath.png",
+          "rect": [
+            481,
+            45,
+            377,
+            365
+          ]
+        },
+        {
+          "id": "elian_mending_note",
+          "name": "Mending Note",
+          "type": "Technique",
+          "effect": "CD 1 · Restore up to 24 HP to a living ally.",
+          "art": "ONE open bronze bell radiating three upward pale green/ivory healing-note leaves. Large bell silhouette, tiny light accents; no patient, hand, wound or anatomical heart.",
+          "png": "skill-icons-v7/elian/elian_mending_note.png",
+          "rect": [
+            917,
+            45,
+            376,
+            365
+          ]
+        },
+        {
+          "id": "elian_quiet_circle",
+          "name": "Quiet Circle",
+          "type": "Technique",
+          "effect": "CD 3 · Two adjacent living allies each lose 10 Strain.",
+          "art": "TWO small bronze bells enclosed by one flat silver circular resonance band; two bells behave as a single paired emblem. No cloth canopy or background scene.",
+          "png": "skill-icons-v7/elian/elian_quiet_circle.png",
+          "rect": [
+            1353,
+            45,
+            376,
+            365
+          ]
+        },
+        {
+          "id": "elian_fracture_chime",
+          "name": "Fracture Chime",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Metal · 80% ATK · ARM -2 for 2 Round Ends within the cap.",
+          "art": "ONE tilted bell projects a jagged silver resonance crack across a small armor-plate fragment. Sharp broken silhouette, no hands, arm or full suit.",
+          "png": "skill-icons-v7/elian/elian_fracture_chime.png",
+          "rect": [
+            46,
+            466,
+            375,
+            369
+          ]
+        },
+        {
+          "id": "elian_borrowed_breath",
+          "name": "Borrowed Breath",
+          "type": "Technique",
+          "effect": "CD 2 · Grant another eligible ally a Strike die within pool limits; Elian gains 5 Strain.",
+          "art": "ONE carved strike die with a simple blade pictogram, suspended inside a slender ivory sound loop ending in a small bell lip. Die dominates, no hand or tabletop, no digits.",
+          "png": "skill-icons-v7/elian/elian_borrowed_breath.png",
+          "rect": [
+            481,
+            466,
+            377,
+            369
+          ]
+        },
+        {
+          "id": "elian_clear_tone",
+          "name": "Clear Tone",
+          "type": "Technique",
+          "effect": "CD 2 · Remove one chosen eligible debuff from a living ally; excludes Downed and Fray.",
+          "art": "The simple plain BRASS BELL from hero master emits ONE fine straight bright resonance band that parts a dark purple curse knot into two ribbons. No tuning fork, hands or scene.",
+          "png": "skill-icons-v7/elian/elian_clear_tone.png",
+          "rect": [
+            915,
+            466,
+            378,
+            369
+          ]
+        },
+        {
+          "id": "elian_last_resonance",
+          "name": "Last Resonance",
+          "type": "Technique",
+          "effect": "CD 5 · Revive one Downed ally at 20% Max HP, once per encounter; cancelled dice stay cancelled.",
+          "art": "ONE broken bronze bell rejoined by ivory spirit threads with a small upward soul-flame silhouette emerging through center. Majestic but compact sacred emblem, no human body or revival scene.",
+          "png": "skill-icons-v7/elian/elian_last_resonance.png",
+          "rect": [
+            1353,
+            466,
+            376,
+            369
+          ]
+        }
+      ],
+      "artStatus": "Approved by user",      "weaponSpec": "Elian's weapon is a SMALL PLAIN WOODEN tuning MALLET with rectangular light-brown head on a slender darker wood handle; his bell is PLAIN uncarved brass with stepped shoulders, broad flared lip and ROUND hanging clapper, on a square wooden support. Match third image. No elaborate floral bell carving, metal sledgehammer, tuning fork substituted as weapon, spear or sword.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "elian-master.png",
+      "approvedSourceSha256": "5394550bbf22d3f17657693ba2d08965b629be7593459ed3fcc033923bb45baa",
+      "heroId": "elian",
+      "form": "base",
+      "formName": "Base"
+    },
+    {
+      "id": "tess-base",
+      "name": "Tess Ashdown",
+      "affinity": "Wood",
+      "palette": "deep jade green and faded red thread",
+      "file": "skill-icons-tess-v7.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "tess_courier_s_shot",
+          "name": "Courier's Shot",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Any enemy slot.",
+          "art": "Exact plain dark-brown asymmetrical wooden bow with ivory wrapped grip and red upper-limb tie from hero master; one narrow GREY arrow upright through center, two small green aiming curls. No gold bow ornament.",
+          "png": "skill-icons-v7/tess/tess_courier_s_shot.png",
+          "rect": [
+            40,
+            32,
+            399,
+            390
+          ]
+        },
+        {
+          "id": "tess_read_the_route",
+          "name": "Read the Route",
+          "type": "Passive",
+          "effect": "First damaging action against a Marked enemy each round gains 3 direct damage before Guard and Ward.",
+          "art": "ONE red wax seal shaped like a watchful eye, with one short bent route-thread running behind it. Compact circular mark emblem. No map, landscape or fingers.",
+          "png": "skill-icons-v7/tess/tess_read_the_route.png",
+          "rect": [
+            472,
+            32,
+            396,
+            390
+          ]
+        },
+        {
+          "id": "tess_red_thread",
+          "name": "Red Thread",
+          "type": "Technique",
+          "effect": "CD 1 · Mark one enemy for 2 Round Ends; no damage.",
+          "art": "ONE vivid red-thread targeting knot over a dark small seal disk, two open loops and a pointed trailing strand. Very clear knot silhouette. No letter, hands or action scene.",
+          "png": "skill-icons-v7/tess/tess_red_thread.png",
+          "rect": [
+            904,
+            32,
+            399,
+            390
+          ]
+        },
+        {
+          "id": "tess_pin_the_hem",
+          "name": "Pin the Hem",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Wood · 80% ATK · Rooted for 1 Round End.",
+          "art": "ONE wood arrowhead pins a small cloth tab caught in a root-shaped loop. Compact diagonal arrow-and-root emblem. No foot, ground, tree or whole garment.",
+          "png": "skill-icons-v7/tess/tess_pin_the_hem.png",
+          "rect": [
+            1336,
+            31,
+            398,
+            391
+          ]
+        },
+        {
+          "id": "tess_through_the_gap",
+          "name": "Through the Gap",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Neutral · 130% ATK · Ignore 50% ARM.",
+          "art": "One enlarged but STILL PLAIN NARROW GREY arrowhead matching hero master passes through a slit between two small armor fragments. No gilded ornate spearhead.",
+          "png": "skill-icons-v7/tess/tess_through_the_gap.png",
+          "rect": [
+            39,
+            462,
+            399,
+            392
+          ]
+        },
+        {
+          "id": "tess_false_address",
+          "name": "False Address",
+          "type": "Technique",
+          "effect": "CD 2 · Push a small enemy back one slot when legal; bosses are immune.",
+          "art": "ONE folded courier letter with a tiny mask-shaped wax seal and a backward curling green decoy trail. Letter is one large simple shape. No hand, road or mountains.",
+          "png": "skill-icons-v7/tess/tess_false_address.png",
+          "rect": [
+            472,
+            462,
+            397,
+            392
+          ]
+        },
+        {
+          "id": "tess_relay_signal",
+          "name": "Relay Signal",
+          "type": "Technique",
+          "effect": "CD 2 · Change one unspent player die to Strike or Guard; no new die.",
+          "art": "ONE wood die face bearing a simple small pictogram of Tess's plain wrapped wooden bow, surrounded by red relay thread and a tiny shield outline at its edge. No numbered pips, spear or ornate sword.",
+          "png": "skill-icons-v7/tess/tess_relay_signal.png",
+          "rect": [
+            904,
+            462,
+            399,
+            392
+          ]
+        },
+        {
+          "id": "tess_final_delivery",
+          "name": "Final Delivery",
+          "type": "Technique",
+          "effect": "CD 4 · Physical / Neutral · 160% ATK; consume Mark for an extra 30% ATK.",
+          "art": "One plain grey arrowhead with ivory fletching detail pierces a compact red wax knot, two snapped red strands flare out. Do not replace arrow with golden spear or new weapon.",
+          "png": "skill-icons-v7/tess/tess_final_delivery.png",
+          "rect": [
+            1337,
+            463,
+            399,
+            391
+          ]
+        }
+      ],
+      "artStatus": "Approved by user",      "weaponSpec": "Tess's exact bow is a PLAIN asymmetrical hand-carved DARK BROWN wooden courier bow, gently recurved tips, slim profile, IVORY CLOTH WRAP around center grip and RED CORD at upper limb. Ivory-fletched arrows with plain narrow grey arrowheads. Match third image. Not ornate symmetrical gold/green fantasy bow, crossbow or spear. Where arrowheads are cropped, preserve this same basic narrow grey arrow design.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "tess-master.png",
+      "approvedSourceSha256": "f7e16c1d779053a9148b82aee7a6379f0438d49101fe74cad4a757cc048d4a7a",
+      "heroId": "tess",
+      "form": "base",
+      "formName": "Base"
+    },
+    {
+      "id": "nera-base",
+      "name": "Nera Voss",
+      "affinity": "Fire",
+      "palette": "terracotta red and ember amber",
+      "file": "skill-icons-nera-v7.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "nera_kiln_rake",
+          "name": "Kiln Rake",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2.",
+          "art": "Exact plain grey TWO-PRONG BLUNT U-shaped kiln rake head from hero master on brown wood shaft, upright tool emblem; two restrained orange ember curls. No ornamental etching, third tine or antler.",
+          "png": "skill-icons-v7/nera/nera_kiln_rake.png",
+          "rect": [
+            34,
+            31,
+            388,
+            387
+          ]
+        },
+        {
+          "id": "nera_borrowed_warmth",
+          "name": "Borrowed Warmth",
+          "type": "Passive",
+          "effect": "First successful Burn application each round grants Nera 3 Ward; DOT ticks do not retrigger.",
+          "art": "ONE ember nestled in a broken ceramic cup, enclosed by a thin glowing ochre protective shell crescent. One cupped-coal emblem, no hands or realistic cooking scene.",
+          "png": "skill-icons-v7/nera/nera_borrowed_warmth.png",
+          "rect": [
+            475,
+            31,
+            388,
+            387
+          ]
+        },
+        {
+          "id": "nera_cinder_wake",
+          "name": "Cinder Wake",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Fire · 80% ATK · Burn 4 for 2 Round Ends.",
+          "art": "Exact plain grey two-BLUNT-prong U-shaped rake head angled diagonally trailing one hooked cinder ribbon and a few ember sparks. Same head shape as first icon, no pointed crescent prongs.",
+          "png": "skill-icons-v7/nera/nera_cinder_wake.png",
+          "rect": [
+            916,
+            31,
+            390,
+            385
+          ]
+        },
+        {
+          "id": "nera_banked_ember",
+          "name": "Banked Ember",
+          "type": "Technique",
+          "effect": "CD 2 · Grant a living ally 10 Ward; no healing.",
+          "art": "ONE closed earthen ember pot fused visually with a protective ceramic shield rim, small quiet ember glint under lid. Compact symmetric emblem, no hands, table or scene.",
+          "png": "skill-icons-v7/nera/nera_banked_ember.png",
+          "rect": [
+            1356,
+            31,
+            388,
+            387
+          ]
+        },
+        {
+          "id": "nera_cooling_breath",
+          "name": "Cooling Breath",
+          "type": "Technique",
+          "effect": "CD 2 · Remove Burn from one living ally who is burning; no healing.",
+          "art": "ONE large folded-open terracotta-colored fan disperses a single red ember with one pale cool curling breath. Fan dominates, no hand, floor or background scene.",
+          "png": "skill-icons-v7/nera/nera_cooling_breath.png",
+          "rect": [
+            34,
+            468,
+            387,
+            387
+          ]
+        },
+        {
+          "id": "nera_open_the_vent",
+          "name": "Open the Vent",
+          "type": "Technique",
+          "effect": "CD 3 · Magic / Fire · 90% ATK · Reduce an interruptible active charge by one when allowed.",
+          "art": "ONE lifted ceramic vent grate, a concentrated orange pressure spear breaks through one incomplete charge ring above it. Compact vertical energy emblem, no furnace building, rake-operating hand or wall.",
+          "png": "skill-icons-v7/nera/nera_open_the_vent.png",
+          "rect": [
+            476,
+            470,
+            387,
+            383
+          ]
+        },
+        {
+          "id": "nera_safe_fuel",
+          "name": "Safe Fuel",
+          "type": "Technique",
+          "effect": "CD 4 · Party loses 4 Strain and gains one nonstacking protection against an eligible Heat hazard.",
+          "art": "THREE clean black coals form one triangular emblem inside an earthen protection sigil, external red heat curls stop at rim. No basket, oven, hands or landscape.",
+          "png": "skill-icons-v7/nera/nera_safe_fuel.png",
+          "rect": [
+            916,
+            470,
+            390,
+            384
+          ]
+        },
+        {
+          "id": "nera_last_coal",
+          "name": "Last Coal",
+          "type": "Technique",
+          "effect": "CD 5 · Magic / Fire · 140% ATK · Other living allies gain 8 Ward; Nera gains 8 Strain.",
+          "art": "ONE central last coal emits a long blazing spear, three ceramic crescent chips fan behind it like a protective crown. Dramatic sharp signature silhouette, no hands, allies or explosive scene.",
+          "png": "skill-icons-v7/nera/nera_last_coal.png",
+          "rect": [
+            1355,
+            470,
+            388,
+            384
+          ]
+        }
+      ],
+      "artStatus": "Approved by user",      "weaponSpec": "Nera's exact kiln rake has a PLAIN DULL GREY U-shaped head with EXACTLY TWO THICK BLUNT flat-ended prongs; open slot between prongs, angled polygon edges and straight wooden shaft in a simple socket. Match third image EXACTLY. It is a work tool, NOT antler, trident, crescent axe, ornate curved four-spike weapon, fork of fire or golden staff. No decorative cutouts or gold curls added to rake.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "nera-master-v4.png",
+      "approvedSourceSha256": "f25969a9fd535c5ce983356c20766a1fb8b57b6c45f7d3a161cb1dd7384e7e47",
+      "heroId": "nera",
+      "form": "base",
+      "formName": "Base"
+    },
+    {
+      "id": "gideon-base",
+      "name": "Gideon Rusk",
+      "affinity": "Earth",
+      "palette": "indigo ink and terracotta red",
+      "file": "skill-icons-gideon-v7.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "gideon_writbreaker",
+          "name": "Writbreaker",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 1.",
+          "art": "Exact plain SHORT DARK-WOOD stamp baton with BRASS collar and BOX-SHAPED square terracotta head from master, end face a CONCENTRIC-SQUARE recess. Upright weapon emblem, no hand or ornate scepter.",
+          "png": "skill-icons-v7/gideon/gideon_writbreaker.png",
+          "rect": [
+            39,
+            41,
+            381,
+            378
+          ]
+        },
+        {
+          "id": "gideon_a_record_kept",
+          "name": "A Record Kept",
+          "type": "Passive",
+          "effect": "First effective Ward grant to another ally each round also removes 2 Strain from them.",
+          "art": "ONE closed wood-bound ledger with a single ivory witness tab and a protective red binding knot across it. Diagonal strong rectangle, no hands, desk or scene.",
+          "png": "skill-icons-v7/gideon/gideon_a_record_kept.png",
+          "rect": [
+            476,
+            41,
+            382,
+            377
+          ]
+        },
+        {
+          "id": "gideon_stay_of_claim",
+          "name": "Stay of Claim",
+          "type": "Technique",
+          "effect": "CD 2 · Root one eligible enemy for 1 Round End; no HP damage.",
+          "art": "Exact SQUARE clay stamp face with simple square-spiral recess anchors four taut red sealing ribbons into a root-like restraint emblem. No floral seal, boot, ground or writing.",
+          "png": "skill-icons-v7/gideon/gideon_stay_of_claim.png",
+          "rect": [
+            917,
+            42,
+            383,
+            376
+          ]
+        },
+        {
+          "id": "gideon_counterseal",
+          "name": "Counterseal",
+          "type": "Technique",
+          "effect": "CD 1 · Grant a living ally 12 Ward; no healing.",
+          "art": "Exact BOX-SHAPED terracotta square stamp with dark wood handle and brass collar above plain wood-bound ledger-cover Ward emblem; a short protective ivory crescent. No round seal or invented carried metal shield.",
+          "png": "skill-icons-v7/gideon/gideon_counterseal.png",
+          "rect": [
+            1352,
+            40,
+            383,
+            378
+          ]
+        },
+        {
+          "id": "gideon_open_the_ledger",
+          "name": "Open the Ledger",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Earth · 70% ATK · ARM -2 for 2 Round Ends within the cap.",
+          "art": "Plain dark wood-bound ledger opens, a small angular armor-crack silhouette floats directly above spine. Ivory pages unlettered, simple clay square seal detail. No ornate gilded book.",
+          "png": "skill-icons-v7/gideon/gideon_open_the_ledger.png",
+          "rect": [
+            39,
+            466,
+            381,
+            375
+          ]
+        },
+        {
+          "id": "gideon_return_the_name",
+          "name": "Return the Name",
+          "type": "Technique",
+          "effect": "CD 2 · Remove one chosen eligible debuff from a living ally; excludes Downed and Fray.",
+          "art": "ONE ivory name tag breaks free from a split dark-red curse seal, one thin clean white release ribbon rising. Bold vertical tag emblem, no hand or text.",
+          "png": "skill-icons-v7/gideon/gideon_return_the_name.png",
+          "rect": [
+            476,
+            466,
+            382,
+            375
+          ]
+        },
+        {
+          "id": "gideon_witness_copy",
+          "name": "Witness Copy",
+          "type": "Technique",
+          "effect": "CD 3 · One ally blocks the next eligible new debuff before Round End; no damage protection.",
+          "art": "TWO overlapping ivory witness tabs form a small shield silhouette, a dark curse knot caught on front tab, back tab intact. Compact paired paper emblem, no fingers or scene.",
+          "png": "skill-icons-v7/gideon/gideon_witness_copy.png",
+          "rect": [
+            917,
+            466,
+            383,
+            375
+          ]
+        },
+        {
+          "id": "gideon_release_of_claim",
+          "name": "Release of Claim",
+          "type": "Technique",
+          "effect": "CD 5 · All enemies lose up to 12 Ward and suffer ARM -2 until Round End; no HP damage; Gideon gains 6 Strain.",
+          "art": "Exact square terracotta stamp head with concentric-square recess at center, three broken red binding loops fanning outward. Short dark wood handle and brass collar may show. No round floral seal, ornate staff, hand or blast.",
+          "png": "skill-icons-v7/gideon/gideon_release_of_claim.png",
+          "rect": [
+            1352,
+            466,
+            383,
+            375
+          ]
+        }
+      ],
+      "artStatus": "Approved by user",      "weaponSpec": "Gideon's exact short stamp baton is straight DARK WOOD with a simple BRASS rectangular collar and a BOX-SHAPED TERRACOTTA RED SQUARE head; its end face has a simple SQUARE SPIRAL/CONCENTRIC SQUARE recess, not letters or floral ornament. Match third image. Ledger is a PLAIN dark WOOD-BOUND rectangular book tied with rope and an octagonal red clay seal. Do not turn stamp into scepter, round seal, mace, golden carving or hammer.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "gideon-master-v4.png",
+      "approvedSourceSha256": "749180d2544cd27aa8e34042a55a3e510364365739b969191995569d5f0f6f96",
+      "heroId": "gideon",
+      "form": "base",
+      "formName": "Base"
+    },
+    {
+      "id": "mara-upgraded",
+      "name": "Mara Venn",
+      "affinity": "Water",
+      "palette": "muted river teal and aged bronze",
+      "file": "skill-icons-mara-upgraded-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "mara_oarhook",
+          "name": "Oarhook",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2",
+          "art": "The exact tier-specific OAR/POLEARM head displayed upright, two short ivory strike curls; no hand.",
+          "png": "skill-icon-tiers-v1/mara/upgraded/mara_oarhook.png",
+          "rect": [
+            32,
+            33,
+            389,
+            383
+          ]
+        },
+        {
+          "id": "mara_river_footing",
+          "name": "River Footing",
+          "type": "Passive",
+          "effect": "First Shift in an encounter grants Mara 5 Ward.",
+          "art": "One tier-matching ferryman boot/foot emblem enclosed by a compact protective river-knot curl; no full leg or terrain.",
+          "png": "skill-icon-tiers-v1/mara/upgraded/mara_river_footing.png",
+          "rect": [
+            471,
+            33,
+            390,
+            383
+          ]
+        },
+        {
+          "id": "mara_undertow",
+          "name": "Undertow",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Water · 80% ATK · Pull a surviving small enemy forward one slot when legal.",
+          "art": "One dominant tightly coiled breaking wave spiral, now with tier wave ornament, an inward-flow pull emblem. No boat or battlefield.",
+          "png": "skill-icon-tiers-v1/mara/upgraded/mara_undertow.png",
+          "rect": [
+            911,
+            33,
+            391,
+            383
+          ]
+        },
+        {
+          "id": "mara_open_seam",
+          "name": "Open Seam",
+          "type": "Technique",
+          "effect": "CD 1 · Physical / Neutral · 70% ATK · Bleed 5 for 3 Round Ends.",
+          "art": "Exact tier OAR/POLEARM tip crosses one sharp crimson cut and three controlled droplets; same head as icon1.",
+          "png": "skill-icon-tiers-v1/mara/upgraded/mara_open_seam.png",
+          "rect": [
+            1352,
+            33,
+            390,
+            383
+          ]
+        },
+        {
+          "id": "mara_sound_the_depths",
+          "name": "Sound the Depths",
+          "type": "Technique",
+          "effect": "CD 2 · Apply Wet for 2 Round Ends and reveal one enemy's trait.",
+          "art": "One sounding plumb pendant encircled by an eye-shaped depth ripple, tier fittings/inlay.",
+          "png": "skill-icon-tiers-v1/mara/upgraded/mara_sound_the_depths.png",
+          "rect": [
+            33,
+            467,
+            389,
+            384
+          ]
+        },
+        {
+          "id": "mara_ferry_line",
+          "name": "Ferry Line",
+          "type": "Technique",
+          "effect": "CD 2 · Swap two living allies when legal and grant each 8 Ward.",
+          "art": "Two braided mooring loops forming a compact exchange knot with opposed current accents.",
+          "png": "skill-icon-tiers-v1/mara/upgraded/mara_ferry_line.png",
+          "rect": [
+            471,
+            467,
+            390,
+            384
+          ]
+        },
+        {
+          "id": "mara_cut_the_current",
+          "name": "Cut the Current",
+          "type": "Technique",
+          "effect": "CD 3 · Magic / Water · 110% ATK · Consume Wet to weaken the enemy's next damaging action by 25% until Round End.",
+          "art": "Exact tier OAR/POLEARM cuts diagonally across one narrow water blade and a split droplet; same head as icon1, composition distinct from round Undertow.",
+          "png": "skill-icon-tiers-v1/mara/upgraded/mara_cut_the_current.png",
+          "rect": [
+            913,
+            467,
+            389,
+            386
+          ]
+        },
+        {
+          "id": "mara_safe_passage",
+          "name": "Safe Passage",
+          "type": "Technique",
+          "effect": "CD 4 · Party loses 5 Strain and gains one protection against the next eligible expedition hazard.",
+          "art": "One protective ferry-ticket/oar talisman, upgraded with tier fittings, sheltered by a calm water arch. No literal ferry scene.",
+          "png": "skill-icon-tiers-v1/mara/upgraded/mara_safe_passage.png",
+          "rect": [
+            1352,
+            467,
+            389,
+            386
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Broad dark teal painted wooden OAR blade with ivory river-wave inlay, small dark iron hook at its outer end, red neck wraps, long plain shaft. Match ref2. Not a crescent axe at this tier.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "mara-deepwater.png",
+      "heroId": "mara",
+      "form": "upgraded",
+      "formName": "Deepwater",
+      "motifs": "layered river-knot wards, paired teal currents, ivory foam scrolls, deepwater wave inlay"
+    },
+    {
+      "id": "mara-legendary",
+      "name": "Mara Venn",
+      "affinity": "Water",
+      "palette": "muted river teal and aged bronze",
+      "file": "skill-icons-mara-legendary-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "mara_oarhook",
+          "name": "Oarhook",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2",
+          "art": "The exact tier-specific OAR/POLEARM head displayed upright, two short ivory strike curls; no hand.",
+          "png": "skill-icon-tiers-v1/mara/legendary/mara_oarhook.png",
+          "rect": [
+            35,
+            33,
+            376,
+            377
+          ]
+        },
+        {
+          "id": "mara_river_footing",
+          "name": "River Footing",
+          "type": "Passive",
+          "effect": "First Shift in an encounter grants Mara 5 Ward.",
+          "art": "One tier-matching ferryman boot/foot emblem enclosed by a compact protective river-knot curl; no full leg or terrain.",
+          "png": "skill-icon-tiers-v1/mara/legendary/mara_river_footing.png",
+          "rect": [
+            477,
+            33,
+            379,
+            377
+          ]
+        },
+        {
+          "id": "mara_undertow",
+          "name": "Undertow",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Water · 80% ATK · Pull a surviving small enemy forward one slot when legal.",
+          "art": "One dominant tightly coiled breaking wave spiral, now with tier wave ornament, an inward-flow pull emblem. No boat or battlefield.",
+          "png": "skill-icon-tiers-v1/mara/legendary/mara_undertow.png",
+          "rect": [
+            919,
+            33,
+            379,
+            377
+          ]
+        },
+        {
+          "id": "mara_open_seam",
+          "name": "Open Seam",
+          "type": "Technique",
+          "effect": "CD 1 · Physical / Neutral · 70% ATK · Bleed 5 for 3 Round Ends.",
+          "art": "Exact tier OAR/POLEARM tip crosses one sharp crimson cut and three controlled droplets; same head as icon1.",
+          "png": "skill-icon-tiers-v1/mara/legendary/mara_open_seam.png",
+          "rect": [
+            1364,
+            33,
+            379,
+            377
+          ]
+        },
+        {
+          "id": "mara_sound_the_depths",
+          "name": "Sound the Depths",
+          "type": "Technique",
+          "effect": "CD 2 · Apply Wet for 2 Round Ends and reveal one enemy's trait.",
+          "art": "One sounding plumb pendant encircled by an eye-shaped depth ripple, tier fittings/inlay.",
+          "png": "skill-icon-tiers-v1/mara/legendary/mara_sound_the_depths.png",
+          "rect": [
+            35,
+            478,
+            376,
+            376
+          ]
+        },
+        {
+          "id": "mara_ferry_line",
+          "name": "Ferry Line",
+          "type": "Technique",
+          "effect": "CD 2 · Swap two living allies when legal and grant each 8 Ward.",
+          "art": "Two braided mooring loops forming a compact exchange knot with opposed current accents.",
+          "png": "skill-icon-tiers-v1/mara/legendary/mara_ferry_line.png",
+          "rect": [
+            477,
+            478,
+            379,
+            376
+          ]
+        },
+        {
+          "id": "mara_cut_the_current",
+          "name": "Cut the Current",
+          "type": "Technique",
+          "effect": "CD 3 · Magic / Water · 110% ATK · Consume Wet to weaken the enemy's next damaging action by 25% until Round End.",
+          "art": "Exact tier OAR/POLEARM cuts diagonally across one narrow water blade and a split droplet; same head as icon1, composition distinct from round Undertow.",
+          "png": "skill-icon-tiers-v1/mara/legendary/mara_cut_the_current.png",
+          "rect": [
+            919,
+            478,
+            379,
+            377
+          ]
+        },
+        {
+          "id": "mara_safe_passage",
+          "name": "Safe Passage",
+          "type": "Technique",
+          "effect": "CD 4 · Party loses 5 Strain and gains one protection against the next eligible expedition hazard.",
+          "art": "One protective ferry-ticket/oar talisman, upgraded with tier fittings, sheltered by a calm water arch. No literal ferry scene.",
+          "png": "skill-icon-tiers-v1/mara/legendary/mara_safe_passage.png",
+          "rect": [
+            1364,
+            478,
+            379,
+            376
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Very broad ornamental crescent/paddle polearm head from reference2, antique gold rim, ivory-and-teal sea-wave field, curved hooked upper and lower tips, reinforced gilt-bound shaft. This evolved tier genuinely differs from Base paddle; match reference2, do not revert to Base or invent a trident.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "mara-legendary-idle.png",
+      "heroId": "mara",
+      "form": "legendary",
+      "formName": "Legendary Tidecrown",
+      "motifs": "regal ivory-gold wave crests, deep teal sea-spirit curls, triple tide arcs and carved tidal-crown talismans"
+    },
+    {
+      "id": "rook-upgraded",
+      "name": "Rook Calder",
+      "affinity": "Earth",
+      "palette": "ochre earth and weathered bronze",
+      "file": "skill-icons-rook-upgraded-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "rook_mason_s_blow",
+          "name": "Mason's Blow",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 1.",
+          "art": "Exact tier rectangular maul head upright on short shaft, force curls; no hands.",
+          "png": "skill-icon-tiers-v1/rook/upgraded/rook_mason_s_blow.png",
+          "rect": [
+            38,
+            38,
+            382,
+            373
+          ]
+        },
+        {
+          "id": "rook_load_bearing",
+          "name": "Load Bearing",
+          "type": "Passive",
+          "effect": "Guard grants Rook 5 additional Ward within the cap.",
+          "art": "One tier keystone held between two short reinforced buttress wedges, downward pressure chevron.",
+          "png": "skill-icon-tiers-v1/rook/upgraded/rook_load_bearing.png",
+          "rect": [
+            476,
+            36,
+            382,
+            375
+          ]
+        },
+        {
+          "id": "rook_brace_the_line",
+          "name": "Brace the Line",
+          "type": "Technique",
+          "effect": "CD 2 · An adjacent ally gains 18 Ward.",
+          "art": "One front-view folding barricade or portal-ward shield matching tier materials, not a whole fortification scene.",
+          "png": "skill-icon-tiers-v1/rook/upgraded/rook_brace_the_line.png",
+          "rect": [
+            917,
+            38,
+            382,
+            373
+          ]
+        },
+        {
+          "id": "rook_take_the_weight",
+          "name": "Take the Weight",
+          "type": "Technique",
+          "effect": "CD 2 · Intercept the next single-target hit against another ally before Round End.",
+          "art": "One tier-armored gauntlet intercepts a dark falling shard, single curved protection accent.",
+          "png": "skill-icon-tiers-v1/rook/upgraded/rook_take_the_weight.png",
+          "rect": [
+            1355,
+            36,
+            384,
+            375
+          ]
+        },
+        {
+          "id": "rook_split_the_seal",
+          "name": "Split the Seal",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Neutral · 100% ATK · Deal 12 extra damage to Ward only.",
+          "art": "Exact tier maul head splits one Ward medallion diagonally; preserve same hammer design as icon1.",
+          "png": "skill-icon-tiers-v1/rook/upgraded/rook_split_the_seal.png",
+          "rect": [
+            38,
+            465,
+            382,
+            374
+          ]
+        },
+        {
+          "id": "rook_anchor_step",
+          "name": "Anchor Step",
+          "type": "Technique",
+          "effect": "CD 2 · Move Rook to the front when legal and resist forced movement until Round End.",
+          "art": "One tier-matching wrapped work boot with short anchor peg and locking crescent; no ground.",
+          "png": "skill-icon-tiers-v1/rook/upgraded/rook_anchor_step.png",
+          "rect": [
+            476,
+            465,
+            382,
+            374
+          ]
+        },
+        {
+          "id": "rook_stone_answer",
+          "name": "Stone Answer",
+          "type": "Technique",
+          "effect": "CD 3 · Physical / Earth · 80% ATK plus half of Ward spent, spending up to 20 Ward.",
+          "art": "Three falling angular stone shards in one downward fan over a jagged impact-star emblem, tier inset/stone motif.",
+          "png": "skill-icon-tiers-v1/rook/upgraded/rook_stone_answer.png",
+          "rect": [
+            917,
+            465,
+            382,
+            374
+          ]
+        },
+        {
+          "id": "rook_hold_until_dawn",
+          "name": "Hold Until Dawn",
+          "type": "Technique",
+          "effect": "CD 5 · Party gains 12 Ward and Rook gains 8 Strain.",
+          "art": "One broad tier stone shield/portal emblem crowned by small dawn disk and four distinct ward rays; no landscape.",
+          "png": "skill-icon-tiers-v1/rook/upgraded/rook_hold_until_dawn.png",
+          "rect": [
+            1355,
+            465,
+            384,
+            374
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Heavier grey RECTANGULAR stone maul, thick broad BRASS CORNER CAPS with round rivets, short brown wood shaft, dark iron-reinforced slate-and-bamboo barricade. Reference2 shows repeated same hero; use first intact pose for weapon details.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "rook-gatebreak-idle.png",
+      "heroId": "rook",
+      "form": "upgraded",
+      "formName": "Gatebreak",
+      "motifs": "reinforced slate slabs, angular brass corner fittings, paired amber impact arcs, stout gate hinges"
+    },
+    {
+      "id": "rook-legendary",
+      "name": "Rook Calder",
+      "affinity": "Earth",
+      "palette": "ochre earth and weathered bronze",
+      "file": "skill-icons-rook-legendary-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "rook_mason_s_blow",
+          "name": "Mason's Blow",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 1.",
+          "art": "Exact tier rectangular maul head upright on short shaft, force curls; no hands.",
+          "png": "skill-icon-tiers-v1/rook/legendary/rook_mason_s_blow.png",
+          "rect": [
+            36,
+            38,
+            380,
+            372
+          ]
+        },
+        {
+          "id": "rook_load_bearing",
+          "name": "Load Bearing",
+          "type": "Passive",
+          "effect": "Guard grants Rook 5 additional Ward within the cap.",
+          "art": "One tier keystone held between two short reinforced buttress wedges, downward pressure chevron.",
+          "png": "skill-icon-tiers-v1/rook/legendary/rook_load_bearing.png",
+          "rect": [
+            476,
+            38,
+            381,
+            372
+          ]
+        },
+        {
+          "id": "rook_brace_the_line",
+          "name": "Brace the Line",
+          "type": "Technique",
+          "effect": "CD 2 · An adjacent ally gains 18 Ward.",
+          "art": "One front-view folding barricade or portal-ward shield matching tier materials, not a whole fortification scene.",
+          "png": "skill-icon-tiers-v1/rook/legendary/rook_brace_the_line.png",
+          "rect": [
+            916,
+            38,
+            382,
+            372
+          ]
+        },
+        {
+          "id": "rook_take_the_weight",
+          "name": "Take the Weight",
+          "type": "Technique",
+          "effect": "CD 2 · Intercept the next single-target hit against another ally before Round End.",
+          "art": "One tier-armored gauntlet intercepts a dark falling shard, single curved protection accent.",
+          "png": "skill-icon-tiers-v1/rook/legendary/rook_take_the_weight.png",
+          "rect": [
+            1358,
+            38,
+            381,
+            372
+          ]
+        },
+        {
+          "id": "rook_split_the_seal",
+          "name": "Split the Seal",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Neutral · 100% ATK · Deal 12 extra damage to Ward only.",
+          "art": "Exact tier maul head splits one Ward medallion diagonally; preserve same hammer design as icon1.",
+          "png": "skill-icon-tiers-v1/rook/legendary/rook_split_the_seal.png",
+          "rect": [
+            35,
+            465,
+            382,
+            374
+          ]
+        },
+        {
+          "id": "rook_anchor_step",
+          "name": "Anchor Step",
+          "type": "Technique",
+          "effect": "CD 2 · Move Rook to the front when legal and resist forced movement until Round End.",
+          "art": "One tier-matching wrapped work boot with short anchor peg and locking crescent; no ground.",
+          "png": "skill-icon-tiers-v1/rook/legendary/rook_anchor_step.png",
+          "rect": [
+            476,
+            465,
+            383,
+            374
+          ]
+        },
+        {
+          "id": "rook_stone_answer",
+          "name": "Stone Answer",
+          "type": "Technique",
+          "effect": "CD 3 · Physical / Earth · 80% ATK plus half of Ward spent, spending up to 20 Ward.",
+          "art": "Three falling angular stone shards in one downward fan over a jagged impact-star emblem, tier inset/stone motif.",
+          "png": "skill-icon-tiers-v1/rook/legendary/rook_stone_answer.png",
+          "rect": [
+            917,
+            465,
+            381,
+            374
+          ]
+        },
+        {
+          "id": "rook_hold_until_dawn",
+          "name": "Hold Until Dawn",
+          "type": "Technique",
+          "effect": "CD 5 · Party gains 12 Ward and Rook gains 8 Strain.",
+          "art": "One broad tier stone shield/portal emblem crowned by small dawn disk and four distinct ward rays; no landscape.",
+          "png": "skill-icon-tiers-v1/rook/legendary/rook_hold_until_dawn.png",
+          "rect": [
+            1357,
+            465,
+            382,
+            374
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Massive DOUBLE-FACED rectangular grey stone gatebreaker maul, broad stepped ANTIQUE GOLD corner caps and a distinct AMBER SQUARE INSET on face, short reinforced wood shaft. Protective architecture is a tall ivory stone and brass PORTAL ARCH from reference2. No round mace or axe.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "rook-bastion-idle.png",
+      "heroId": "rook",
+      "form": "legendary",
+      "formName": "Legendary Bastion Regent",
+      "motifs": "ivory portal-arch wards, stepped gold and amber keystones, broad ground-rending stone fans; regal gate geometry"
+    },
+    {
+      "id": "elian-upgraded",
+      "name": "Elian Reed",
+      "affinity": "Metal",
+      "palette": "tarnished bronze and pale ivory",
+      "file": "skill-icons-elian-upgraded-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "elian_tuning_strike",
+          "name": "Tuning Strike",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2.",
+          "art": "Exact tier hammer head crosses tier bell, compact weapon-emblem, one metal resonance arc.",
+          "png": "skill-icon-tiers-v1/elian/upgraded/elian_tuning_strike.png",
+          "rect": [
+            43,
+            43,
+            379,
+            369
+          ]
+        },
+        {
+          "id": "elian_measured_breath",
+          "name": "Measured Breath",
+          "type": "Passive",
+          "effect": "The first successful cleanse each round also removes 2 Strain from its recipient.",
+          "art": "One tier bell within a measured ivory breathing spiral, compact and calm.",
+          "png": "skill-icon-tiers-v1/elian/upgraded/elian_measured_breath.png",
+          "rect": [
+            480,
+            43,
+            379,
+            369
+          ]
+        },
+        {
+          "id": "elian_mending_note",
+          "name": "Mending Note",
+          "type": "Technique",
+          "effect": "CD 1 · Restore up to 24 HP to a living ally.",
+          "art": "One tier bell radiating three green/ivory healing-note leaves, clear healing emblem not damage.",
+          "png": "skill-icon-tiers-v1/elian/upgraded/elian_mending_note.png",
+          "rect": [
+            915,
+            43,
+            380,
+            369
+          ]
+        },
+        {
+          "id": "elian_quiet_circle",
+          "name": "Quiet Circle",
+          "type": "Technique",
+          "effect": "CD 3 · Two adjacent living allies each lose 10 Strain.",
+          "art": "Two tier bells inside one silver circular quiet resonance band.",
+          "png": "skill-icon-tiers-v1/elian/upgraded/elian_quiet_circle.png",
+          "rect": [
+            1352,
+            43,
+            380,
+            369
+          ]
+        },
+        {
+          "id": "elian_fracture_chime",
+          "name": "Fracture Chime",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Metal · 80% ATK · ARM -2 for 2 Round Ends within the cap.",
+          "art": "One tilted tier bell projects a jagged silver resonance crack through an armor fragment.",
+          "png": "skill-icon-tiers-v1/elian/upgraded/elian_fracture_chime.png",
+          "rect": [
+            41,
+            464,
+            381,
+            371
+          ]
+        },
+        {
+          "id": "elian_borrowed_breath",
+          "name": "Borrowed Breath",
+          "type": "Technique",
+          "effect": "CD 2 · Grant another eligible ally a Strike die within pool limits; Elian gains 5 Strain.",
+          "art": "One carved strike die with blade pictogram inside ivory sound loop ending on small tier bell, no numbered pips.",
+          "png": "skill-icon-tiers-v1/elian/upgraded/elian_borrowed_breath.png",
+          "rect": [
+            480,
+            464,
+            379,
+            371
+          ]
+        },
+        {
+          "id": "elian_clear_tone",
+          "name": "Clear Tone",
+          "type": "Technique",
+          "effect": "CD 2 · Remove one chosen eligible debuff from a living ally; excludes Downed and Fray.",
+          "art": "Tier bell and matching short chime detail emit a bright clean resonance band dividing one purple curse-knot; no invented extra weapon.",
+          "png": "skill-icon-tiers-v1/elian/upgraded/elian_clear_tone.png",
+          "rect": [
+            915,
+            464,
+            380,
+            371
+          ]
+        },
+        {
+          "id": "elian_last_resonance",
+          "name": "Last Resonance",
+          "type": "Technique",
+          "effect": "CD 5 · Revive one Downed ally at 20% Max HP, once per encounter; cancelled dice stay cancelled.",
+          "art": "One fractured tier great-bell rejoined by ivory spirit threads, an upward soul-flame inside; symbolic not a character revival scene.",
+          "png": "skill-icon-tiers-v1/elian/upgraded/elian_last_resonance.png",
+          "rect": [
+            1352,
+            464,
+            379,
+            371
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Short tuning mallet with BROAD RECTANGULAR bronze-framed DARK head, geometric bar motif on face, square brass fittings along handle. Three graduated plain brass bells hang from angular wooden side frame. Match second reference.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "elian-resonant-master.png",
+      "heroId": "elian",
+      "form": "upgraded",
+      "formName": "Resonant",
+      "motifs": "three graduated bells, geometrical bronze acoustic bars, paired ivory sound ribbons and jade tags"
+    },
+    {
+      "id": "elian-legendary",
+      "name": "Elian Reed",
+      "affinity": "Metal",
+      "palette": "tarnished bronze and pale ivory",
+      "file": "skill-icons-elian-legendary-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "elian_tuning_strike",
+          "name": "Tuning Strike",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2.",
+          "art": "Exact tier hammer head crosses tier bell, compact weapon-emblem, one metal resonance arc.",
+          "png": "skill-icon-tiers-v1/elian/legendary/elian_tuning_strike.png",
+          "rect": [
+            44,
+            44,
+            379,
+            366
+          ]
+        },
+        {
+          "id": "elian_measured_breath",
+          "name": "Measured Breath",
+          "type": "Passive",
+          "effect": "The first successful cleanse each round also removes 2 Strain from its recipient.",
+          "art": "One tier bell within a measured ivory breathing spiral, compact and calm.",
+          "png": "skill-icon-tiers-v1/elian/legendary/elian_measured_breath.png",
+          "rect": [
+            479,
+            44,
+            381,
+            366
+          ]
+        },
+        {
+          "id": "elian_mending_note",
+          "name": "Mending Note",
+          "type": "Technique",
+          "effect": "CD 1 · Restore up to 24 HP to a living ally.",
+          "art": "One tier bell radiating three green/ivory healing-note leaves, clear healing emblem not damage.",
+          "png": "skill-icon-tiers-v1/elian/legendary/elian_mending_note.png",
+          "rect": [
+            915,
+            44,
+            379,
+            366
+          ]
+        },
+        {
+          "id": "elian_quiet_circle",
+          "name": "Quiet Circle",
+          "type": "Technique",
+          "effect": "CD 3 · Two adjacent living allies each lose 10 Strain.",
+          "art": "Two tier bells inside one silver circular quiet resonance band.",
+          "png": "skill-icon-tiers-v1/elian/legendary/elian_quiet_circle.png",
+          "rect": [
+            1351,
+            44,
+            378,
+            366
+          ]
+        },
+        {
+          "id": "elian_fracture_chime",
+          "name": "Fracture Chime",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Metal · 80% ATK · ARM -2 for 2 Round Ends within the cap.",
+          "art": "One tilted tier bell projects a jagged silver resonance crack through an armor fragment.",
+          "png": "skill-icon-tiers-v1/elian/legendary/elian_fracture_chime.png",
+          "rect": [
+            44,
+            465,
+            379,
+            370
+          ]
+        },
+        {
+          "id": "elian_borrowed_breath",
+          "name": "Borrowed Breath",
+          "type": "Technique",
+          "effect": "CD 2 · Grant another eligible ally a Strike die within pool limits; Elian gains 5 Strain.",
+          "art": "One carved strike die with blade pictogram inside ivory sound loop ending on small tier bell, no numbered pips.",
+          "png": "skill-icon-tiers-v1/elian/legendary/elian_borrowed_breath.png",
+          "rect": [
+            479,
+            465,
+            379,
+            368
+          ]
+        },
+        {
+          "id": "elian_clear_tone",
+          "name": "Clear Tone",
+          "type": "Technique",
+          "effect": "CD 2 · Remove one chosen eligible debuff from a living ally; excludes Downed and Fray.",
+          "art": "Tier bell and matching short chime detail emit a bright clean resonance band dividing one purple curse-knot; no invented extra weapon.",
+          "png": "skill-icon-tiers-v1/elian/legendary/elian_clear_tone.png",
+          "rect": [
+            915,
+            465,
+            379,
+            370
+          ]
+        },
+        {
+          "id": "elian_last_resonance",
+          "name": "Last Resonance",
+          "type": "Technique",
+          "effect": "CD 5 · Revive one Downed ally at 20% Max HP, once per encounter; cancelled dice stay cancelled.",
+          "art": "One fractured tier great-bell rejoined by ivory spirit threads, an upward soul-flame inside; symbolic not a character revival scene.",
+          "png": "skill-icon-tiers-v1/elian/legendary/elian_last_resonance.png",
+          "rect": [
+            1351,
+            465,
+            378,
+            368
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Large SHORT-HANDLED twin-pronged CROWN tuning hammer: two broad rectangular upturned gold arms with angular ivory inlay, square/domed central diamond fitting. Huge geometric gold great-bell under stepped ivory-and-brass frame, flanked by SILVER CHIME PLATES. No base wooden mallet or thin ordinary tuning fork.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "elian-choir-master.png",
+      "heroId": "elian",
+      "form": "legendary",
+      "formName": "Legendary Choirkeeper",
+      "motifs": "grand gold bell and four silver chime plates, crown-shaped acoustic waves, layered ivory resonance bands and jade knots"
+    },
+    {
+      "id": "tess-upgraded",
+      "name": "Tess Ashdown",
+      "affinity": "Wood",
+      "palette": "deep jade green and faded red thread",
+      "file": "skill-icons-tess-upgraded-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "tess_courier_s_shot",
+          "name": "Courier's Shot",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Any enemy slot.",
+          "art": "Exact tier bow with one centered arrow and two thin aim curls; no hands.",
+          "png": "skill-icon-tiers-v1/tess/upgraded/tess_courier_s_shot.png",
+          "rect": [
+            39,
+            29,
+            400,
+            393
+          ]
+        },
+        {
+          "id": "tess_read_the_route",
+          "name": "Read the Route",
+          "type": "Passive",
+          "effect": "First damaging action against a Marked enemy each round gains 3 direct damage before Guard and Ward.",
+          "art": "One eye-shaped wax courier seal with short curved route-thread, tier seal fittings.",
+          "png": "skill-icon-tiers-v1/tess/upgraded/tess_read_the_route.png",
+          "rect": [
+            471,
+            29,
+            401,
+            393
+          ]
+        },
+        {
+          "id": "tess_red_thread",
+          "name": "Red Thread",
+          "type": "Technique",
+          "effect": "CD 1 · Mark one enemy for 2 Round Ends; no damage.",
+          "art": "One dominant red targeting-thread knot over a dark seal disk, tier layered knots.",
+          "png": "skill-icon-tiers-v1/tess/upgraded/tess_red_thread.png",
+          "rect": [
+            904,
+            29,
+            400,
+            393
+          ]
+        },
+        {
+          "id": "tess_pin_the_hem",
+          "name": "Pin the Hem",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Wood · 80% ATK · Rooted for 1 Round End.",
+          "art": "One arrowhead pins a small cloth tab in root loop, tier ivory fletching/leaf ornaments; no terrain.",
+          "png": "skill-icon-tiers-v1/tess/upgraded/tess_pin_the_hem.png",
+          "rect": [
+            1335,
+            29,
+            400,
+            393
+          ]
+        },
+        {
+          "id": "tess_through_the_gap",
+          "name": "Through the Gap",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Neutral · 130% ATK · Ignore 50% ARM.",
+          "art": "Tier arrowhead passes through a slit between two small armor-wing fragments; no long spear substitution.",
+          "png": "skill-icon-tiers-v1/tess/upgraded/tess_through_the_gap.png",
+          "rect": [
+            39,
+            460,
+            399,
+            394
+          ]
+        },
+        {
+          "id": "tess_false_address",
+          "name": "False Address",
+          "type": "Technique",
+          "effect": "CD 2 · Push a small enemy back one slot when legal; bosses are immune.",
+          "art": "One folded courier letter with mask-like wax seal and backward green decoy curl, tier envelope fittings.",
+          "png": "skill-icon-tiers-v1/tess/upgraded/tess_false_address.png",
+          "rect": [
+            471,
+            460,
+            401,
+            396
+          ]
+        },
+        {
+          "id": "tess_relay_signal",
+          "name": "Relay Signal",
+          "type": "Technique",
+          "effect": "CD 2 · Change one unspent player die to Strike or Guard; no new die.",
+          "art": "One wood die face with pictogram of exact tier bow, red relay thread and tiny shield, no numbered pips.",
+          "png": "skill-icon-tiers-v1/tess/upgraded/tess_relay_signal.png",
+          "rect": [
+            904,
+            460,
+            402,
+            395
+          ]
+        },
+        {
+          "id": "tess_final_delivery",
+          "name": "Final Delivery",
+          "type": "Technique",
+          "effect": "CD 4 · Physical / Neutral · 160% ATK; consume Mark for an extra 30% ATK.",
+          "art": "One tier arrowhead pierces red wax-knot, two snapped red strands flare like horns; focused signature emblem.",
+          "png": "skill-icon-tiers-v1/tess/upgraded/tess_final_delivery.png",
+          "rect": [
+            1335,
+            459,
+            400,
+            397
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Tall DOUBLE-CURVED dark wood bow, pale ivory flowing inlay, gold/brass pointed end caps with round rivets, RED WRAPPED GRIP and red knotted tassels at both ends. Simple ivory-fletched arrows. Preserve master silhouette, not Base plain bow.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "tess-longroute-master.png",
+      "heroId": "tess",
+      "form": "upgraded",
+      "formName": "Longroute",
+      "motifs": "braided red relay knots, reinforced gold-corner letter seals, ivory fletching fans, forest-green route arcs"
+    },
+    {
+      "id": "tess-legendary",
+      "name": "Tess Ashdown",
+      "affinity": "Wood",
+      "palette": "deep jade green and faded red thread",
+      "file": "skill-icons-tess-legendary-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "tess_courier_s_shot",
+          "name": "Courier's Shot",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Any enemy slot.",
+          "art": "Exact tier bow with one centered arrow and two thin aim curls; no hands.",
+          "png": "skill-icon-tiers-v1/tess/legendary/tess_courier_s_shot.png",
+          "rect": [
+            39,
+            30,
+            400,
+            395
+          ]
+        },
+        {
+          "id": "tess_read_the_route",
+          "name": "Read the Route",
+          "type": "Passive",
+          "effect": "First damaging action against a Marked enemy each round gains 3 direct damage before Guard and Ward.",
+          "art": "One eye-shaped wax courier seal with short curved route-thread, tier seal fittings.",
+          "png": "skill-icon-tiers-v1/tess/legendary/tess_read_the_route.png",
+          "rect": [
+            471,
+            30,
+            401,
+            395
+          ]
+        },
+        {
+          "id": "tess_red_thread",
+          "name": "Red Thread",
+          "type": "Technique",
+          "effect": "CD 1 · Mark one enemy for 2 Round Ends; no damage.",
+          "art": "One dominant red targeting-thread knot over a dark seal disk, tier layered knots.",
+          "png": "skill-icon-tiers-v1/tess/legendary/tess_red_thread.png",
+          "rect": [
+            902,
+            30,
+            400,
+            395
+          ]
+        },
+        {
+          "id": "tess_pin_the_hem",
+          "name": "Pin the Hem",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Wood · 80% ATK · Rooted for 1 Round End.",
+          "art": "One arrowhead pins a small cloth tab in root loop, tier ivory fletching/leaf ornaments; no terrain.",
+          "png": "skill-icon-tiers-v1/tess/legendary/tess_pin_the_hem.png",
+          "rect": [
+            1335,
+            30,
+            401,
+            395
+          ]
+        },
+        {
+          "id": "tess_through_the_gap",
+          "name": "Through the Gap",
+          "type": "Technique",
+          "effect": "CD 2 · Physical / Neutral · 130% ATK · Ignore 50% ARM.",
+          "art": "Tier arrowhead passes through a slit between two small armor-wing fragments; no long spear substitution.",
+          "png": "skill-icon-tiers-v1/tess/legendary/tess_through_the_gap.png",
+          "rect": [
+            39,
+            462,
+            400,
+            393
+          ]
+        },
+        {
+          "id": "tess_false_address",
+          "name": "False Address",
+          "type": "Technique",
+          "effect": "CD 2 · Push a small enemy back one slot when legal; bosses are immune.",
+          "art": "One folded courier letter with mask-like wax seal and backward green decoy curl, tier envelope fittings.",
+          "png": "skill-icon-tiers-v1/tess/legendary/tess_false_address.png",
+          "rect": [
+            471,
+            462,
+            401,
+            393
+          ]
+        },
+        {
+          "id": "tess_relay_signal",
+          "name": "Relay Signal",
+          "type": "Technique",
+          "effect": "CD 2 · Change one unspent player die to Strike or Guard; no new die.",
+          "art": "One wood die face with pictogram of exact tier bow, red relay thread and tiny shield, no numbered pips.",
+          "png": "skill-icon-tiers-v1/tess/legendary/tess_relay_signal.png",
+          "rect": [
+            902,
+            462,
+            400,
+            393
+          ]
+        },
+        {
+          "id": "tess_final_delivery",
+          "name": "Final Delivery",
+          "type": "Technique",
+          "effect": "CD 4 · Physical / Neutral · 160% ATK; consume Mark for an extra 30% ATK.",
+          "art": "One tier arrowhead pierces red wax-knot, two snapped red strands flare like horns; focused signature emblem.",
+          "png": "skill-icon-tiers-v1/tess/legendary/tess_final_delivery.png",
+          "rect": [
+            1335,
+            462,
+            401,
+            393
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Ceremonial IVORYWOOD bow with long angular JADE inlay fields and GOLD edging, swept fork-like ivory feather points at tips, jade wrapped grip, round red wax-seal joints and hanging red tassels. Exact second reference, not golden spear or crossbow.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "tess-starcourier-master.png",
+      "heroId": "tess",
+      "form": "legendary",
+      "formName": "Legendary Starcourier",
+      "motifs": "wing-shaped jade-and-ivory aim ribbons, layered courier wax seals, elaborate red relay knots, feather-like ivory arrow trails"
+    },
+    {
+      "id": "nera-upgraded",
+      "name": "Nera Voss",
+      "affinity": "Fire",
+      "palette": "terracotta red and ember amber",
+      "file": "skill-icons-nera-upgraded-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "nera_kiln_rake",
+          "name": "Kiln Rake",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2.",
+          "art": "Exact TWO-pronged U kiln rake of this tier upright, two controlled ember curls.",
+          "png": "skill-icon-tiers-v1/nera/upgraded/nera_kiln_rake.png",
+          "rect": [
+            32,
+            30,
+            390,
+            389
+          ]
+        },
+        {
+          "id": "nera_borrowed_warmth",
+          "name": "Borrowed Warmth",
+          "type": "Passive",
+          "effect": "First successful Burn application each round grants Nera 3 Ward; DOT ticks do not retrigger.",
+          "art": "One glowing ember in a broken ceramic cup with protective shell crescent, match tier tile patterns.",
+          "png": "skill-icon-tiers-v1/nera/upgraded/nera_borrowed_warmth.png",
+          "rect": [
+            475,
+            32,
+            387,
+            387
+          ]
+        },
+        {
+          "id": "nera_cinder_wake",
+          "name": "Cinder Wake",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Fire · 80% ATK · Burn 4 for 2 Round Ends.",
+          "art": "Exact same tier U rake head angled diagonally trailing a hooked cinder ribbon and few sparks.",
+          "png": "skill-icon-tiers-v1/nera/upgraded/nera_cinder_wake.png",
+          "rect": [
+            917,
+            31,
+            390,
+            388
+          ]
+        },
+        {
+          "id": "nera_banked_ember",
+          "name": "Banked Ember",
+          "type": "Technique",
+          "effect": "CD 2 · Grant a living ally 10 Ward; no healing.",
+          "art": "One closed tier-patterned earthen ember pot within ceramic shield rim, quiet glow under lid.",
+          "png": "skill-icon-tiers-v1/nera/upgraded/nera_banked_ember.png",
+          "rect": [
+            1356,
+            32,
+            388,
+            387
+          ]
+        },
+        {
+          "id": "nera_cooling_breath",
+          "name": "Cooling Breath",
+          "type": "Technique",
+          "effect": "CD 2 · Remove Burn from one living ally who is burning; no healing.",
+          "art": "One terracotta fan with ivory tier kiln motifs disperses an ember with pale cool breath; no hand.",
+          "png": "skill-icon-tiers-v1/nera/upgraded/nera_cooling_breath.png",
+          "rect": [
+            33,
+            467,
+            389,
+            388
+          ]
+        },
+        {
+          "id": "nera_open_the_vent",
+          "name": "Open the Vent",
+          "type": "Technique",
+          "effect": "CD 3 · Magic / Fire · 90% ATK · Reduce an interruptible active charge by one when allowed.",
+          "art": "One lifted ceramic vent grate with pressure spear breaking an incomplete charge ring, compact icon.",
+          "png": "skill-icon-tiers-v1/nera/upgraded/nera_open_the_vent.png",
+          "rect": [
+            475,
+            467,
+            387,
+            388
+          ]
+        },
+        {
+          "id": "nera_safe_fuel",
+          "name": "Safe Fuel",
+          "type": "Technique",
+          "effect": "CD 4 · Party loses 4 Strain and gains one nonstacking protection against an eligible Heat hazard.",
+          "art": "Three black coals in triangular earthen ward emblem using tier ceramic patterns, outer heat curls stop at rim.",
+          "png": "skill-icon-tiers-v1/nera/upgraded/nera_safe_fuel.png",
+          "rect": [
+            917,
+            467,
+            390,
+            388
+          ]
+        },
+        {
+          "id": "nera_last_coal",
+          "name": "Last Coal",
+          "type": "Technique",
+          "effect": "CD 5 · Magic / Fire · 140% ATK · Other living allies gain 8 Ward; Nera gains 8 Strain.",
+          "art": "One last coal emits a focused fire spear, three tier ceramic crescents form protective crown; no hands, allies or extra action scene.",
+          "png": "skill-icon-tiers-v1/nera/upgraded/nera_last_coal.png",
+          "rect": [
+            1355,
+            467,
+            389,
+            388
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Exactly TWO thick blunt U-shaped iron kiln prongs, ORANGE TERRACOTTA collar around the base of U with IVORY wave marks and rope binding, brown shaft with ceramic rings. Prong ends stay plain iron as ref2. No third tine, horns or trident.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "nera-emberguard-master.png",
+      "heroId": "nera",
+      "form": "upgraded",
+      "formName": "Emberguard",
+      "motifs": "stacked terracotta tile wards, ivory kiln-wave ornament, controlled ember arcs and clay bead knots"
+    },
+    {
+      "id": "nera-legendary",
+      "name": "Nera Voss",
+      "affinity": "Fire",
+      "palette": "terracotta red and ember amber",
+      "file": "skill-icons-nera-legendary-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "nera_kiln_rake",
+          "name": "Kiln Rake",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 2.",
+          "art": "Exact TWO-pronged U kiln rake of this tier upright, two controlled ember curls.",
+          "png": "skill-icon-tiers-v1/nera/legendary/nera_kiln_rake.png",
+          "rect": [
+            33,
+            31,
+            390,
+            387
+          ]
+        },
+        {
+          "id": "nera_borrowed_warmth",
+          "name": "Borrowed Warmth",
+          "type": "Passive",
+          "effect": "First successful Burn application each round grants Nera 3 Ward; DOT ticks do not retrigger.",
+          "art": "One glowing ember in a broken ceramic cup with protective shell crescent, match tier tile patterns.",
+          "png": "skill-icon-tiers-v1/nera/legendary/nera_borrowed_warmth.png",
+          "rect": [
+            475,
+            31,
+            389,
+            388
+          ]
+        },
+        {
+          "id": "nera_cinder_wake",
+          "name": "Cinder Wake",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Fire · 80% ATK · Burn 4 for 2 Round Ends.",
+          "art": "Exact same tier U rake head angled diagonally trailing a hooked cinder ribbon and few sparks.",
+          "png": "skill-icon-tiers-v1/nera/legendary/nera_cinder_wake.png",
+          "rect": [
+            916,
+            31,
+            391,
+            387
+          ]
+        },
+        {
+          "id": "nera_banked_ember",
+          "name": "Banked Ember",
+          "type": "Technique",
+          "effect": "CD 2 · Grant a living ally 10 Ward; no healing.",
+          "art": "One closed tier-patterned earthen ember pot within ceramic shield rim, quiet glow under lid.",
+          "png": "skill-icon-tiers-v1/nera/legendary/nera_banked_ember.png",
+          "rect": [
+            1354,
+            31,
+            391,
+            388
+          ]
+        },
+        {
+          "id": "nera_cooling_breath",
+          "name": "Cooling Breath",
+          "type": "Technique",
+          "effect": "CD 2 · Remove Burn from one living ally who is burning; no healing.",
+          "art": "One terracotta fan with ivory tier kiln motifs disperses an ember with pale cool breath; no hand.",
+          "png": "skill-icon-tiers-v1/nera/legendary/nera_cooling_breath.png",
+          "rect": [
+            35,
+            467,
+            388,
+            389
+          ]
+        },
+        {
+          "id": "nera_open_the_vent",
+          "name": "Open the Vent",
+          "type": "Technique",
+          "effect": "CD 3 · Magic / Fire · 90% ATK · Reduce an interruptible active charge by one when allowed.",
+          "art": "One lifted ceramic vent grate with pressure spear breaking an incomplete charge ring, compact icon.",
+          "png": "skill-icon-tiers-v1/nera/legendary/nera_open_the_vent.png",
+          "rect": [
+            475,
+            467,
+            388,
+            387
+          ]
+        },
+        {
+          "id": "nera_safe_fuel",
+          "name": "Safe Fuel",
+          "type": "Technique",
+          "effect": "CD 4 · Party loses 4 Strain and gains one nonstacking protection against an eligible Heat hazard.",
+          "art": "Three black coals in triangular earthen ward emblem using tier ceramic patterns, outer heat curls stop at rim.",
+          "png": "skill-icon-tiers-v1/nera/legendary/nera_safe_fuel.png",
+          "rect": [
+            917,
+            467,
+            389,
+            387
+          ]
+        },
+        {
+          "id": "nera_last_coal",
+          "name": "Last Coal",
+          "type": "Technique",
+          "effect": "CD 5 · Magic / Fire · 140% ATK · Other living allies gain 8 Ward; Nera gains 8 Strain.",
+          "art": "One last coal emits a focused fire spear, three tier ceramic crescents form protective crown; no hands, allies or extra action scene.",
+          "png": "skill-icon-tiers-v1/nera/legendary/nera_last_coal.png",
+          "rect": [
+            1356,
+            467,
+            389,
+            388
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Exactly TWO blunt U-shaped grey iron kiln prongs with IVORY FLAME and red/gold geometric INLAY on inner broad face, large patterned ceramic neck collar and ring, long brown shaft with gold/ivory motif bands. Preserve exact U opening and flat angled tips, no extra prongs.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "nera-hearthwarden-master.png",
+      "heroId": "nera",
+      "form": "legendary",
+      "formName": "Legendary Hearthwarden",
+      "motifs": "crowned kiln-seal emblems, double-layer ivory-flame ceramic wards, gold-edged hearthfire ribbons and rich patterned terracotta"
+    },
+    {
+      "id": "gideon-upgraded",
+      "name": "Gideon Rusk",
+      "affinity": "Earth",
+      "palette": "indigo ink and terracotta red",
+      "file": "skill-icons-gideon-upgraded-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "gideon_writbreaker",
+          "name": "Writbreaker",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 1.",
+          "art": "Exact tier square stamp baton upright, clay edge accents, same head as master.",
+          "png": "skill-icon-tiers-v1/gideon/upgraded/gideon_writbreaker.png",
+          "rect": [
+            32,
+            34,
+            395,
+            389
+          ]
+        },
+        {
+          "id": "gideon_a_record_kept",
+          "name": "A Record Kept",
+          "type": "Passive",
+          "effect": "First effective Ward grant to another ally each round also removes 2 Strain from them.",
+          "art": "One tier carved wood-bound ledger with ivory witness tab and protective binding knot.",
+          "png": "skill-icon-tiers-v1/gideon/upgraded/gideon_a_record_kept.png",
+          "rect": [
+            472,
+            34,
+            395,
+            389
+          ]
+        },
+        {
+          "id": "gideon_stay_of_claim",
+          "name": "Stay of Claim",
+          "type": "Technique",
+          "effect": "CD 2 · Root one eligible enemy for 1 Round End; no HP damage.",
+          "art": "Exact tier square stamp face with four taut binding ribbons forming compact restraint emblem.",
+          "png": "skill-icon-tiers-v1/gideon/upgraded/gideon_stay_of_claim.png",
+          "rect": [
+            912,
+            34,
+            395,
+            389
+          ]
+        },
+        {
+          "id": "gideon_counterseal",
+          "name": "Counterseal",
+          "type": "Technique",
+          "effect": "CD 1 · Grant a living ally 12 Ward; no healing.",
+          "art": "Exact tier stamp crosses tier ledger-cover Ward emblem with short ivory protection crescent.",
+          "png": "skill-icon-tiers-v1/gideon/upgraded/gideon_counterseal.png",
+          "rect": [
+            1350,
+            34,
+            393,
+            389
+          ]
+        },
+        {
+          "id": "gideon_open_the_ledger",
+          "name": "Open the Ledger",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Earth · 70% ATK · ARM -2 for 2 Round Ends within the cap.",
+          "art": "One open tier wood ledger projects small angular armor-crack silhouette above spine, no writing.",
+          "png": "skill-icon-tiers-v1/gideon/upgraded/gideon_open_the_ledger.png",
+          "rect": [
+            32,
+            459,
+            396,
+            386
+          ]
+        },
+        {
+          "id": "gideon_return_the_name",
+          "name": "Return the Name",
+          "type": "Technique",
+          "effect": "CD 2 · Remove one chosen eligible debuff from a living ally; excludes Downed and Fray.",
+          "art": "One ivory name tag frees itself from split dark-red seal, one thin bright release ribbon; tier tab edge treatment.",
+          "png": "skill-icon-tiers-v1/gideon/upgraded/gideon_return_the_name.png",
+          "rect": [
+            472,
+            459,
+            394,
+            386
+          ]
+        },
+        {
+          "id": "gideon_witness_copy",
+          "name": "Witness Copy",
+          "type": "Technique",
+          "effect": "CD 3 · One ally blocks the next eligible new debuff before Round End; no damage protection.",
+          "art": "Two tier witness tabs overlap as a shield, front tab catches curse-knot, rear stays intact.",
+          "png": "skill-icon-tiers-v1/gideon/upgraded/gideon_witness_copy.png",
+          "rect": [
+            912,
+            459,
+            395,
+            386
+          ]
+        },
+        {
+          "id": "gideon_release_of_claim",
+          "name": "Release of Claim",
+          "type": "Technique",
+          "effect": "CD 5 · All enemies lose up to 12 Ward and suffer ARM -2 until Round End; no HP damage; Gideon gains 6 Strain.",
+          "art": "Exact tier square stamp head at center, three broken red claim loops fan outward, same cubic geometry as icon1.",
+          "png": "skill-icon-tiers-v1/gideon/upgraded/gideon_release_of_claim.png",
+          "rect": [
+            1350,
+            459,
+            393,
+            386
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "SHORT dark wood stamp baton, thick rope bindings, large BOX-SHAPED red terracotta head, concentric-square end recess and angular meanders on side edges. Ledger is wood-bound with carved landscape relief, rope binding and octagonal red clay seal. Match ref2.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "gideon-oathscribe-master.png",
+      "heroId": "gideon",
+      "form": "upgraded",
+      "formName": "Oathscribe",
+      "motifs": "paired carved witness tabs, octagonal clay seals, braided ivory cord, dust-indigo legal-ward loops"
+    },
+    {
+      "id": "gideon-legendary",
+      "name": "Gideon Rusk",
+      "affinity": "Earth",
+      "palette": "indigo ink and terracotta red",
+      "file": "skill-icons-gideon-legendary-v1.png",
+      "columns": 4,
+      "rows": 2,
+      "skills": [
+        {
+          "id": "gideon_writbreaker",
+          "name": "Writbreaker",
+          "type": "Basic",
+          "effect": "Physical / Neutral · 100% ATK · Reach 1.",
+          "art": "Exact tier square stamp baton upright, clay edge accents, same head as master.",
+          "png": "skill-icon-tiers-v1/gideon/legendary/gideon_writbreaker.png",
+          "rect": [
+            39,
+            36,
+            383,
+            385
+          ]
+        },
+        {
+          "id": "gideon_a_record_kept",
+          "name": "A Record Kept",
+          "type": "Passive",
+          "effect": "First effective Ward grant to another ally each round also removes 2 Strain from them.",
+          "art": "One tier carved wood-bound ledger with ivory witness tab and protective binding knot.",
+          "png": "skill-icon-tiers-v1/gideon/legendary/gideon_a_record_kept.png",
+          "rect": [
+            474,
+            36,
+            388,
+            385
+          ]
+        },
+        {
+          "id": "gideon_stay_of_claim",
+          "name": "Stay of Claim",
+          "type": "Technique",
+          "effect": "CD 2 · Root one eligible enemy for 1 Round End; no HP damage.",
+          "art": "Exact tier square stamp face with four taut binding ribbons forming compact restraint emblem.",
+          "png": "skill-icon-tiers-v1/gideon/legendary/gideon_stay_of_claim.png",
+          "rect": [
+            912,
+            36,
+            391,
+            385
+          ]
+        },
+        {
+          "id": "gideon_counterseal",
+          "name": "Counterseal",
+          "type": "Technique",
+          "effect": "CD 1 · Grant a living ally 12 Ward; no healing.",
+          "art": "Exact tier stamp crosses tier ledger-cover Ward emblem with short ivory protection crescent.",
+          "png": "skill-icon-tiers-v1/gideon/legendary/gideon_counterseal.png",
+          "rect": [
+            1352,
+            36,
+            387,
+            385
+          ]
+        },
+        {
+          "id": "gideon_open_the_ledger",
+          "name": "Open the Ledger",
+          "type": "Technique",
+          "effect": "CD 2 · Magic / Earth · 70% ATK · ARM -2 for 2 Round Ends within the cap.",
+          "art": "One open tier wood ledger projects small angular armor-crack silhouette above spine, no writing.",
+          "png": "skill-icon-tiers-v1/gideon/legendary/gideon_open_the_ledger.png",
+          "rect": [
+            39,
+            465,
+            383,
+            382
+          ]
+        },
+        {
+          "id": "gideon_return_the_name",
+          "name": "Return the Name",
+          "type": "Technique",
+          "effect": "CD 2 · Remove one chosen eligible debuff from a living ally; excludes Downed and Fray.",
+          "art": "One ivory name tag frees itself from split dark-red seal, one thin bright release ribbon; tier tab edge treatment.",
+          "png": "skill-icon-tiers-v1/gideon/legendary/gideon_return_the_name.png",
+          "rect": [
+            475,
+            465,
+            387,
+            382
+          ]
+        },
+        {
+          "id": "gideon_witness_copy",
+          "name": "Witness Copy",
+          "type": "Technique",
+          "effect": "CD 3 · One ally blocks the next eligible new debuff before Round End; no damage protection.",
+          "art": "Two tier witness tabs overlap as a shield, front tab catches curse-knot, rear stays intact.",
+          "png": "skill-icon-tiers-v1/gideon/legendary/gideon_witness_copy.png",
+          "rect": [
+            912,
+            465,
+            386,
+            382
+          ]
+        },
+        {
+          "id": "gideon_release_of_claim",
+          "name": "Release of Claim",
+          "type": "Technique",
+          "effect": "CD 5 · All enemies lose up to 12 Ward and suffer ARM -2 until Round End; no HP damage; Gideon gains 6 Strain.",
+          "art": "Exact tier square stamp head at center, three broken red claim loops fan outward, same cubic geometry as icon1.",
+          "png": "skill-icon-tiers-v1/gideon/legendary/gideon_release_of_claim.png",
+          "rect": [
+            1351,
+            465,
+            390,
+            382
+          ]
+        }
+      ],
+      "artStatus": "Generated tier variants; awaiting user visual approval",      "weaponSpec": "Heavy FOUR-FACED BOX stamp head with terracotta recessed squared seal face, gold/ochre carved side faces and ornate floral top, rope-wrapped dark wood shaft. Elaborately relief-carved gold/wood ledger with red square clay seal, ivory/gold witness tablets. Square cubic head is essential, never round scepter.",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "weaponReferencePreview": "gideon-namekeeper-master.png",
+      "heroId": "gideon",
+      "form": "legendary",
+      "formName": "Legendary Namekeeper",
+      "motifs": "four-faced master seals, layered ivory paper-fan wards, elaborate red broken claim-knots and gold-edged carved witness emblems"
+    }
+  ]
+}

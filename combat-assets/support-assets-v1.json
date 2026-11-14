@@ -1,0 +1,590 @@
+{
+  "materials": {
+    "title": "Crafting Materials",
+    "file": "support-materials-v1.png",
+    "frames": [
+      {
+        "name": "River Glass",
+        "rect": [
+          56,
+          105,
+          316,
+          251
+        ]
+      },
+      {
+        "name": "Reed Fiber",
+        "rect": [
+          433,
+          51,
+          345,
+          324
+        ]
+      },
+      {
+        "name": "Heartwood",
+        "rect": [
+          825,
+          73,
+          340,
+          300
+        ]
+      },
+      {
+        "name": "Bitter Resin",
+        "rect": [
+          1221,
+          65,
+          318,
+          283
+        ]
+      },
+      {
+        "name": "Kiln Salt",
+        "rect": [
+          1597,
+          60,
+          333,
+          309
+        ]
+      },
+      {
+        "name": "Cinder Ore",
+        "rect": [
+          52,
+          436,
+          321,
+          302
+        ]
+      },
+      {
+        "name": "Mourning Iron",
+        "rect": [
+          426,
+          464,
+          351,
+          271
+        ]
+      },
+      {
+        "name": "Wire Thread",
+        "rect": [
+          847,
+          448,
+          296,
+          292
+        ]
+      },
+      {
+        "name": "Pale Clay",
+        "rect": [
+          1206,
+          456,
+          338,
+          263
+        ]
+      },
+      {
+        "name": "Memory Shale",
+        "rect": [
+          1595,
+          456,
+          345,
+          283
+        ]
+      }
+    ]
+  },
+  "catalysts": {
+    "title": "Encounter Catalysts",
+    "file": "support-catalysts-v1.png",
+    "frames": [
+      {
+        "name": "River Knot",
+        "rect": [
+          15,
+          37,
+          372,
+          348
+        ]
+      },
+      {
+        "name": "Root Knot",
+        "rect": [
+          422,
+          15,
+          352,
+          373
+        ]
+      },
+      {
+        "name": "Ember Knot",
+        "rect": [
+          818,
+          44,
+          350,
+          323
+        ]
+      },
+      {
+        "name": "Iron Knot",
+        "rect": [
+          1203,
+          27,
+          356,
+          351
+        ]
+      },
+      {
+        "name": "Stone Knot",
+        "rect": [
+          1591,
+          26,
+          377,
+          364
+        ]
+      },
+      {
+        "name": "Drowned Clapper",
+        "rect": [
+          56,
+          403,
+          333,
+          379
+        ]
+      },
+      {
+        "name": "Hollow Seed",
+        "rect": [
+          425,
+          429,
+          342,
+          335
+        ]
+      },
+      {
+        "name": "Warm Ember",
+        "rect": [
+          800,
+          457,
+          360,
+          288
+        ]
+      },
+      {
+        "name": "Mourning Rivet",
+        "rect": [
+          1224,
+          426,
+          306,
+          342
+        ]
+      },
+      {
+        "name": "Name Seal",
+        "rect": [
+          1592,
+          424,
+          368,
+          351
+        ]
+      }
+    ]
+  },
+  "relics": {
+    "title": "Base Relics",
+    "file": "support-relics-v1.png",
+    "frames": [
+      {
+        "name": "Wayfarer's Lamp",
+        "rect": [
+          68,
+          36,
+          217,
+          314
+        ]
+      },
+      {
+        "name": "Ferryman's Knot",
+        "rect": [
+          384,
+          101,
+          320,
+          242
+        ]
+      },
+      {
+        "name": "Reed Mirror",
+        "rect": [
+          768,
+          39,
+          296,
+          313
+        ]
+      },
+      {
+        "name": "Root Spindle",
+        "rect": [
+          1156,
+          43,
+          256,
+          307
+        ]
+      },
+      {
+        "name": "Hollow Flute",
+        "rect": [
+          32,
+          406,
+          298,
+          285
+        ]
+      },
+      {
+        "name": "Ember Censer",
+        "rect": [
+          400,
+          398,
+          283,
+          289
+        ]
+      },
+      {
+        "name": "Kiln Heart",
+        "rect": [
+          760,
+          399,
+          290,
+          293
+        ]
+      },
+      {
+        "name": "Toll Bell",
+        "rect": [
+          1150,
+          396,
+          262,
+          294
+        ]
+      },
+      {
+        "name": "Iron Needle",
+        "rect": [
+          40,
+          744,
+          290,
+          314
+        ]
+      },
+      {
+        "name": "Witness Seal",
+        "rect": [
+          395,
+          762,
+          291,
+          279
+        ]
+      },
+      {
+        "name": "Pale Compass",
+        "rect": [
+          757,
+          754,
+          289,
+          291
+        ]
+      },
+      {
+        "name": "Oath Bowl",
+        "rect": [
+          1107,
+          788,
+          320,
+          222
+        ]
+      }
+    ]
+  },
+  "companions": {
+    "title": "Companions",
+    "file": "support-companions-v1-clean.png",
+    "frames": [
+      {
+        "name": "Wick",
+        "rect": [
+          55,
+          38,
+          427,
+          438
+        ]
+      },
+      {
+        "name": "Bristle",
+        "rect": [
+          562,
+          59,
+          396,
+          402
+        ]
+      },
+      {
+        "name": "Mote",
+        "rect": [
+          1057,
+          75,
+          448,
+          388
+        ]
+      },
+      {
+        "name": "Rivet",
+        "rect": [
+          32,
+          555,
+          446,
+          399
+        ]
+      },
+      {
+        "name": "Pebble",
+        "rect": [
+          544,
+          604,
+          446,
+          336
+        ]
+      }
+    ]
+  },
+  "wood-bestiary": {
+    "title": "Hollow Orchard Bestiary",
+    "file": "support-wood-bestiary-v1-clean.png",
+    "frames": [
+      {
+        "name": "Bark Listener",
+        "rect": [
+          64,
+          24,
+          361,
+          446
+        ]
+      },
+      {
+        "name": "Thorn Porter",
+        "rect": [
+          526,
+          90,
+          455,
+          374
+        ]
+      },
+      {
+        "name": "Empty Cradle",
+        "rect": [
+          1070,
+          82,
+          429,
+          383
+        ]
+      },
+      {
+        "name": "Sap Runner",
+        "rect": [
+          49,
+          552,
+          473,
+          390
+        ]
+      },
+      {
+        "name": "The Grafted Bride",
+        "rect": [
+          565,
+          533,
+          461,
+          413
+        ]
+      }
+    ]
+  },
+  "consumables": {
+    "title": "Additional Consumables",
+    "file": "support-consumables-v1.png",
+    "frames": [
+      {
+        "name": "Bitter Smoke",
+        "rect": [
+          131,
+          85,
+          322,
+          397
+        ]
+      },
+      {
+        "name": "Spark Jar",
+        "rect": [
+          602,
+          91,
+          327,
+          389
+        ]
+      },
+      {
+        "name": "Clay Ward",
+        "rect": [
+          1065,
+          88,
+          407,
+          389
+        ]
+      },
+      {
+        "name": "Focus Tea",
+        "rect": [
+          139,
+          638,
+          309,
+          271
+        ]
+      },
+      {
+        "name": "Last Light",
+        "rect": [
+          626,
+          554,
+          281,
+          389
+        ]
+      }
+    ]
+  },
+  "route-icons": {
+    "title": "Expedition Nodes",
+    "file": "support-route-icons-v1.png",
+    "frames": [
+      {
+        "name": "Battle",
+        "rect": [
+          69,
+          55,
+          308,
+          341
+        ]
+      },
+      {
+        "name": "Elite",
+        "rect": [
+          456,
+          34,
+          344,
+          343
+        ]
+      },
+      {
+        "name": "Story",
+        "rect": [
+          875,
+          45,
+          319,
+          346
+        ]
+      },
+      {
+        "name": "Hidden Trail",
+        "rect": [
+          70,
+          442,
+          301,
+          338
+        ]
+      },
+      {
+        "name": "Supply Cache",
+        "rect": [
+          463,
+          448,
+          323,
+          331
+        ]
+      },
+      {
+        "name": "Merchant",
+        "rect": [
+          865,
+          428,
+          365,
+          344
+        ]
+      },
+      {
+        "name": "Camp",
+        "rect": [
+          46,
+          861,
+          361,
+          329
+        ]
+      },
+      {
+        "name": "Crossing",
+        "rect": [
+          431,
+          855,
+          397,
+          343
+        ]
+      },
+      {
+        "name": "Boss",
+        "rect": [
+          869,
+          828,
+          358,
+          380
+        ]
+      }
+    ]
+  },
+  "hub-npcs": {
+    "title": "Lantern Quay NPCs",
+    "file": "support-hub-npcs-v1-clean.png",
+    "frames": [
+      {
+        "name": "Ada Wren",
+        "rect": [
+          163,
+          50,
+          343,
+          517
+        ]
+      },
+      {
+        "name": "Bram Flint",
+        "rect": [
+          721,
+          51,
+          374,
+          515
+        ]
+      },
+      {
+        "name": "Juniper Shaw",
+        "rect": [
+          234,
+          665,
+          211,
+          525
+        ]
+      },
+      {
+        "name": "Keeper Vey",
+        "rect": [
+          750,
+          654,
+          285,
+          536
+        ]
+      }
+    ]
+  }
+}

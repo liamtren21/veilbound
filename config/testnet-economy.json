@@ -1,0 +1,29 @@
+{
+  "version": "economy-fixture-v1",
+  "proofLevel": "deterministic-fixture",
+  "campaignCapAtomic": "1000000",
+  "accountCapAtomic": "100000",
+  "modeCapsAtomic": { "expedition": "500000", "raid": "250000", "weekly": "100000", "quest": "150000" },
+  "bootstrapAtomic": "200000",
+  "npcCapitalAtomic": "50000",
+  "materialCaps": { "salt": 1000, "resin": 600, "iron": 400, "thread": 400 },
+  "materialGrant": { "salt": 2, "resin": 3, "iron": 2, "thread": 2 },
+  "tradeUnitPriceAtomic": "100",
+  "npcMaxUnitPriceAtomic": "120",
+  "npcTargetStock": 24,
+  "attemptsPerPlayer": 8,
+  "profiles": [
+    { "id": "novice", "clearedRegions": 1, "clearEvery": 4, "durationMinutes": 32 },
+    { "id": "median", "clearedRegions": 3, "clearEvery": 2, "durationMinutes": 38 },
+    { "id": "expert", "clearedRegions": 5, "clearEvery": 1, "durationMinutes": 44 }
+  ],
+  "scenarioPlayers": [3, 30, 120],
+  "outageScenarios": [false, true],
+  "notes": [
+    "10000 Copper campaign cap is a fixture, not an approved reward allocation.",
+    "Profiles and duration are assumed trajectories, not measured player skill or combat win rates.",
+    "Copper banking calls the production checkpoint reducer and uses production foe Copper values.",
+    "Craft recipes and NPC validation come from production modules.",
+    "Artifact creation is owner-authorized; recipes produce inlay and binding materials and do not authorize an NFT mint."
+  ]
+}

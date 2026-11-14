@@ -1,0 +1,318 @@
+.shopkeeper{position:absolute;inset:auto 4% 4% auto;width:42%;height:83%;object-fit:contain;object-position:center bottom;pointer-events:none}
+body[data-vendor=merrin] .shopkeeper{right:29%}
+body[data-vendor] #decision{left:0;right:0;bottom:0;transform:none;width:100%;max-height:calc(100% - 52px);
+  padding:16px clamp(16px,4vw,62px);background:none;border:0;border-image:none;box-shadow:none;display:block;pointer-events:none}
+body[data-vendor] #decision :is(button,select,input){pointer-events:auto}
+body[data-vendor] #decision h2,body[data-vendor] #decision>p{width:fit-content;background:#251814ef;padding:4px 12px}
+body[data-vendor] #decision>.shop-shelf{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px}
+.shop-board{
+  width:min(60vw,650px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:start;
+  padding:clamp(26px,5vw,80px) clamp(24px,5vw,76px);
+  color:#3f291b;background:var(--vendor-board) center/100% 100% no-repeat;
+}
+body[data-vendor=merrin]{--vendor-board:url('combat-assets/wood-shop-board-reed-v5.png')}
+body[data-vendor=sable],body[data-vendor=hester]{--vendor-board:url('combat-assets/wood-shop-board-wick-v5.png')}
+body[data-vendor=orin]{--vendor-board:url('combat-assets/wood-shop-board-bench-v5.png')}
+body[data-vendor=merrin] .shop-board{width:min(30vw,385px);grid-template-columns:1fr}
+body[data-vendor] .shop-board .shop-goods{padding:2px;text-align:center;justify-items:center;background:none;border-image:none}
+body[data-vendor] .shop-goods>button{justify-self:center}
+body[data-vendor] .shop-goods small{display:none}
+body:is(.tutorial-loot,.field-loot) #loot-diary{
+  position:absolute;
+  inset: max(12px,3vh) auto max(12px,3vh) clamp(6px,1.2vw,20px);
+  width:min(34%,480px);
+  overflow:auto;
+  padding:clamp(12px,2vw,32px);
+  color:#41271c;
+  background:none;
+  border:1px solid transparent;
+  border-image:var(--orchard-parchment) 66 100 fill / 16px / 0 stretch;
+  box-shadow:4px 8px 22px #150d0b80;
+}
+.field-loot .masthead .location{visibility:hidden}
+#loot-diary .loot-portrait .starter-avatar{width:min(100%,64px);margin:0 auto 3px}
+#loot-diary .loot-portrait small{display:block;margin-top:2px}
+#loot-diary .loot-tokens:empty{display:none}
+body:is(.tutorial-loot,.field-loot,[data-phase=complete],[data-phase=defeat]) #decision{
+  --result-art:url('combat-assets/ui-victory-v2.png');
+  width:min(60vw,calc(91dvh * .75));aspect-ratio:3/4;max-height:none;bottom:50%;left:auto;right:7%;
+  top:auto;transform:translateY(50%);display:flex;flex-direction:column;justify-content:flex-start;gap:4px;
+  padding:0;margin:0;isolation:isolate;background:var(--result-art) center/100% 100% no-repeat;
+  border:0;border-image:none;box-shadow:none;border-radius:0;color:#42291d;overflow:visible;
+}
+body:is([data-phase=complete],[data-phase=defeat]) #decision{left:50%;right:auto;transform:translate(-50%,50%);text-align:center}
+body[data-phase=defeat] #decision{--result-art:url('combat-assets/ui-defeat-v2.png')}
+body:is(.tutorial-loot,.field-loot,[data-phase=complete],[data-phase=defeat]) #decision-title{
+  position:absolute;inset:27% 22% auto;margin:0;padding:0;text-align:center;color:inherit;line-height:1;
+  font-size:clamp(12px,2vw,27px);background:none;text-shadow:none;border:0;box-shadow:none;
+}
+body[data-phase=defeat] #decision-title{top:34%}
+body:is(.tutorial-loot,.field-loot,[data-phase=complete],[data-phase=defeat]) #decision-title::after{display:none}
+.result-content{position:absolute;inset:34% 23% 20%;display:flex;flex-direction:column;gap:5px;overflow:auto;padding:4px}
+body[data-phase=defeat] .result-content{top:41%;bottom:18%}
+.result-content p{color:inherit;margin:0}
+.field-loot .result-content button{text-align:left;width:100%}
+body:is(.tutorial-loot,.field-loot,[data-phase=complete],[data-phase=defeat]) #decision>.result-action{
+  position:absolute;inset:auto 34% 9.7%;width:32%;min-height:6%;padding:2px;background:none;border:0;
+  border-image:none;color:#43281c;box-shadow:none;font-size:clamp(10px,1.2vw,17px);
+}
+body[data-phase=defeat] #decision>.result-action{bottom:8%}
+@media(max-width:700px){
+  .shopkeeper{right:0;width:44%;height:66%}
+  body[data-vendor=merrin] .shopkeeper{right:28%}
+  .shop-board{grid-template-columns:repeat(2,minmax(0,1fr));padding:30px 20px}
+  body[data-vendor=merrin] .shop-board{width:32vw}
+  body:is(.tutorial-loot,.field-loot) #loot-diary{width:39%;padding:12px}
+  body:is(.tutorial-loot,.field-loot) #decision{width:61vw;right:0}
+  body:is([data-phase=complete],[data-phase=defeat]) #decision{width:min(92vw,calc(91dvh * .75))}
+}
+
+#loot-diary .loot-recipient{display:none}
+#loot-diary.choosing-recipient .loot-recipient{display:inline-block}
+#loot-diary.choosing-recipient .loot-warden{align-items:center}
+#decision>.result-action.loot-leave{position:absolute;background:none;color:#43281c;box-shadow:none;border:0}
+body[data-vendor] #decision :is(h2,p).shop-purse,
+body[data-vendor] #decision>h2,
+body[data-vendor] #decision>p{color:#f6e2c0}
+
+.shop-item-frame{
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:clamp(44px,5.7vw,82px);
+  aspect-ratio:1;
+  overflow:hidden;
+  border-radius:4px;
+  background:
+    linear-gradient(160deg,#1f365333 0%,transparent 45%,#0b131c77 100%),
+    url('combat-assets/talismans-v3/inset-v1.webp') center / cover;
+}
+.shop-item-frame::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:url('combat-assets/warden-avatars-v1/frame-v1.png') center / 100% 100% no-repeat;
+}
+.shop-item-frame :is(.item-icon,.loot-icon){width:82%}
+.shop-item-frame .shop-item-paint{
+  background-image:url('combat-assets/wood-shop-catalog-v1.webp');
+  background-size:200% 200%;
+}
+.shop-item-details{min-width:0}
+body[data-vendor=merrin] #decision .shop-shelf{align-items:stretch}
+body[data-vendor=merrin] .shop-board{
+  width:min(31vw,420px);
+  gap:0;
+  align-content:center;
+  justify-items:center;
+  min-height:clamp(235px,37vh,340px);
+  padding:clamp(28px,4vw,55px) clamp(20px,4.5vw,65px);
+}
+body[data-vendor=merrin] .shop-board .shop-goods{
+  width:min(100%,220px);
+  grid-template-columns:auto minmax(0,1fr);
+  gap:clamp(6px,1vw,14px);
+  align-items:center;
+  justify-items:stretch;
+  min-height:clamp(74px,13vh,120px);
+  padding:6px 0;
+  text-align:left;
+}
+body[data-vendor=merrin] .shop-goods+.shop-goods{border-top:1px solid #864c3b70}
+body[data-vendor=merrin] .shop-item-details{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:4px;
+  font-size:clamp(.83rem,1.25vw,1.1rem);
+}
+body[data-vendor=merrin] .shop-item-details button{align-self:center;margin:0}
+@media(max-width:780px){
+  body[data-vendor=merrin] .shop-board{width:calc(50% - 5px);padding:24px clamp(24px,7vw,54px)}
+  body[data-vendor=merrin] .shop-item-details button{white-space:normal}
+  body[data-vendor=merrin] .shopkeeper{bottom:29%;height:64%}
+}
+@media(max-width:460px){
+  body[data-vendor=merrin] .shop-board .shop-goods{grid-template-columns:1fr;justify-items:center;text-align:center}
+  body[data-vendor=merrin] .shop-item-details{align-items:center}
+  body[data-vendor=merrin] .shop-item-details button{align-self:center}
+}
+
+@media(min-width:781px){
+  body[data-vendor=merrin] .shop-item-details button{font-size:clamp(.67rem,1vw,.9rem);white-space:nowrap}
+}
+
+.shop-item-cutout{
+  width:82%;
+  height:82%;
+  object-fit:contain;
+}
+body:is([data-vendor=sable],[data-vendor=hester]) .shop-board{
+  position:relative;
+  display:block;
+  width:min(57vw,89vh,880px);
+  aspect-ratio:3 / 2;
+  background-size:contain;
+  padding:0;
+}
+body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-grid{
+  position:absolute;
+  inset:31% 17% 15%;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-rows:repeat(2,minmax(0,1fr));
+  gap:4px 8px;
+}
+body:is([data-vendor=sable],[data-vendor=hester]) .shop-board .shop-goods{
+  grid-template-rows:auto 1fr;
+  align-content:start;
+  gap:4px;
+  min-width:0;
+}
+body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-frame{
+  width:clamp(36px,min(5.3vw,8vh),76px);
+}
+body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-details{
+  display:grid;
+  justify-items:center;
+  grid-template-rows:2lh auto;
+  align-items:center;
+  gap:2px;
+  line-height:1;
+  font-size:clamp(.7rem,1vw,.95rem);
+}
+body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-details button{
+  margin:0;
+  max-width:100%;
+  white-space:nowrap;
+  font-size:clamp(.62rem,1vw,.9rem);
+}
+body:is([data-vendor=sable],[data-vendor=hester]) .shop-goods-empty{opacity:.55}
+.shop-empty-price{display:grid;place-items:center;min-width:2.4em;border:1px solid #8a5144;border-radius:8px}
+@media(max-width:700px){
+  body:is([data-vendor=sable],[data-vendor=hester]) .shop-board{
+    width:min(100%,480px);
+  }
+  body:is([data-vendor=sable],[data-vendor=hester]) .shopkeeper{bottom:23%;right:0}
+  body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-grid{gap:2px}
+  body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-details{line-height:1.1}
+  body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-details button{padding-inline:3px;white-space:normal}
+}
+
+.shop-item-frame .remedy-item-paint{
+  background-image:url('combat-assets/wood-shop-remedies-v1.webp');
+  background-size:300% 200%;
+}
+body[data-vendor=hester] .shop-goods strong{line-height:1}
+body[data-vendor=hester] .owned-remedies{pointer-events:auto}
+body[data-vendor=hester] .owned-remedies:not([open]){width:max-content}
+body[data-vendor=hester] .owned-remedies summary{
+  cursor:pointer;
+  width:max-content;
+  background:#251814ef;
+  color:#f6e2c0;
+  padding:6px 12px;
+}
+body[data-vendor=orin] .mentor-lessons{
+  position:relative;
+  width:min(61vw,960px);
+  aspect-ratio:2;
+  margin-block:8px;
+  background:var(--vendor-board) center / contain no-repeat;
+  color:#3f291b;
+}
+.mentor-controls{
+  position:absolute;
+  inset:21% 17%;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-content:center;
+  gap:6px 10px;
+}
+.mentor-wardens,.mentor-controls>button:last-child{grid-column:1 / -1}
+.mentor-wardens{
+  display:flex;
+  justify-content:center;
+  gap:clamp(4px,1vw,14px);
+}
+.mentor-warden{
+  display:grid;
+  grid-template-rows:auto 1fr;
+  justify-items:center;
+  flex:0 1 115px;
+  min-width:0;
+}
+.mentor-warden-name{
+  text-align:center;
+  line-height:1.1;
+  font-size:clamp(.72rem,1.15vw,1rem);
+}
+#decision .mentor-portrait{
+  padding:0;
+  min-height:0;
+  border:0;
+  border-radius:4px;
+  background:none;
+  box-shadow:none;
+}
+.mentor-portrait .starter-avatar{
+  width:clamp(34px,5vw,64px);
+  margin:0 0 3px;
+}
+.mentor-portrait[aria-pressed=true] .starter-avatar{
+  box-shadow:0 0 0 2px #316758,0 0 6px #31795c80;
+}
+.mentor-controls button{margin:0}
+@media(max-width:700px){
+  body[data-vendor=orin] .mentor-lessons{width:min(100%,600px)}
+  body[data-vendor=orin] .shopkeeper{bottom:23%}
+  .mentor-controls{inset:18% 15%;gap:2px 4px}
+  .mentor-portrait .starter-avatar{width:clamp(24px,7vw,38px)}
+  .mentor-warden-name{font-size:clamp(.56rem,1.8vw,.72rem)}
+  .mentor-controls button{font-size:clamp(.58rem,2vw,.8rem)}
+  .mentor-controls button{min-height:0;padding:2px 5px;border-width:2px}
+  body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-frame{width:clamp(24px,8vw,42px)}
+  body:is([data-vendor=sable],[data-vendor=hester]) .shop-item-details button{
+    min-height:0;
+    padding:2px 4px;
+    border-width:2px;
+    font-size:clamp(.52rem,2vw,.65rem);
+  }
+}
+
+#decision .result-content :is(.reward-item,.loot-row){
+  display:flex;
+  width:100%;
+  min-height:0;
+  flex:none;
+  align-items:center;
+  gap:8px;
+  padding:3px;
+  border:0;
+  border-image:none;
+  border-radius:3px;
+  box-shadow:none;
+  background:none;
+  color:inherit;
+  text-align:left;
+  font-size:clamp(.65rem,1.15vw,1rem);
+}
+#decision .result-content :is(.reward-item,.loot-row):not(:disabled):is(:hover,:focus-visible){
+  background:#63362415;
+  filter:none;
+}
+#decision .result-content .shop-item-frame{
+  width:clamp(28px,3.6vw,50px);
+  flex:none;
+}
+.result-content .shop-item-frame .loot-icon{position:relative}
+.reward-coin{width:72%;aspect-ratio:1;object-fit:contain}
+.loot-item-copy{min-width:0;overflow-wrap:anywhere}
+.loot-item-copy small{
+  display:block;
+  margin-top:2px;
+  font:.875em/1.2 var(--body-font);
+  text-transform:none;
+}

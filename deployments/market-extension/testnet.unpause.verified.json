@@ -1,0 +1,16 @@
+{
+  "transactionHash": "DNRn5C8vjPbq6TVGU7U3aFYKgBMyTGS2ZQvPEbUvaXMx",
+  "network": "testnet",
+  "blockHash": "CJcuAQhn6C8fKNoSRX7ujJQ2WNWjw3oa7gCLg3S1BHyY",
+  "status": "VERIFIED_ACTIVE",
+  "artifacts": {
+    "copper": {
+      "bytes": 220729,
+      "sha256": "e7056d403484f88e86250e08ad3271d687da3a0613d9527328002e048d25fbe4"
+    },
+    "core": {
+      "bytes": 888820,
+      "sha256": "6b8196fcf87390677c8ab3c74129b3974a87bfa2611c9b1e045cf053507528d4"
+    }
+  }
+}

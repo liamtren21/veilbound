@@ -1,0 +1,18 @@
+{
+  "optionalEdges": {
+    "cache": ["bridge"],
+    "creek": ["graft"],
+    "graft": ["trainer"],
+    "causeway-camp": ["water-witch"],
+    "terraces-camp": ["fire-witch"],
+    "mourning-camp": ["metal-witch"],
+    "basin-camp": ["earth-witch"]
+  },
+  "formations": {
+    "road": [["bark", "sap"], ["sap", "bark"], ["bark", "bark"]],
+    "causeway-road": [["reed-drifter", "silt-grasper"], ["silt-grasper", "reed-drifter"], ["reed-drifter", "reed-drifter"]],
+    "terraces-road": [["kiln-hound", "coal-bearer"], ["coal-bearer", "kiln-hound"], ["kiln-hound", "kiln-hound"]],
+    "mourning-road": [["rust-hound", "toll-collector"], ["toll-collector", "rust-hound"], ["rust-hound", "rust-hound"]],
+    "basin-road": [["shale-crawler", "clay-witness"], ["clay-witness", "shale-crawler"], ["shale-crawler", "shale-crawler"]]
+  }
+}

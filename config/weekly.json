@@ -1,0 +1,1 @@
+{ "ruleset": "weekly-oath-v1", "seed": 438811, "durationDays": 7, "graceMinutes": 30, "roster": ["rook", "mara", "elian"], "budget": 0, "rewardSlots": 50, "targetRounds": 100, "reward": "weekly-oath-cosmetic" }

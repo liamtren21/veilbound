@@ -1,0 +1,22 @@
+@font-face{font-family:Asimovian;src:url('combat-assets/fonts/Asimovian-Regular.ttf')}
+@font-face{font-family:'Bubblegum Sans';src:url('combat-assets/fonts/BubblegumSans-Regular.ttf')}
+:root{font:16px/1.4 'Bubblegum Sans',system-ui,sans-serif;--ink:#f6e2c0;--muted:#dfc4a7;--gold:#efc487;--accent:#efc487;--line:#82533f;--edge:#82533f;--field:#25191e;--panel:#301c24;--surface:#301c24;color:var(--ink);background:#150e15}
+body{min-height:100dvh;background:linear-gradient(#160d16b8,#120d14f5),url('combat-assets/veilbound-title-waymark-v2.webp') center/cover fixed;color:var(--ink)}
+h1,h2,h3,button,summary{font-family:Asimovian,system-ui,sans-serif;font-weight:400;text-transform:uppercase}
+h1{text-align:center;font-size:clamp(2rem,5vw,3.65rem);text-shadow:0 3px 8px #000}
+h2{font-size:clamp(1.3rem,3vw,2rem)}
+section,.wallet,dialog,.masthead{border:2px solid transparent;border-image:url('combat-assets/expedition-hall-frame-v1.png') 23% / 24px / 0 stretch;background:linear-gradient(148deg,#41252c,#22171e);border-radius:0}
+button{min-height:44px;border:solid transparent;border-width:7px 20px;border-image:url('combat-assets/ui-orchard-v1/nameplate.png') 37 96 fill / 7px 20px / 0 stretch;border-radius:0;background:none;color:#382218}
+button:hover:not(:disabled){background:none;color:#382218;filter:brightness(1.12) drop-shadow(0 0 4px #efac72)}
+input,select{background:#24191e;color:var(--ink);border:1px solid #95674e}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:7px}
+nav a{display:grid;place-items:center;text-align:center;gap:5px;min-height:78px;padding:8px;color:var(--ink);text-decoration:none;background:#311c26;border:2px solid transparent;border-image:url('combat-assets/expedition-hall-frame-v1.png') 23% / 16px / 0 stretch}
+nav a::before{content:'';width:32px;height:32px;background:var(--mark) center/contain no-repeat}
+nav a:is(:hover,[aria-current]){background:#503137;color:#ffe6ad}
+nav a:is([href="#materials"],[href="#rewards"]){--mark:url('combat-assets/account-v1/copper.png')}
+nav a:is([href="#artifacts"],[href="#trials"]){--mark:url('combat-assets/talismans-v3/gate.png')}
+nav a:is([href="#rentals"],[href="#weekly"]){--mark:url('combat-assets/talismans-v3/river.png')}
+nav a:is([href="#charter"],[href="#guild"]){--mark:url('combat-assets/account-v1/ledger.png')}
+nav a:is([href="#crafting"],[href="#raid"]){--mark:url('combat-assets/region-emblems-v2/fire.png')}
+nav a[href="#duel"]{--mark:url('combat-assets/region-emblems-v2/metal.png')}
+nav a[href="#coop"]{--mark:url('combat-assets/region-emblems-v2/earth.png')}

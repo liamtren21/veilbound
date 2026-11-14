@@ -1,0 +1,563 @@
+{
+  "assetId": "hero_rook_base_v001",
+  "hero": "Rook Calder",
+  "affinity": "Earth",
+  "facing": "right",
+  "contactFrame": 6,
+  "contactMs": 560,
+  "attackDurationMs": 1320,
+  "damageAuthority": "presentation_only",
+  "status": "Integrated; awaiting user visual approval",
+  "clips": {
+    "idle": {
+      "file": "rook-idle.png",
+      "columns": 6,
+      "rows": 2,
+      "frameCount": 12,
+      "loop": true,
+      "worldSize": 2.6802,
+      "durationMs": 1200,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.08011,
+          "durationMs": 100,
+          "opaqueBounds": [
+            102,
+            21,
+            294,
+            333
+          ]
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.08011,
+          "durationMs": 100,
+          "opaqueBounds": [
+            102,
+            20,
+            295,
+            333
+          ]
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.08011,
+          "durationMs": 100,
+          "opaqueBounds": [
+            102,
+            15,
+            293,
+            333
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.08011,
+          "durationMs": 100,
+          "opaqueBounds": [
+            102,
+            14,
+            294,
+            333
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.08011,
+          "durationMs": 100,
+          "opaqueBounds": [
+            104,
+            11,
+            292,
+            333
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.08011,
+          "durationMs": 100,
+          "opaqueBounds": [
+            101,
+            21,
+            292,
+            333
+          ]
+        },
+        {
+          "rect": [
+            0,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.082873,
+          "durationMs": 100,
+          "opaqueBounds": [
+            102,
+            22,
+            294,
+            332
+          ]
+        },
+        {
+          "rect": [
+            362,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.082873,
+          "durationMs": 100,
+          "opaqueBounds": [
+            102,
+            24,
+            295,
+            332
+          ]
+        },
+        {
+          "rect": [
+            724,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.082873,
+          "durationMs": 100,
+          "opaqueBounds": [
+            103,
+            26,
+            295,
+            332
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.082873,
+          "durationMs": 100,
+          "opaqueBounds": [
+            103,
+            26,
+            295,
+            332
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.082873,
+          "durationMs": 100,
+          "opaqueBounds": [
+            103,
+            23,
+            295,
+            332
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.082873,
+          "durationMs": 100,
+          "opaqueBounds": [
+            103,
+            22,
+            294,
+            332
+          ]
+        }
+      ],
+      "sha256": "5828608fbe7c1cea94348e635c4cf322b9e8b46b9a0f9cfcb07a54ae5a73a9c3"
+    },
+    "attack": {
+      "file": "rook-attack.png",
+      "columns": 6,
+      "rows": 2,
+      "frameCount": 12,
+      "loop": false,
+      "worldSize": 2.6888,
+      "durationMs": 1320,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.049724,
+          "durationMs": 140,
+          "opaqueBounds": [
+            90,
+            33,
+            309,
+            344
+          ]
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.046961,
+          "durationMs": 100,
+          "opaqueBounds": [
+            86,
+            59,
+            299,
+            345
+          ]
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.046961,
+          "durationMs": 100,
+          "opaqueBounds": [
+            81,
+            65,
+            301,
+            345
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.046961,
+          "durationMs": 90,
+          "opaqueBounds": [
+            80,
+            14,
+            281,
+            345
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.049724,
+          "durationMs": 65,
+          "opaqueBounds": [
+            81,
+            19,
+            281,
+            344
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.046961,
+          "durationMs": 65,
+          "opaqueBounds": [
+            76,
+            67,
+            310,
+            345
+          ]
+        },
+        {
+          "rect": [
+            0,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.049724,
+          "durationMs": 100,
+          "opaqueBounds": [
+            77,
+            60,
+            332,
+            344
+          ]
+        },
+        {
+          "rect": [
+            362,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.049724,
+          "durationMs": 80,
+          "opaqueBounds": [
+            70,
+            62,
+            315,
+            344
+          ]
+        },
+        {
+          "rect": [
+            724,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.049724,
+          "durationMs": 90,
+          "opaqueBounds": [
+            77,
+            54,
+            305,
+            344
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.049724,
+          "durationMs": 110,
+          "opaqueBounds": [
+            73,
+            46,
+            296,
+            344
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.049724,
+          "durationMs": 130,
+          "opaqueBounds": [
+            78,
+            41,
+            298,
+            344
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.049724,
+          "durationMs": 250,
+          "opaqueBounds": [
+            88,
+            36,
+            308,
+            344
+          ]
+        }
+      ],
+      "sha256": "515e68910ce931bbcc2fae9fc4692f5fc2bbf7f851c5b29790735b57c4604e4a"
+    },
+    "death": {
+      "file": "rook-death.png",
+      "columns": 4,
+      "rows": 2,
+      "frameCount": 8,
+      "loop": false,
+      "worldSize": 2.693,
+      "durationMs": 1200,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            443,
+            443
+          ],
+          "pivotY": 0.049661,
+          "durationMs": 150,
+          "opaqueBounds": [
+            111,
+            41,
+            366,
+            421
+          ]
+        },
+        {
+          "rect": [
+            443,
+            0,
+            444,
+            443
+          ],
+          "pivotY": 0.049661,
+          "durationMs": 150,
+          "opaqueBounds": [
+            99,
+            48,
+            366,
+            421
+          ]
+        },
+        {
+          "rect": [
+            887,
+            0,
+            443,
+            443
+          ],
+          "pivotY": 0.049661,
+          "durationMs": 150,
+          "opaqueBounds": [
+            97,
+            73,
+            366,
+            421
+          ]
+        },
+        {
+          "rect": [
+            1330,
+            0,
+            444,
+            443
+          ],
+          "pivotY": 0.049661,
+          "durationMs": 150,
+          "opaqueBounds": [
+            81,
+            109,
+            349,
+            421
+          ]
+        },
+        {
+          "rect": [
+            0,
+            443,
+            443,
+            444
+          ],
+          "pivotY": 0.056306,
+          "durationMs": 150,
+          "opaqueBounds": [
+            46,
+            90,
+            350,
+            419
+          ]
+        },
+        {
+          "rect": [
+            443,
+            443,
+            444,
+            444
+          ],
+          "pivotY": 0.058559,
+          "durationMs": 150,
+          "opaqueBounds": [
+            38,
+            131,
+            346,
+            418
+          ]
+        },
+        {
+          "rect": [
+            887,
+            443,
+            443,
+            444
+          ],
+          "pivotY": 0.058559,
+          "durationMs": 150,
+          "opaqueBounds": [
+            32,
+            157,
+            343,
+            415
+          ]
+        },
+        {
+          "rect": [
+            1330,
+            443,
+            444,
+            444
+          ],
+          "pivotY": 0.058559,
+          "durationMs": 150,
+          "opaqueBounds": [
+            41,
+            194,
+            345,
+            413
+          ]
+        }
+      ],
+      "sha256": "b0f8909348ad14a4de825326c19ff8ba4a8d80ec0f7c19b97e742522021f03b9"
+    }
+  },
+  "masterFile": "rook-master.png",
+  "sourcePrompts": "../rook-production-prompts.json"
+}

@@ -1,0 +1,17 @@
+{
+  "network": "testnet",
+  "status": "VERIFIED",
+  "accountId": "vibebound.testnet",
+  "permission": {
+    "allowance": "100000000000000000000000",
+    "method_names": [
+      "issue_starter",
+      "link_starter",
+      "settle_starter_run"
+    ],
+    "receiver_id": "core.vibebound.testnet"
+  },
+  "transactionHash": "4a9znGiYKhf2D5hHFayz49FX8U2KN566JNHHZVU3iKUv",
+  "blockHash": "2UDzQuyy4Bk5TY8j3pGammFQ7pi4LkdRZvsicLJTNTCZ",
+  "publicKey": "ed25519:9xgr6Y7rt8eRJfo8EEeQbhvGJV3VBboqA2YGe7CMZoV"
+}

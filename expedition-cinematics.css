@@ -1,0 +1,17 @@
+.journey-coach[data-page=versus]{inset:0;width:100%;transform:none;overflow:hidden;pointer-events:none;background:none;padding:0}
+body:not(.reduce-motion) .journey-coach[data-page=versus]{animation:none}
+.intro-title{position:absolute;inset:14% 16% auto;padding:7px;font-size:clamp(27px,4.25vw,58px);color:#f8dfb2;background:linear-gradient(90deg,transparent,#20140cef 22% 78%,transparent);text-shadow:0 4px 7px #000}
+.journey-coach[data-page=versus] canvas{position:absolute;bottom:-3%;left:7%;width:min(46vw,420px);height:auto;filter:drop-shadow(0 0 15px #f5c07685)}
+.intro-die{position:absolute;top:53%;left:47%;width:clamp(26px,6vw,78px);aspect-ratio:1;background:#f4dfab;color:#572c16;border:2px solid #4b2f1f;border-radius:8px;box-shadow:0 0 22px #f6c37390;display:grid;place-items:center;transform:rotate(-21deg)}
+.intro-die.foe{left:40%;top:58%;background:#493353;color:#f9d2f0;transform:rotate(24deg)}
+.intro-die svg{width:64%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.intro-lines{position:absolute;inset:0;overflow:hidden}
+.intro-lines i{position:absolute;top:var(--line-y);left:-40%;width:46%;height:2px;background:linear-gradient(90deg,transparent,#fff3c6 78%,transparent);opacity:0}
+body:not(.reduce-motion) .intro-lines i{animation:intro-streak .76s var(--line-delay) 2 both}
+@keyframes intro-streak{10%{opacity:0}27%{opacity:.8}90%,100%{opacity:0;transform:translateX(315%)}}
+body > .loot-transfer{position:fixed;z-index:7;pointer-events:none;filter:drop-shadow(0 0 8px #ffc777);transform:translate(-50%,-50%)}
+.loot-receive{position:fixed;z-index:7;pointer-events:none;aspect-ratio:1;border:2px solid #fff2c9;border-radius:50%;box-shadow:0 0 12px #ffc777,inset 0 0 9px #fff2c9;background:#fff2c955}
+
+#battle-outcome[data-result=defeat] i{top:auto;bottom:12%;width:4px;height:4px;border-radius:50%;animation-name:outcome-ash}
+@keyframes outcome-ash{0%{opacity:0;transform:none}24%{opacity:.75}100%{opacity:0;transform:translate(16px,-58vh) rotate(125deg)}}
+

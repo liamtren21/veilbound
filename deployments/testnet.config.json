@@ -1,0 +1,12 @@
+{
+  "network": "testnet",
+  "rootAccountId": "vibebound.testnet",
+  "receiptSigner": "mh5dDDmhiLwM9lyZcnkRPa84W6uznb5QoM9Tpb/VFuk=",
+  "ruleset": "veilbound-testnet-v1",
+  "bootstrapCap": "1000000",
+  "globalRewardCap": "1000000",
+  "epochLengthNs": "86400000000000",
+  "epochRewardCap": "200000",
+  "copperFundingYocto": "3000000000000000000000000",
+  "coreFundingYocto": "9000000000000000000000000"
+}

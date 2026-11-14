@@ -1,0 +1,563 @@
+{
+  "assetId": "hero_elian_base_v001",
+  "hero": "Elian Reed",
+  "affinity": "Metal",
+  "facing": "right",
+  "contactFrame": 6,
+  "contactMs": 560,
+  "attackDurationMs": 1320,
+  "damageAuthority": "presentation_only",
+  "status": "Integrated; awaiting user visual approval",
+  "clips": {
+    "idle": {
+      "file": "elian-idle.png",
+      "columns": 6,
+      "rows": 2,
+      "frameCount": 12,
+      "loop": true,
+      "worldSize": 2.26528,
+      "durationMs": 1200,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            115,
+            21,
+            287,
+            348
+          ],
+          "durationMs": 100,
+          "pivotY": 0.038674
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            117,
+            20,
+            287,
+            348
+          ],
+          "durationMs": 100,
+          "pivotY": 0.038674
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            119,
+            18,
+            295,
+            348
+          ],
+          "durationMs": 100,
+          "pivotY": 0.038674
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            120,
+            17,
+            298,
+            348
+          ],
+          "durationMs": 100,
+          "pivotY": 0.038674
+        },
+        {
+          "rect": [
+            1448,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            121,
+            16,
+            299,
+            348
+          ],
+          "durationMs": 100,
+          "pivotY": 0.038674
+        },
+        {
+          "rect": [
+            1810,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            120,
+            19,
+            296,
+            348
+          ],
+          "durationMs": 100,
+          "pivotY": 0.038674
+        },
+        {
+          "rect": [
+            0,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            117,
+            22,
+            288,
+            347
+          ],
+          "durationMs": 100,
+          "pivotY": 0.041436
+        },
+        {
+          "rect": [
+            362,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            116,
+            27,
+            286,
+            347
+          ],
+          "durationMs": 100,
+          "pivotY": 0.041436
+        },
+        {
+          "rect": [
+            724,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            116,
+            27,
+            287,
+            347
+          ],
+          "durationMs": 100,
+          "pivotY": 0.041436
+        },
+        {
+          "rect": [
+            1086,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            117,
+            26,
+            286,
+            347
+          ],
+          "durationMs": 100,
+          "pivotY": 0.041436
+        },
+        {
+          "rect": [
+            1448,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            117,
+            22,
+            288,
+            347
+          ],
+          "durationMs": 100,
+          "pivotY": 0.041436
+        },
+        {
+          "rect": [
+            1810,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            118,
+            22,
+            288,
+            347
+          ],
+          "durationMs": 100,
+          "pivotY": 0.041436
+        }
+      ],
+      "sha256": "c68bcb3b2bfca313af3e0cda6e4d2850fe55e767cbb0450151b1ced0f6f9a978"
+    },
+    "attack": {
+      "file": "elian-attack.png",
+      "columns": 6,
+      "rows": 2,
+      "frameCount": 12,
+      "loop": false,
+      "worldSize": 2.42125,
+      "durationMs": 1320,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            106,
+            36,
+            257,
+            341
+          ],
+          "durationMs": 140,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            101,
+            47,
+            264,
+            341
+          ],
+          "durationMs": 100,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            87,
+            47,
+            264,
+            341
+          ],
+          "durationMs": 100,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            90,
+            40,
+            262,
+            341
+          ],
+          "durationMs": 90,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            1448,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            85,
+            25,
+            274,
+            341
+          ],
+          "durationMs": 65,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            1810,
+            0,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            86,
+            59,
+            267,
+            341
+          ],
+          "durationMs": 65,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            0,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            76,
+            67,
+            328,
+            341
+          ],
+          "durationMs": 100,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            362,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            79,
+            66,
+            318,
+            341
+          ],
+          "durationMs": 80,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            724,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            91,
+            54,
+            271,
+            341
+          ],
+          "durationMs": 90,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            1086,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            97,
+            44,
+            259,
+            341
+          ],
+          "durationMs": 110,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            1448,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            99,
+            37,
+            256,
+            341
+          ],
+          "durationMs": 130,
+          "pivotY": 0.058011
+        },
+        {
+          "rect": [
+            1810,
+            362,
+            362,
+            362
+          ],
+          "opaqueBounds": [
+            104,
+            37,
+            255,
+            341
+          ],
+          "durationMs": 250,
+          "pivotY": 0.058011
+        }
+      ],
+      "sha256": "7b63d74efa69a5f6338645b3af87c0a92a9490e08a588a182a1eea0382a070ab"
+    },
+    "death": {
+      "file": "elian-death.png",
+      "columns": 4,
+      "rows": 2,
+      "frameCount": 8,
+      "loop": false,
+      "worldSize": 2.13623,
+      "durationMs": 1200,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            444,
+            444
+          ],
+          "opaqueBounds": [
+            123,
+            12,
+            328,
+            436
+          ],
+          "durationMs": 150,
+          "pivotY": 0.018018
+        },
+        {
+          "rect": [
+            444,
+            0,
+            443,
+            444
+          ],
+          "opaqueBounds": [
+            101,
+            38,
+            357,
+            436
+          ],
+          "durationMs": 150,
+          "pivotY": 0.018018
+        },
+        {
+          "rect": [
+            887,
+            0,
+            443,
+            444
+          ],
+          "opaqueBounds": [
+            71,
+            80,
+            330,
+            436
+          ],
+          "durationMs": 150,
+          "pivotY": 0.018018
+        },
+        {
+          "rect": [
+            1330,
+            0,
+            444,
+            444
+          ],
+          "opaqueBounds": [
+            42,
+            137,
+            334,
+            435
+          ],
+          "durationMs": 150,
+          "pivotY": 0.018018
+        },
+        {
+          "rect": [
+            0,
+            444,
+            444,
+            443
+          ],
+          "opaqueBounds": [
+            65,
+            121,
+            339,
+            427
+          ],
+          "durationMs": 150,
+          "pivotY": 0.018018
+        },
+        {
+          "rect": [
+            444,
+            444,
+            443,
+            443
+          ],
+          "opaqueBounds": [
+            63,
+            127,
+            327,
+            413
+          ],
+          "durationMs": 150,
+          "pivotY": 0.018018
+        },
+        {
+          "rect": [
+            887,
+            444,
+            443,
+            443
+          ],
+          "opaqueBounds": [
+            89,
+            223,
+            295,
+            403
+          ],
+          "durationMs": 150,
+          "pivotY": 0.018018
+        },
+        {
+          "rect": [
+            1330,
+            444,
+            444,
+            443
+          ],
+          "opaqueBounds": [
+            193,
+            380,
+            231,
+            403
+          ],
+          "durationMs": 150,
+          "pivotY": 0.018018
+        }
+      ],
+      "sha256": "0464ac832fa7198f9f5843a0544f8a8773f4dbc1b883e3f41d1f218992130a5f"
+    }
+  },
+  "masterFile": "elian-master.png",
+  "sourcePrompts": "../elian-production-prompts.json"
+}

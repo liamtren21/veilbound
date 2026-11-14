@@ -1,0 +1,12 @@
+{
+  "coreId": "core.vibebound.testnet",
+  "copperId": "copper.vibebound.testnet",
+  "budgetAtomicPerNpc": "200",
+  "ttlMs": 900000,
+  "npcs": {
+    "provisioner.vibebound.testnet": { "salt": "100", "resin": "120" },
+    "cursekeeper.vibebound.testnet": { "ash": "110", "thread": "125" },
+    "relicsmith.vibebound.testnet": { "iron": "120", "resin": "120" },
+    "quartermaster.vibebound.testnet": { "salt": "100", "thread": "125" }
+  }
+}

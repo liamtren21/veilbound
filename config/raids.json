@@ -1,0 +1,1 @@
+{ "ruleset": "breach-encounter-v1", "durationDays": 3, "graceMinutes": 30, "hp": 2500, "contributionCap": 30, "personalThreshold": 5, "rewardSlots": 50 }

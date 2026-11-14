@@ -1,0 +1,5 @@
+[
+  { "id": "accord-i", "name": "Wardbreak", "eliteVariant": "fractured-ward", "bossVariant": null, "recoveryPercent": 100, "supportChoice": false, "reward": { "recipe": "wardbreaker", "chronicle": "accord-wardbreak" } },
+  { "id": "accord-ii", "name": "The Last Resupply", "eliteVariant": null, "bossVariant": "second-reckoning", "recoveryPercent": 50, "supportChoice": false, "reward": { "cosmetic": "talisman-thread", "chronicle": "accord-resupply" } },
+  { "id": "accord-iii", "name": "The Broken Accord", "eliteVariant": "fractured-ward", "bossVariant": "second-reckoning", "recoveryPercent": 50, "supportChoice": true, "reward": { "recipe": "accord-seal", "cosmetic": "accord-crest", "chronicle": "accord-broken" } }
+]

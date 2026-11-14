@@ -1,0 +1,37 @@
+[
+  {
+    "id": "wood-elite-watch-v1",
+    "objective": "graft",
+    "delivery": "sanctum",
+    "rewardAtomic": "250",
+    "endsAt": 1795104905143
+  },
+  {
+    "id": "water-elite-watch-v1",
+    "objective": "causeway-elite",
+    "delivery": "drowned-belfry",
+    "rewardAtomic": "250",
+    "endsAt": 1795104905143
+  },
+  {
+    "id": "fire-elite-watch-v1",
+    "objective": "terraces-elite",
+    "delivery": "hunger-kiln",
+    "rewardAtomic": "250",
+    "endsAt": 1795104905143
+  },
+  {
+    "id": "metal-elite-watch-v1",
+    "objective": "mourning-elite",
+    "delivery": "mourning-foundry",
+    "rewardAtomic": "250",
+    "endsAt": 1795104905143
+  },
+  {
+    "id": "earth-elite-watch-v1",
+    "objective": "basin-elite",
+    "delivery": "sunken-tribunal",
+    "rewardAtomic": "250",
+    "endsAt": 1795104905143
+  }
+]

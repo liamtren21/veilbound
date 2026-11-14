@@ -1,0 +1,17 @@
+{
+  "account": "vibebound.testnet",
+  "publicKey": "ed25519:Eu89byRLqn3HhuhPgAYDBgPpCYkxEd8QCDmGverajtG6",
+  "block_hash": "7p7Lnw6WKVKy4hkJmRCepNYXZahXLxWofXfEXmi9UyJL",
+  "block_height": 277377434,
+  "nonce": 277352014000000,
+  "permission": {
+    "FunctionCall": {
+      "allowance": "100000000000000000000000",
+      "method_names": [
+        "issue_starter",
+        "link_starter"
+      ],
+      "receiver_id": "core.vibebound.testnet"
+    }
+  }
+}

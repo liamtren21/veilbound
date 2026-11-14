@@ -1,0 +1,595 @@
+{
+  "assetId": "hero_nera_base_v004",
+  "hero": "Nera Voss",
+  "affinity": "Fire",
+  "facing": "right",
+  "contactFrame": 6,
+  "contactMs": 560,
+  "attackDurationMs": 1320,
+  "damageAuthority": "presentation_only",
+  "status": "Revised art, pending visual approval",
+  "clips": {
+    "idle": {
+      "file": "nera-idle-v4.png",
+      "columns": 6,
+      "rows": 2,
+      "frameCount": 12,
+      "loop": true,
+      "worldSize": 2.28288,
+      "durationMs": 1200,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 100,
+          "opaqueBounds": [
+            105,
+            17,
+            306,
+            350
+          ]
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 100,
+          "opaqueBounds": [
+            105,
+            17,
+            306,
+            350
+          ]
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 100,
+          "opaqueBounds": [
+            106,
+            15,
+            305,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 100,
+          "opaqueBounds": [
+            107,
+            14,
+            305,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 100,
+          "opaqueBounds": [
+            108,
+            14,
+            305,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 100,
+          "opaqueBounds": [
+            107,
+            17,
+            305,
+            350
+          ]
+        },
+        {
+          "rect": [
+            0,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            108,
+            18,
+            306,
+            349
+          ]
+        },
+        {
+          "rect": [
+            362,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            106,
+            18,
+            306,
+            349
+          ]
+        },
+        {
+          "rect": [
+            724,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            106,
+            18,
+            306,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            106,
+            18,
+            306,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            106,
+            18,
+            306,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            106,
+            18,
+            305,
+            349
+          ]
+        }
+      ],
+      "sha256": "125ef91f12d76dfb47a53c92f507a79c377889af3d2dd666c9a690f089c72ed3"
+    },
+    "attack": {
+      "file": "nera-attack-v4-clean.png",
+      "columns": 6,
+      "rows": 2,
+      "frameCount": 12,
+      "loop": false,
+      "worldSize": 2.3463,
+      "durationMs": 1320,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.038674,
+          "durationMs": 140,
+          "opaqueBounds": [
+            92,
+            14,
+            302,
+            348
+          ]
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            77,
+            25,
+            314,
+            349
+          ]
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            65,
+            57,
+            326,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 90,
+          "opaqueBounds": [
+            85,
+            37,
+            314,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 65,
+          "opaqueBounds": [
+            79,
+            7,
+            268,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            0,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.033149,
+          "durationMs": 65,
+          "opaqueBounds": [
+            72,
+            48,
+            337,
+            350
+          ]
+        },
+        {
+          "rect": [
+            6,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.483425,
+          "pivotY": 0.035912,
+          "durationMs": 100,
+          "opaqueBounds": [
+            43,
+            46,
+            357,
+            349
+          ]
+        },
+        {
+          "rect": [
+            368,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.483425,
+          "pivotY": 0.035912,
+          "durationMs": 80,
+          "opaqueBounds": [
+            42,
+            46,
+            352,
+            349
+          ]
+        },
+        {
+          "rect": [
+            724,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 90,
+          "opaqueBounds": [
+            60,
+            35,
+            326,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 110,
+          "opaqueBounds": [
+            73,
+            33,
+            300,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 130,
+          "opaqueBounds": [
+            64,
+            24,
+            288,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            362,
+            362,
+            362
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.035912,
+          "durationMs": 250,
+          "opaqueBounds": [
+            69,
+            13,
+            289,
+            349
+          ]
+        }
+      ],
+      "sha256": "233af3c37a28bc13cbe691ab25922149aebc2742f8d56af4f36cb9b0efe16dc8"
+    },
+    "death": {
+      "file": "nera-death-v4.png",
+      "columns": 4,
+      "rows": 2,
+      "frameCount": 8,
+      "loop": false,
+      "worldSize": 2.29963,
+      "durationMs": 1200,
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            443,
+            443
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.038375,
+          "durationMs": 150,
+          "opaqueBounds": [
+            103,
+            13,
+            357,
+            426
+          ]
+        },
+        {
+          "rect": [
+            443,
+            0,
+            444,
+            443
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.042889,
+          "durationMs": 150,
+          "opaqueBounds": [
+            88,
+            27,
+            370,
+            424
+          ]
+        },
+        {
+          "rect": [
+            887,
+            0,
+            443,
+            443
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.042889,
+          "durationMs": 150,
+          "opaqueBounds": [
+            73,
+            79,
+            386,
+            424
+          ]
+        },
+        {
+          "rect": [
+            1330,
+            0,
+            444,
+            443
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.042889,
+          "durationMs": 150,
+          "opaqueBounds": [
+            70,
+            137,
+            392,
+            423
+          ]
+        },
+        {
+          "rect": [
+            0,
+            443,
+            443,
+            444
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.042889,
+          "durationMs": 150,
+          "opaqueBounds": [
+            68,
+            114,
+            388,
+            421
+          ]
+        },
+        {
+          "rect": [
+            443,
+            443,
+            444,
+            444
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.042889,
+          "durationMs": 150,
+          "opaqueBounds": [
+            69,
+            84,
+            378,
+            419
+          ]
+        },
+        {
+          "rect": [
+            887,
+            443,
+            443,
+            444
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.042889,
+          "durationMs": 150,
+          "opaqueBounds": [
+            83,
+            113,
+            347,
+            403
+          ]
+        },
+        {
+          "rect": [
+            1330,
+            443,
+            444,
+            444
+          ],
+          "pivotX": 0.5,
+          "pivotY": 0.042889,
+          "durationMs": 150,
+          "opaqueBounds": [
+            143,
+            243,
+            303,
+            368
+          ]
+        }
+      ],
+      "sha256": "b73af692dbd8739c638fb78412926cd7133868c396ce9efcdf7f81c6227de21b"
+    }
+  },
+  "masterFile": "nera-master-v4.png",
+  "sourcePrompts": "../recruits-v4-prompts.json"
+}

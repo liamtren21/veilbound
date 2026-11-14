@@ -1,0 +1,49 @@
+{
+  "network": "testnet",
+  "status": "VERIFIED",
+  "contract": "core.vibebound.testnet",
+  "transaction_hash": "D5ctX7DaF8QRTGu7btGrU4inDYz3kbCTYw8AzrTQ5wsS",
+  "block_hash": "4t5jyqiYcXVQoEsjKUovN3zEz3ecciKGq3YhWaz4EaR5",
+  "materials": [
+    {
+      "token_id": "resin",
+      "supply": "100"
+    },
+    {
+      "token_id": "salt",
+      "supply": "100"
+    },
+    {
+      "token_id": "ash",
+      "supply": "0"
+    },
+    {
+      "token_id": "iron",
+      "supply": "100"
+    },
+    {
+      "token_id": "thread",
+      "supply": "100"
+    },
+    {
+      "token_id": "heartwood-knot",
+      "supply": "0"
+    },
+    {
+      "token_id": "tideglass-core",
+      "supply": "0"
+    },
+    {
+      "token_id": "cinder-heart",
+      "supply": "0"
+    },
+    {
+      "token_id": "warden-rivet",
+      "supply": "0"
+    },
+    {
+      "token_id": "veil-lens",
+      "supply": "0"
+    }
+  ]
+}

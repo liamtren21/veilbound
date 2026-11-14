@@ -1,0 +1,23 @@
+{
+  "reservationId": "a5c600bad8ef98d68482e5b4bd5789aca4bd12bf4ad47d27491d9c092c02fa69",
+  "transactions": [
+    {
+      "transactionHash": "9CzgfaHHG6ZgYo8Hd4hYvatdDnm5gjeDbbLY4J9RfJVC"
+    },
+    {
+      "transactionHash": "2nQV85vn3hNfw9i566c1eVVEScT6BtUXb5yj1QtHS6Fq"
+    }
+  ],
+  "status": "VERIFIED_RELEASED",
+  "final": {
+    "value": {
+      "beneficiary": "vibebound.testnet",
+      "amount": "250",
+      "expires_at_ns": "1794503730244000000",
+      "status": "released",
+      "operator_id": "field.vibebound.testnet"
+    },
+    "blockHash": "7ouEGQ5nko54dtn97dkCdhrYFmSonyjwfu8ZpH8t4rQr",
+    "finalizedAtNs": "1794500146711816281"
+  }
+}

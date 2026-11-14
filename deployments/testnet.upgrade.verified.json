@@ -1,0 +1,89 @@
+{
+  "status": "VERIFIED_PAUSED",
+  "network": "testnet",
+  "rootAccountId": "vibebound.testnet",
+  "upgradeDigest": "3ba8218e8437169ea43f29659812ab28e28d91b4c08243ba0286eba6cb109f09",
+  "checkedAt": "2026-11-12T15:16:13.226Z",
+  "blockHash": "93C1iTjWykfp2S2rgikxpXSRUS2Fc5ZpWFTmA8Mw8MBS",
+  "artifacts": {
+    "copper": {
+      "sha256": "e7056d403484f88e86250e08ad3271d687da3a0613d9527328002e048d25fbe4",
+      "blockHash": "93C1iTjWykfp2S2rgikxpXSRUS2Fc5ZpWFTmA8Mw8MBS",
+      "bytes": 220729
+    },
+    "core": {
+      "sha256": "3e276dcb3c198929b925435b2d44a36e9ec6637efb76fa0ce7c892690937c7e1",
+      "blockHash": "93C1iTjWykfp2S2rgikxpXSRUS2Fc5ZpWFTmA8Mw8MBS",
+      "bytes": 664570
+    }
+  },
+  "checks": {
+    "paused": true,
+    "metadata": {
+      "spec": "ft-1.0.0",
+      "name": "Veilbound Copper",
+      "symbol": "COPPER",
+      "icon": null,
+      "reference": null,
+      "reference_hash": null,
+      "decimals": 2
+    },
+    "supply": "100000",
+    "custody": "100000",
+    "allocated": "100000",
+    "budget": {
+      "epoch": "20769",
+      "epoch_length_ns": "86400000000000",
+      "global_reward_cap": "1000000",
+      "rewards_minted": "0",
+      "epoch_reward_cap": "200000",
+      "epoch_minted": "0"
+    },
+    "rewardConfig": {
+      "receipt_signer": "mh5dDDmhiLwM9lyZcnkRPa84W6uznb5QoM9Tpb/VFuk=",
+      "ruleset": "veilbound-testnet-v1",
+      "copper_id": "copper.vibebound.testnet"
+    },
+    "starterConfiguration": {
+      "copper": "1000",
+      "token_ids": [
+        "salve",
+        "ward"
+      ],
+      "quantities": [
+        "1",
+        "1"
+      ],
+      "grant_cap": "1"
+    },
+    "starterPool": {
+      "issued": "0",
+      "configuration": {
+        "copper": "1000",
+        "token_ids": [
+          "salve",
+          "ward"
+        ],
+        "quantities": [
+          "1",
+          "1"
+        ],
+        "grant_cap": "1"
+      },
+      "available_copper": "100000"
+    },
+    "artifactReceiptApi": null,
+    "artifactWithdrawalApi": null,
+    "chronicleApi": null,
+    "artifacts": {
+      "starter-001": {
+        "ownerId": "core.vibebound.testnet",
+        "vaultId": "v-starter-001.core.vibebound.testnet"
+      },
+      "shop-001": {
+        "ownerId": "vibebound.testnet",
+        "vaultId": "v-shop-001.core.vibebound.testnet"
+      }
+    }
+  }
+}

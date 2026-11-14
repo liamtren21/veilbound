@@ -1,0 +1,14 @@
+node_modules/
+target/
+.env
+.env.*
+!.env*.example
+*.pem
+*.key
+*.sqlite*
+.vercel/
+.railway/
+__pycache__/
+.DS_Store
+Thumbs.db
+.veilbound-secrets/

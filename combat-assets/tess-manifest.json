@@ -1,0 +1,573 @@
+{
+  "assetId": "hero_tess_base_v001",
+  "hero": "Tess Ashdown",
+  "affinity": "Wood",
+  "facing": "right",
+  "contactFrame": 6,
+  "contactMs": 560,
+  "attackDurationMs": 1320,
+  "damageAuthority": "presentation_only",
+  "status": "Draft; awaiting runtime integration and user visual approval",
+  "clips": {
+    "idle": {
+      "file": "tess-idle.png",
+      "columns": 6,
+      "rows": 2,
+      "frameCount": 12,
+      "loop": true,
+      "worldSize": 2.15,
+      "durationMs": 1200,
+      "imageSize": [
+        2172,
+        724
+      ],
+      "sha256": "4af8456086115a72a45abbdd44c63026c3cb074b7b70a350aeb7f401b9b6cda0",
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            81,
+            16,
+            305,
+            350
+          ]
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            82,
+            15,
+            306,
+            350
+          ]
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            81,
+            10,
+            308,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            80,
+            10,
+            306,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            79,
+            4,
+            306,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            79,
+            4,
+            308,
+            350
+          ]
+        },
+        {
+          "rect": [
+            0,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            79,
+            4,
+            305,
+            350
+          ]
+        },
+        {
+          "rect": [
+            362,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            81,
+            9,
+            306,
+            350
+          ]
+        },
+        {
+          "rect": [
+            724,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            82,
+            9,
+            308,
+            350
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            81,
+            14,
+            306,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            80,
+            16,
+            306,
+            349
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03315,
+          "durationMs": 100,
+          "opaqueBounds": [
+            81,
+            19,
+            309,
+            350
+          ]
+        }
+      ]
+    },
+    "attack": {
+      "file": "tess-attack.png",
+      "columns": 6,
+      "rows": 2,
+      "frameCount": 12,
+      "loop": false,
+      "worldSize": 2.15,
+      "durationMs": 1320,
+      "imageSize": [
+        2172,
+        724
+      ],
+      "sha256": "fc30ea99838fa58c57ff9a958977136e85f68aca8c4aa295826650d9d19f5cf4",
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 140,
+          "opaqueBounds": [
+            82,
+            10,
+            313,
+            351
+          ]
+        },
+        {
+          "rect": [
+            362,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 100,
+          "opaqueBounds": [
+            77,
+            9,
+            314,
+            351
+          ]
+        },
+        {
+          "rect": [
+            724,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 100,
+          "opaqueBounds": [
+            75,
+            9,
+            321,
+            351
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 90,
+          "opaqueBounds": [
+            73,
+            9,
+            336,
+            351
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 65,
+          "opaqueBounds": [
+            65,
+            9,
+            343,
+            351
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            0,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 65,
+          "opaqueBounds": [
+            53,
+            2,
+            350,
+            351
+          ]
+        },
+        {
+          "rect": [
+            0,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 100,
+          "opaqueBounds": [
+            30,
+            5,
+            344,
+            351
+          ]
+        },
+        {
+          "rect": [
+            362,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 80,
+          "opaqueBounds": [
+            29,
+            8,
+            331,
+            351
+          ]
+        },
+        {
+          "rect": [
+            724,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 90,
+          "opaqueBounds": [
+            38,
+            8,
+            321,
+            351
+          ]
+        },
+        {
+          "rect": [
+            1086,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 110,
+          "opaqueBounds": [
+            71,
+            8,
+            321,
+            351
+          ]
+        },
+        {
+          "rect": [
+            1448,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 130,
+          "opaqueBounds": [
+            76,
+            8,
+            315,
+            351
+          ]
+        },
+        {
+          "rect": [
+            1810,
+            362,
+            362,
+            362
+          ],
+          "pivotY": 0.03039,
+          "durationMs": 250,
+          "opaqueBounds": [
+            81,
+            8,
+            316,
+            351
+          ]
+        }
+      ]
+    },
+    "death": {
+      "file": "tess-death.png",
+      "columns": 4,
+      "rows": 2,
+      "frameCount": 8,
+      "loop": false,
+      "worldSize": 2.15,
+      "durationMs": 1200,
+      "imageSize": [
+        1774,
+        887
+      ],
+      "sha256": "1b2c99c680cefd8f4c170e803de438679ea4df9e7551cb156c70320f99d71a1b",
+      "frames": [
+        {
+          "rect": [
+            0,
+            0,
+            443,
+            443
+          ],
+          "pivotY": 0.02483,
+          "durationMs": 150,
+          "opaqueBounds": [
+            93,
+            7,
+            352,
+            432
+          ]
+        },
+        {
+          "rect": [
+            443,
+            0,
+            444,
+            443
+          ],
+          "pivotY": 0.02483,
+          "durationMs": 150,
+          "opaqueBounds": [
+            91,
+            29,
+            348,
+            433
+          ]
+        },
+        {
+          "rect": [
+            887,
+            0,
+            443,
+            443
+          ],
+          "pivotY": 0.02483,
+          "durationMs": 150,
+          "opaqueBounds": [
+            83,
+            54,
+            347,
+            432
+          ]
+        },
+        {
+          "rect": [
+            1330,
+            0,
+            444,
+            443
+          ],
+          "pivotY": 0.02483,
+          "durationMs": 150,
+          "opaqueBounds": [
+            61,
+            72,
+            347,
+            430
+          ]
+        },
+        {
+          "rect": [
+            0,
+            443,
+            443,
+            444
+          ],
+          "pivotY": 0.02483,
+          "durationMs": 150,
+          "opaqueBounds": [
+            64,
+            74,
+            349,
+            424
+          ]
+        },
+        {
+          "rect": [
+            443,
+            443,
+            444,
+            444
+          ],
+          "pivotY": 0.02483,
+          "durationMs": 150,
+          "opaqueBounds": [
+            74,
+            80,
+            346,
+            411
+          ]
+        },
+        {
+          "rect": [
+            887,
+            443,
+            443,
+            444
+          ],
+          "pivotY": 0.02483,
+          "durationMs": 150,
+          "opaqueBounds": [
+            87,
+            100,
+            330,
+            355
+          ]
+        },
+        {
+          "rect": [
+            1330,
+            443,
+            444,
+            444
+          ],
+          "pivotY": 0.02483,
+          "durationMs": 150,
+          "opaqueBounds": [
+            95,
+            122,
+            301,
+            311
+          ]
+        }
+      ]
+    }
+  }
+}

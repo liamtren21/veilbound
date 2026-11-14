@@ -1,0 +1,36 @@
+{
+  "network": "testnet",
+  "operator": "field.vibebound.testnet",
+  "steps": [],
+  "status": "VERIFIED_READY",
+  "balance": {
+    "available": "2500",
+    "reserved": "0"
+  },
+  "deposit": {
+    "amount": "2500",
+    "status": "settled",
+    "receipt": null
+  },
+  "blockHash": "EnHjYVFwdCX6GNc3NBsm4xakuyyMoTiZJchUHtSiJSAR",
+  "keys": [
+    {
+      "publicKey": "ed25519:3EFC5SyDnm3cMJSXuLMwenkN8e9HW3yVBXydYBmfaz7p",
+      "permission": {
+        "FunctionCall": {
+          "allowance": "100000000000000000000000",
+          "method_names": [
+            "reserve_field_reward",
+            "pay_field_reward",
+            "release_field_reward"
+          ],
+          "receiver_id": "core.vibebound.testnet"
+        }
+      }
+    },
+    {
+      "publicKey": "ed25519:6LS6hgoBDt1QrpXeU2TZGD2o5VQPtgB9LW6aDjQqRgAs",
+      "permission": "FullAccess"
+    }
+  ]
+}

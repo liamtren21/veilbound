@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VEILBOUND · Hollow Orchard</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="expedition.css?v=expedition-scenes-v3-stalls">
+  <link rel="stylesheet" href="expedition-journey.css?v=compendium-v1">
+  <link rel="stylesheet" href="expedition-stalls.css?v=loot-item-frame-v2">
+  <link rel="preload" as="image" href="combat-assets/veilbound-title-logo.png">
+  <link rel="preload" as="image" href="combat-assets/veilbound-title-waymark-v2.webp">
+  <link rel="stylesheet" href="expedition-cinematics.css?v=loot-motion-v1">
+  <link rel="stylesheet" href="expedition-map.css?v=route-frames-v1">
+  <link rel="stylesheet" href="expedition-dice-art.css?v=fonts-v1">
+</head>
+<body>
+<div id="title-loading" role="status">
+  <img id="boot-logo" src="combat-assets/veilbound-title-logo.png" alt="VEILBOUND" width="1261" height="1247">
+  <p>Loading expedition…</p>
+  <noscript><p>Enable JavaScript to play VEILBOUND.</p></noscript>
+</div>
+<main>
+  <header class="masthead">
+    <div class="location"><h1 id="region-name">Hollow Orchard</h1><span id="purse"></span></div>
+    <div class="run-meta">
+      <details id="field-guide" class="utility"><summary title="Route legend" aria-label="Route legend">◇</summary><div id="legend" class="popover"></div></details>
+      <details id="journal" class="utility" hidden><summary title="Battle journal" aria-label="Battle journal">▤</summary><ol class="popover" id="battle-log"></ol></details>
+      <details id="satchel-menu" class="utility"><summary title="Travel Diary" aria-label="Travel Diary">♧</summary><div class="popover"><strong id="satchel"></strong><section id="equipment-pouch" aria-label="Equipment pouch"></section><section id="party-panel" aria-label="Expedition party"></section></div></details>
+      <details id="settings" class="utility"><summary title="Settings" aria-label="Settings">⚙</summary><div class="popover">
+        <label><input id="reduced" type="checkbox"> Reduce motion</label><button id="fullscreen" type="button" class="secondary">Full screen</button>
+        <button id="restart" class="secondary" type="button">New expedition</button><button id="title-menu" class="secondary" type="button">Title screen / Help</button><small id="save-status">Saved on this device</small>
+      </div></details>
+    </div>
+  </header>
+  <p id="announcement" class="sr-only" role="status"></p>
+  <p id="expedition-error" role="alert" hidden></p>
+  <section id="travel" class="stage" aria-label="Expedition route">
+    <div class="map-surface" id="map">
+      <header class="route-heading"><img id="route-emblem" alt="" width="48" height="48"><div><p id="route-chapter">Region 1 of 5</p><h2 id="route-region">Hollow Orchard</h2></div></header>
+      <div id="route-scroll" aria-label="Hollow Orchard route map">
+        <div class="route-landscape" aria-hidden="true"></div>
+        <div id="route-plot">
+          <svg id="roads" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div id="nodes"></div>
+          <div id="route-marker" aria-hidden="true"></div>
+        </div>
+      </div>
+      <p id="route-readout" role="status"></p>
+    </div>
+    <img id="travel-scene" class="travel-scene" alt="" hidden>
+    <img id="shopkeeper" class="shopkeeper" alt="" hidden>
+    <aside id="loot-diary" aria-label="Travel Diary" hidden></aside>
+    <aside id="decision" class="decision" aria-labelledby="decision-title"></aside>
+  </section>
+  <section id="combat" class="stage" hidden aria-label="Battle">
+    <div class="arena" id="arena">
+      <canvas id="battlefield" width="1200" height="560" aria-label="Animated battle arena"></canvas>
+      <div id="target-layer" aria-label="Battlefield targets"></div>
+      <div id="action-flash" aria-hidden="true"></div>
+    </div>
+    <div id="battle-outcome" role="status" hidden></div>
+    <header class="battle-heading">
+      <h2 id="battle-title" class="sr-only"></h2><p id="battle-meta" class="sr-only"></p><span id="boss-warning" class="warning" hidden></span>
+      <p id="roll-status" class="roll-status" role="status" hidden></p>
+    </header>
+    <div class="battle-hud">
+      <section id="command" class="command" aria-label="Selected action" hidden></section>
+      <div class="battle-controls">
+        <div class="battle-supplies">
+          <div id="combat-tokens" aria-label="Combat tokens"></div>
+          <button id="reroll" class="turn-button" type="button">Reroll</button>
+        </div>
+        <div class="dice-pools">
+          <span id="companion-status" class="companion-status" hidden></span>
+          <div id="party-dice" class="dice" role="group" aria-label="Warden dice"></div>
+          <div id="enemy-dice" class="dice" role="group" aria-label="Enemy intent"></div>
+        </div>
+        <button id="end-round" class="turn-button" type="button">End Turn</button>
+        <details class="reserve utility"><summary title="Reserve and Brace" aria-label="Reserve and Brace">✥</summary><div id="reserve" class="popover"></div></details>
+      </div>
+    </div>
+  </section>
+</main>
+<dialog id="confirmation">
+  <form method="dialog">
+    <h2 id="confirm-title"></h2><p id="confirm-copy"></p>
+    <div class="button-row"><button value="cancel" class="secondary">Cancel</button><button value="confirm">Confirm</button></div>
+  </form>
+</dialog>
+<script type="module" src="expedition.mjs?v=route-frames-v1"></script>
+</body>
+</html>

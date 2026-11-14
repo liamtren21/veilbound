@@ -1,0 +1,37 @@
+{
+  "network": "testnet",
+  "accounts": [
+    {
+      "id": "provisioner.vibebound.testnet",
+      "hash": "7sH4tEbsY9J4qHQSjufQsXba7fonfFvP7juGQMraaQtJ",
+      "balance": {
+        "available": "1000",
+        "reserved": "0"
+      }
+    },
+    {
+      "id": "cursekeeper.vibebound.testnet",
+      "hash": "C6wrkZE6Lcsd3bQqPVNAMB8SKyGUPLHSztCqT76br6qd",
+      "balance": {
+        "available": "1000",
+        "reserved": "0"
+      }
+    },
+    {
+      "id": "relicsmith.vibebound.testnet",
+      "hash": "9FMZjC3XrYCSkWh7Zzu4V2oWsrLTZyVFfbjMcprE7E1t",
+      "balance": {
+        "available": "1000",
+        "reserved": "0"
+      }
+    },
+    {
+      "id": "quartermaster.vibebound.testnet",
+      "hash": "7z14RPibf9U7bVtR6CMYNcMssMc2hPxAAxR5p1z2NLJd",
+      "balance": {
+        "available": "1000",
+        "reserved": "0"
+      }
+    }
+  ]
+}

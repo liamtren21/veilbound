@@ -1,0 +1,2325 @@
+{
+  "kind": "local-authoritative-gameplay-fixture",
+  "seed": "five-region-1",
+  "fixtureSecretHex": "d61c6c261a9bd77a905b0f9d0aa652b8ca00d37652005909921feecd5e1c8a6b",
+  "passiveAfterRegion": 1,
+  "lifecycle": "LOST",
+  "runId": "a8c44862-1a8f-494f-86a1-25d80263ef4d",
+  "ruleset": {
+    "combat": "expedition-hmac-action-v1",
+    "map": "orchard-five-v1"
+  },
+  "actionCount": 215,
+  "encounters": [
+    {
+      "node": "road",
+      "round": 9,
+      "outcome": "reward"
+    },
+    {
+      "node": "sanctum",
+      "round": 8,
+      "outcome": "reward"
+    },
+    {
+      "node": "causeway-road",
+      "round": 37,
+      "outcome": "defeat"
+    }
+  ],
+  "checkpoints": [
+    {
+      "region": 1,
+      "node": "sanctum",
+      "copperAtomic": "1500",
+      "settlement": "run-only"
+    }
+  ],
+  "checkpointEvents": [
+    {
+      "sequence": 111,
+      "kind": "checkpoint",
+      "node": "sanctum"
+    }
+  ],
+  "acceptedIntentHash": "d9549429a1bf92b447e925898422a11d7db0e50feb29b8cc9729cf0cb61f747d",
+  "summary": {
+    "outcome": "lost",
+    "progress": {
+      "xp": 60,
+      "totalXp": 60,
+      "trial": 0,
+      "unlocked": [
+        "Reed Salve at the start of each run"
+      ]
+    },
+    "bossClears": 1,
+    "rounds": 54,
+    "faints": 3,
+    "consumables": 1,
+    "lostCopperAtomic": "1500"
+  },
+  "stateHash": "d35a60fd60813b82b5bb6f4bab9b9e344f56d67bb46438e8746411e4bb0c13ab",
+  "replayVerified": true,
+  "visited": [
+    "threshold",
+    "road",
+    "house",
+    "camp",
+    "memorial",
+    "trainer",
+    "sable",
+    "wood-witch",
+    "sanctum",
+    "causeway-entry"
+  ],
+  "finalParty": [
+    {
+      "id": "mara",
+      "hp": 0,
+      "maxHp": 116,
+      "level": 2
+    },
+    {
+      "id": "elian",
+      "hp": 0,
+      "maxHp": 108,
+      "level": 2
+    },
+    {
+      "id": "rook",
+      "hp": 0,
+      "maxHp": 144,
+      "level": 2
+    },
+    {
+      "id": "tess",
+      "hp": 94,
+      "maxHp": 102,
+      "level": 2
+    }
+  ],
+  "events": [
+    {
+      "sequence": 1,
+      "previousHash": "bc26b97616fb9f99336df7d7dcc9776c70dbfc7c1f83012e0899caca34227a21",
+      "stateHash": "5e9c79ff9fb0d72467739b146da91539e808998acbc3b3641bff3f7cd0dca25f",
+      "intent": {
+        "type": "event",
+        "choice": "enter"
+      }
+    },
+    {
+      "sequence": 2,
+      "previousHash": "5e9c79ff9fb0d72467739b146da91539e808998acbc3b3641bff3f7cd0dca25f",
+      "stateHash": "d1ca62c9fbceabc9eadecdee58fd7fc3e88bbd66e3673649a48ea7fcd9b8755d",
+      "intent": {
+        "type": "enter",
+        "node": "road"
+      }
+    },
+    {
+      "sequence": 3,
+      "previousHash": "d1ca62c9fbceabc9eadecdee58fd7fc3e88bbd66e3673649a48ea7fcd9b8755d",
+      "stateHash": "1447490f45ba330d0e56e5f4cadd9e9fbf085f29a0240c9959a5d8bee0f6e812",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 1,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 4,
+      "previousHash": "1447490f45ba330d0e56e5f4cadd9e9fbf085f29a0240c9959a5d8bee0f6e812",
+      "stateHash": "efb44fe004b1f37d60f3796e108cf6f3ec85e36af08d0b1f3a18b72e9b9ff263",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 1,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 5,
+      "previousHash": "efb44fe004b1f37d60f3796e108cf6f3ec85e36af08d0b1f3a18b72e9b9ff263",
+      "stateHash": "b61c8402441d6a5e7d98a03881cb6e776029c43e5c3feb7cd32c292a00c9583c",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 1,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 6,
+      "previousHash": "b61c8402441d6a5e7d98a03881cb6e776029c43e5c3feb7cd32c292a00c9583c",
+      "stateHash": "11699aa8066dafd1b5073d6311a1e6afcd54f61d158d5c818b2e811c4a05556f",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 1,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 7,
+      "previousHash": "11699aa8066dafd1b5073d6311a1e6afcd54f61d158d5c818b2e811c4a05556f",
+      "stateHash": "a9f69d11253bb1d5de1ba9306717486ab6661aedf737a1d2a14623988b8997ba",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 1,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 8,
+      "previousHash": "a9f69d11253bb1d5de1ba9306717486ab6661aedf737a1d2a14623988b8997ba",
+      "stateHash": "03913d99a4dcb1774c9da1eec374d6fdc4d56877360078e03f5b362cacc869dd",
+      "intent": {
+        "type": "end-round",
+        "round": 1
+      }
+    },
+    {
+      "sequence": 9,
+      "previousHash": "03913d99a4dcb1774c9da1eec374d6fdc4d56877360078e03f5b362cacc869dd",
+      "stateHash": "d36475892883c17deb618e9de1a4567db5211d21a18d507310dfe66718c62ec7",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 2,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 10,
+      "previousHash": "d36475892883c17deb618e9de1a4567db5211d21a18d507310dfe66718c62ec7",
+      "stateHash": "1f5bf30c84ce8619c9242cbcb19e93e0511847665c8f5182207b5b54c11e9767",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 2,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 11,
+      "previousHash": "1f5bf30c84ce8619c9242cbcb19e93e0511847665c8f5182207b5b54c11e9767",
+      "stateHash": "61d4226466dd85f4fab686382a5ed0bd9ab1366dbf9661b79cc21d8a2bf08d79",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 2,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 12,
+      "previousHash": "61d4226466dd85f4fab686382a5ed0bd9ab1366dbf9661b79cc21d8a2bf08d79",
+      "stateHash": "ba7d42408043e1aef9854d583c59d23945c4732753ca863476d244d7b5ea6482",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 2,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 13,
+      "previousHash": "ba7d42408043e1aef9854d583c59d23945c4732753ca863476d244d7b5ea6482",
+      "stateHash": "a39d3d6b8d68b3d3bc2191b41c4cfa44f87dff9b2dac915c2c6fef68db4977f8",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 2,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 14,
+      "previousHash": "a39d3d6b8d68b3d3bc2191b41c4cfa44f87dff9b2dac915c2c6fef68db4977f8",
+      "stateHash": "2398bcf18594509d3c6810b16e8df607b0fe5bc1fa7cae1208b1246e7aa7adbb",
+      "intent": {
+        "type": "end-round",
+        "round": 2
+      }
+    },
+    {
+      "sequence": 15,
+      "previousHash": "2398bcf18594509d3c6810b16e8df607b0fe5bc1fa7cae1208b1246e7aa7adbb",
+      "stateHash": "e6aac40f1f475f51d261666a8388792ce704cdea361adf11a7e054112999512e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 3,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 16,
+      "previousHash": "e6aac40f1f475f51d261666a8388792ce704cdea361adf11a7e054112999512e",
+      "stateHash": "709054fbb0285e70c1db48a76919e3255824bffc7aab9cba4dcf60a9f6363c86",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 3,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 17,
+      "previousHash": "709054fbb0285e70c1db48a76919e3255824bffc7aab9cba4dcf60a9f6363c86",
+      "stateHash": "b6938a5710935de056f1ba10a5edfd8b86e7b86a9a624da77eab5e8a8a520548",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 3,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 18,
+      "previousHash": "b6938a5710935de056f1ba10a5edfd8b86e7b86a9a624da77eab5e8a8a520548",
+      "stateHash": "c7e394a13a0e91ef58bfecb8c6c457f8b4bd82ca5aaa183efde9e09ec90f4bb5",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 3,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 19,
+      "previousHash": "c7e394a13a0e91ef58bfecb8c6c457f8b4bd82ca5aaa183efde9e09ec90f4bb5",
+      "stateHash": "63ce2b7296768e87b7bcc1af0f8ab2dfabcfc6f13f69f26b260451780ed83ce7",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 3,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 20,
+      "previousHash": "63ce2b7296768e87b7bcc1af0f8ab2dfabcfc6f13f69f26b260451780ed83ce7",
+      "stateHash": "74376d2f4de582f26eabcc55eb0ccad9c6b957db55c7429acf208b7b716c59e8",
+      "intent": {
+        "type": "end-round",
+        "round": 3
+      }
+    },
+    {
+      "sequence": 21,
+      "previousHash": "74376d2f4de582f26eabcc55eb0ccad9c6b957db55c7429acf208b7b716c59e8",
+      "stateHash": "191f73792a8a93cf3e7b137ae44070042f762de1fb388513d977326e4906dd20",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 4,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 22,
+      "previousHash": "191f73792a8a93cf3e7b137ae44070042f762de1fb388513d977326e4906dd20",
+      "stateHash": "2153d2719fd47b733fd7a9995127eb77d7882c3d2a30118b893bf23fa1d7a4ad",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 4,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 23,
+      "previousHash": "2153d2719fd47b733fd7a9995127eb77d7882c3d2a30118b893bf23fa1d7a4ad",
+      "stateHash": "b83fae20d4a1eaeb0b41c0b691bf7d39262eda04c045c4f7aadcb53a7db73bfe",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 4,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 24,
+      "previousHash": "b83fae20d4a1eaeb0b41c0b691bf7d39262eda04c045c4f7aadcb53a7db73bfe",
+      "stateHash": "064506f3e738ea8149d79da4fa172d2971bfcab2844825a607718e2d75c6fa26",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 4,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 25,
+      "previousHash": "064506f3e738ea8149d79da4fa172d2971bfcab2844825a607718e2d75c6fa26",
+      "stateHash": "39f64787a666e0bb1d4f7a84bf31e58480a1e533e558c7908baa2217d360bf44",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 4,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 26,
+      "previousHash": "39f64787a666e0bb1d4f7a84bf31e58480a1e533e558c7908baa2217d360bf44",
+      "stateHash": "b03efb3eac749c24d109437daa809482ae357f2fd9bffbf10a48fb1f3dd5fa32",
+      "intent": {
+        "type": "end-round",
+        "round": 4
+      }
+    },
+    {
+      "sequence": 27,
+      "previousHash": "b03efb3eac749c24d109437daa809482ae357f2fd9bffbf10a48fb1f3dd5fa32",
+      "stateHash": "1095c8bfaf321b81e4e0b3f8e5d14f9f47b0c1d826ebca6e4b48e2aecf545056",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 5,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 28,
+      "previousHash": "1095c8bfaf321b81e4e0b3f8e5d14f9f47b0c1d826ebca6e4b48e2aecf545056",
+      "stateHash": "56a78202b726da0413d2b8d49ac5ad673510676a3a950ab75d32f715b6adbad6",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 5,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 29,
+      "previousHash": "56a78202b726da0413d2b8d49ac5ad673510676a3a950ab75d32f715b6adbad6",
+      "stateHash": "1499ff08db401ac9e14249dddfd195589a2b5203d36d262f1acf13d0aa0f5575",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 5,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 30,
+      "previousHash": "1499ff08db401ac9e14249dddfd195589a2b5203d36d262f1acf13d0aa0f5575",
+      "stateHash": "d0413b3e1dbc6e4b4c7e74bff20aaed7cbfd5b2b01ae88f29a4814da5a73dca9",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 5,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 31,
+      "previousHash": "d0413b3e1dbc6e4b4c7e74bff20aaed7cbfd5b2b01ae88f29a4814da5a73dca9",
+      "stateHash": "d902f2750b31702ddb863a3b7af4a5e221d1058c9948ab6f4c8e11e8528fe86f",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 5,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 32,
+      "previousHash": "d902f2750b31702ddb863a3b7af4a5e221d1058c9948ab6f4c8e11e8528fe86f",
+      "stateHash": "ac7327edc12c6c1535f3e3808fc54863ee1b4be6281b89c78df8c6481c82a03a",
+      "intent": {
+        "type": "end-round",
+        "round": 5
+      }
+    },
+    {
+      "sequence": 33,
+      "previousHash": "ac7327edc12c6c1535f3e3808fc54863ee1b4be6281b89c78df8c6481c82a03a",
+      "stateHash": "1439fa87caea6b5231be522dd026b3a5437eaa7040fece1f9e4fbdcdf303132e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 6,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 34,
+      "previousHash": "1439fa87caea6b5231be522dd026b3a5437eaa7040fece1f9e4fbdcdf303132e",
+      "stateHash": "ec955a907e63599e551458762ad963d61c19cc96172aad722c81db9914b66308",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 6,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 35,
+      "previousHash": "ec955a907e63599e551458762ad963d61c19cc96172aad722c81db9914b66308",
+      "stateHash": "0fc443f0c92d9a1c8dc8395c27fc176537fdcaec96b0eac880169c471bc867c9",
+      "intent": {
+        "type": "end-round",
+        "round": 6
+      }
+    },
+    {
+      "sequence": 36,
+      "previousHash": "0fc443f0c92d9a1c8dc8395c27fc176537fdcaec96b0eac880169c471bc867c9",
+      "stateHash": "dd1e48d0e5f18ad1ebd75c45f04fe95100f1741d2df3fb245129bb8e70b4ea89",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 7,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 37,
+      "previousHash": "dd1e48d0e5f18ad1ebd75c45f04fe95100f1741d2df3fb245129bb8e70b4ea89",
+      "stateHash": "34ee7c1ddf9bf30fa20c5a9e5f0c25612146b0fa924644c873713b9df6d83a2d",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 7,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 38,
+      "previousHash": "34ee7c1ddf9bf30fa20c5a9e5f0c25612146b0fa924644c873713b9df6d83a2d",
+      "stateHash": "d23f9ad355fe7fcfa907385d97f9b59dcdbed64a93cd3d4c9b25439a7ff728c3",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 7,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 39,
+      "previousHash": "d23f9ad355fe7fcfa907385d97f9b59dcdbed64a93cd3d4c9b25439a7ff728c3",
+      "stateHash": "f6ecadcd2073c2110d4fae3e5f3460ba5bad020c4a327cb43bb45f300e3eb1c8",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 7,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 40,
+      "previousHash": "f6ecadcd2073c2110d4fae3e5f3460ba5bad020c4a327cb43bb45f300e3eb1c8",
+      "stateHash": "e62861f409d303a4cdce082934050a5ea765091fffe88cc3bc269a595ea3182b",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 7,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 41,
+      "previousHash": "e62861f409d303a4cdce082934050a5ea765091fffe88cc3bc269a595ea3182b",
+      "stateHash": "565c2a5b116c51c48bd8154d4401fddb02a29689d96152310fb303f5ebda665f",
+      "intent": {
+        "type": "end-round",
+        "round": 7
+      }
+    },
+    {
+      "sequence": 42,
+      "previousHash": "565c2a5b116c51c48bd8154d4401fddb02a29689d96152310fb303f5ebda665f",
+      "stateHash": "9ceb219eedb4a52c4bf2808afcbf61607ba44707d6555b3337ac4bfe8c00a199",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 8,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 43,
+      "previousHash": "9ceb219eedb4a52c4bf2808afcbf61607ba44707d6555b3337ac4bfe8c00a199",
+      "stateHash": "2e868d31145816ed4cb4a3f571cdeccd5f52727b32612230683fdc6b7b579c85",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 8,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 44,
+      "previousHash": "2e868d31145816ed4cb4a3f571cdeccd5f52727b32612230683fdc6b7b579c85",
+      "stateHash": "25a4217fd19551f52c4658d10b3abc49bb70fafc484a176f606ede62929e70d2",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 8,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 45,
+      "previousHash": "25a4217fd19551f52c4658d10b3abc49bb70fafc484a176f606ede62929e70d2",
+      "stateHash": "e805137c313127ace86157b9cc2bad8407f3a27f5ec340073c86070b67079272",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 8,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 46,
+      "previousHash": "e805137c313127ace86157b9cc2bad8407f3a27f5ec340073c86070b67079272",
+      "stateHash": "657e4cd483749b4b4e3fb7f5d587b0ef5d336a85ee321e69cf6aee8b77436d15",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 8,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 47,
+      "previousHash": "657e4cd483749b4b4e3fb7f5d587b0ef5d336a85ee321e69cf6aee8b77436d15",
+      "stateHash": "9d7ff6fe7c20deac37b3c2b874c4e32c6f11652f896737b708c65ca2e00c0d5e",
+      "intent": {
+        "type": "end-round",
+        "round": 8
+      }
+    },
+    {
+      "sequence": 48,
+      "previousHash": "9d7ff6fe7c20deac37b3c2b874c4e32c6f11652f896737b708c65ca2e00c0d5e",
+      "stateHash": "b936d86f64387ee6e3b018ba182173b13853467d9506d50587200d0740834e44",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 9,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 49,
+      "previousHash": "b936d86f64387ee6e3b018ba182173b13853467d9506d50587200d0740834e44",
+      "stateHash": "278d399af9ab4cc9673d83042b66fc6431aff580dbbfb1e2a13d5585b06e677b",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 9,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 50,
+      "previousHash": "278d399af9ab4cc9673d83042b66fc6431aff580dbbfb1e2a13d5585b06e677b",
+      "stateHash": "5cfaefbbb86617e6d2301305b6009a31e89ef3337cc09deb9f0ce0538c85a55a",
+      "intent": {
+        "type": "claim",
+        "choice": "copper"
+      }
+    },
+    {
+      "sequence": 51,
+      "previousHash": "5cfaefbbb86617e6d2301305b6009a31e89ef3337cc09deb9f0ce0538c85a55a",
+      "stateHash": "de2509ca7cc9088202d585c6c003255c96ac339e18d32cb4d576ad7eeecb4bfc",
+      "intent": {
+        "type": "claim",
+        "choice": "leave"
+      }
+    },
+    {
+      "sequence": 52,
+      "previousHash": "de2509ca7cc9088202d585c6c003255c96ac339e18d32cb4d576ad7eeecb4bfc",
+      "stateHash": "59bf69fce2a4150a1a02e6ba89f558023b59cbe2c18166526b2290f34545e96d",
+      "intent": {
+        "type": "enter",
+        "node": "house"
+      }
+    },
+    {
+      "sequence": 53,
+      "previousHash": "59bf69fce2a4150a1a02e6ba89f558023b59cbe2c18166526b2290f34545e96d",
+      "stateHash": "cec39ba05756d4c5a37232021f324fd2ecccbb0c1e9ce341ba019c34e583d398",
+      "intent": {
+        "type": "event",
+        "choice": "letter"
+      }
+    },
+    {
+      "sequence": 54,
+      "previousHash": "cec39ba05756d4c5a37232021f324fd2ecccbb0c1e9ce341ba019c34e583d398",
+      "stateHash": "d0345fc78e2eaf4fff4f190d465283d258514d01556372f40b3df56e48891323",
+      "intent": {
+        "type": "enter",
+        "node": "camp"
+      }
+    },
+    {
+      "sequence": 55,
+      "previousHash": "d0345fc78e2eaf4fff4f190d465283d258514d01556372f40b3df56e48891323",
+      "stateHash": "1d5e6ffe8808d18a87bc288fff2612bd3c6afcfd13b34cd616d43d38d4ec4dc7",
+      "intent": {
+        "type": "event",
+        "choice": "rest"
+      }
+    },
+    {
+      "sequence": 56,
+      "previousHash": "1d5e6ffe8808d18a87bc288fff2612bd3c6afcfd13b34cd616d43d38d4ec4dc7",
+      "stateHash": "eedcee6e9b41cb784408eaa2f7621c6468492a7cdc2d7147c9c6705b1982d37d",
+      "intent": {
+        "type": "enter",
+        "node": "memorial"
+      }
+    },
+    {
+      "sequence": 57,
+      "previousHash": "eedcee6e9b41cb784408eaa2f7621c6468492a7cdc2d7147c9c6705b1982d37d",
+      "stateHash": "84a631c55df59c750be1586cdf77f3b450af28fd1530314ea47e23c79809efbb",
+      "intent": {
+        "type": "event",
+        "choice": "remember"
+      }
+    },
+    {
+      "sequence": 58,
+      "previousHash": "84a631c55df59c750be1586cdf77f3b450af28fd1530314ea47e23c79809efbb",
+      "stateHash": "0270900f51da0f0cdd8e505669e1003f1e48f00a174c5d3e886acae7fa6b61fb",
+      "intent": {
+        "type": "enter",
+        "node": "trainer"
+      }
+    },
+    {
+      "sequence": 59,
+      "previousHash": "0270900f51da0f0cdd8e505669e1003f1e48f00a174c5d3e886acae7fa6b61fb",
+      "stateHash": "3a0a84fc2218ab50db06c28c625f94bed84a0241acfb65add15608beab46868f",
+      "intent": {
+        "type": "trainer",
+        "choice": "rest"
+      }
+    },
+    {
+      "sequence": 60,
+      "previousHash": "3a0a84fc2218ab50db06c28c625f94bed84a0241acfb65add15608beab46868f",
+      "stateHash": "b9385cf3dc2665f0887abeb209815216bfc599b17f0f714edaa99ccc8e7bc02b",
+      "intent": {
+        "type": "enter",
+        "node": "sable"
+      }
+    },
+    {
+      "sequence": 61,
+      "previousHash": "b9385cf3dc2665f0887abeb209815216bfc599b17f0f714edaa99ccc8e7bc02b",
+      "stateHash": "1eb49f0fbe17e66ce1f02670ed73c9b8a89bf712058945d9430c84c7f0c5c322",
+      "intent": {
+        "type": "buy",
+        "itemId": "salve"
+      }
+    },
+    {
+      "sequence": 62,
+      "previousHash": "1eb49f0fbe17e66ce1f02670ed73c9b8a89bf712058945d9430c84c7f0c5c322",
+      "stateHash": "4a691091d3455010820be2b764c36bde66ca56bd8c5928f85b765965d2733578",
+      "intent": {
+        "type": "leave-shop"
+      }
+    },
+    {
+      "sequence": 63,
+      "previousHash": "4a691091d3455010820be2b764c36bde66ca56bd8c5928f85b765965d2733578",
+      "stateHash": "0ed3d20b92e5b041baaa8b62b692c0adc19bccd3e98f25c7b227bf8ca26c0d91",
+      "intent": {
+        "type": "enter",
+        "node": "wood-witch"
+      }
+    },
+    {
+      "sequence": 64,
+      "previousHash": "0ed3d20b92e5b041baaa8b62b692c0adc19bccd3e98f25c7b227bf8ca26c0d91",
+      "stateHash": "a78de9793df68c07991d8c74032ba9099efc82fe89d45bbdcb3452aac859f400",
+      "intent": {
+        "type": "leave-shop"
+      }
+    },
+    {
+      "sequence": 65,
+      "previousHash": "a78de9793df68c07991d8c74032ba9099efc82fe89d45bbdcb3452aac859f400",
+      "stateHash": "08776a07a8bafc4009c759a562a4ebde8221624b4b9c3fc48b66c265baeb7262",
+      "intent": {
+        "type": "enter",
+        "node": "sanctum"
+      }
+    },
+    {
+      "sequence": 66,
+      "previousHash": "08776a07a8bafc4009c759a562a4ebde8221624b4b9c3fc48b66c265baeb7262",
+      "stateHash": "7396fec9aec92721ce8fc4fd3ade8c291c6b1c127bf933549ad28b07763bd609",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 1,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 67,
+      "previousHash": "7396fec9aec92721ce8fc4fd3ade8c291c6b1c127bf933549ad28b07763bd609",
+      "stateHash": "77b0bbe2b2ae86252892aa722265aa98d6c305db901c9a17b5cc808adc1c40fb",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 1,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 68,
+      "previousHash": "77b0bbe2b2ae86252892aa722265aa98d6c305db901c9a17b5cc808adc1c40fb",
+      "stateHash": "c205e151f77646f0b627badfa79ccf0b31d1d446a5e660f9a58919bbf9c2caff",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss1",
+        "round": 1,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 69,
+      "previousHash": "c205e151f77646f0b627badfa79ccf0b31d1d446a5e660f9a58919bbf9c2caff",
+      "stateHash": "1ef827227fcdd3f56109c2e38a5d58c9049a15fe60ec7da43f086b7105ccfa46",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 1,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 70,
+      "previousHash": "1ef827227fcdd3f56109c2e38a5d58c9049a15fe60ec7da43f086b7105ccfa46",
+      "stateHash": "b9f2e9be899f7c57444862aaaea5d5ec375b2bbeaf6a07b5b04a83d5b26513dc",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss0",
+        "round": 1,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 71,
+      "previousHash": "b9f2e9be899f7c57444862aaaea5d5ec375b2bbeaf6a07b5b04a83d5b26513dc",
+      "stateHash": "1a6990f74546cb24742dc82edf85282f8a19937488c07d8ebe464bda8544528d",
+      "intent": {
+        "type": "use-die",
+        "dieId": "reserve",
+        "round": 1,
+        "targetKey": "elian",
+        "itemId": "salve"
+      }
+    },
+    {
+      "sequence": 72,
+      "previousHash": "1a6990f74546cb24742dc82edf85282f8a19937488c07d8ebe464bda8544528d",
+      "stateHash": "626cc65f9a241ff470eafc3c1e7f2b2b00d314064fb08fc37b0b759d16a7f46e",
+      "intent": {
+        "type": "end-round",
+        "round": 1
+      }
+    },
+    {
+      "sequence": 73,
+      "previousHash": "626cc65f9a241ff470eafc3c1e7f2b2b00d314064fb08fc37b0b759d16a7f46e",
+      "stateHash": "a458fe7751932d8204794f7e98725e9fa62b6a838f9ff3d22ad61d78bd2d86ce",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 2,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 74,
+      "previousHash": "a458fe7751932d8204794f7e98725e9fa62b6a838f9ff3d22ad61d78bd2d86ce",
+      "stateHash": "ce9d5524e4bb139b8ba3c236cdf0d48fe0449c6ac55a6b37ad89f228cf3e7f43",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss1",
+        "round": 2,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 75,
+      "previousHash": "ce9d5524e4bb139b8ba3c236cdf0d48fe0449c6ac55a6b37ad89f228cf3e7f43",
+      "stateHash": "09aaa6e4e2b465329c18e4799eb27a01196d0c3c60aac599cb5987eec5e0dc48",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss0",
+        "round": 2,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 76,
+      "previousHash": "09aaa6e4e2b465329c18e4799eb27a01196d0c3c60aac599cb5987eec5e0dc48",
+      "stateHash": "7e821cf67b00890f6c87baf715938c4b07c2f4d681987570ae93fd885505a1d6",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 2,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 77,
+      "previousHash": "7e821cf67b00890f6c87baf715938c4b07c2f4d681987570ae93fd885505a1d6",
+      "stateHash": "41253d7d1553092f48c19aba9c78b001b5ad6c8875c419e8073d6695d20e6295",
+      "intent": {
+        "type": "end-round",
+        "round": 2
+      }
+    },
+    {
+      "sequence": 78,
+      "previousHash": "41253d7d1553092f48c19aba9c78b001b5ad6c8875c419e8073d6695d20e6295",
+      "stateHash": "186baa13d79eb4430677daf12c275789274e9120c3728fda824a7988e9801fa5",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 3,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 79,
+      "previousHash": "186baa13d79eb4430677daf12c275789274e9120c3728fda824a7988e9801fa5",
+      "stateHash": "162662454a0ca64c756eb8a2dac0fda4a7d791d7a663c6ceafc6588fd431b397",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 3,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 80,
+      "previousHash": "162662454a0ca64c756eb8a2dac0fda4a7d791d7a663c6ceafc6588fd431b397",
+      "stateHash": "3cd12ef6bc43d0a89aaad2c4590ce8949e03a6e1adb90617893e0cd7a8e5410a",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss1",
+        "round": 3,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 81,
+      "previousHash": "3cd12ef6bc43d0a89aaad2c4590ce8949e03a6e1adb90617893e0cd7a8e5410a",
+      "stateHash": "f8c8fee5e9faa677aca3baa508bb31c5f1b5155be2be17c123f95357b94ec9b4",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss0",
+        "round": 3,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 82,
+      "previousHash": "f8c8fee5e9faa677aca3baa508bb31c5f1b5155be2be17c123f95357b94ec9b4",
+      "stateHash": "65b9042625bf11cff72e4eda150765e83b4a595e82fd151acc17e01c5d337e68",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 3,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 83,
+      "previousHash": "65b9042625bf11cff72e4eda150765e83b4a595e82fd151acc17e01c5d337e68",
+      "stateHash": "43b8ed91711f70542db87cd0e8c7669ce767286529d70d514775693ecac549cc",
+      "intent": {
+        "type": "end-round",
+        "round": 3
+      }
+    },
+    {
+      "sequence": 84,
+      "previousHash": "43b8ed91711f70542db87cd0e8c7669ce767286529d70d514775693ecac549cc",
+      "stateHash": "707e376b8d5a87f89e6c4b8912e36047f57e09a979d7ccdf123609294ed68b61",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 4,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 85,
+      "previousHash": "707e376b8d5a87f89e6c4b8912e36047f57e09a979d7ccdf123609294ed68b61",
+      "stateHash": "dd7a37caa99de13382fb6d352833fb8ce0ca6cf6bb10a48c22f359b41c49dae0",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss1",
+        "round": 4,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 86,
+      "previousHash": "dd7a37caa99de13382fb6d352833fb8ce0ca6cf6bb10a48c22f359b41c49dae0",
+      "stateHash": "36388283adb0d14d334b6167a7cd2135714af9b56368dc91df1b17fd86a7f4ef",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss0",
+        "round": 4,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 87,
+      "previousHash": "36388283adb0d14d334b6167a7cd2135714af9b56368dc91df1b17fd86a7f4ef",
+      "stateHash": "320e10a3d042616f4ad28f0a63773fcfc4dcf88ea18189235d18d70e763af957",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 4,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 88,
+      "previousHash": "320e10a3d042616f4ad28f0a63773fcfc4dcf88ea18189235d18d70e763af957",
+      "stateHash": "56b7a83df902d2db2e9f283872dc0d19eae8f9ad906a0634475111b7f10cbc47",
+      "intent": {
+        "type": "end-round",
+        "round": 4
+      }
+    },
+    {
+      "sequence": 89,
+      "previousHash": "56b7a83df902d2db2e9f283872dc0d19eae8f9ad906a0634475111b7f10cbc47",
+      "stateHash": "bea79a645c09b26aed72c354d812fcf78ada59514f90b3d72e0107251f2bea98",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 5,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 90,
+      "previousHash": "bea79a645c09b26aed72c354d812fcf78ada59514f90b3d72e0107251f2bea98",
+      "stateHash": "783588b48f3a2e876328fdaebff91de54875fa03cb0bce2a81403c730305f1ad",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 5,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 91,
+      "previousHash": "783588b48f3a2e876328fdaebff91de54875fa03cb0bce2a81403c730305f1ad",
+      "stateHash": "67fff22e348300303fce38b7dffb8c1f617ee4581bb9570740be05ebe4df4f7e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 5,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 92,
+      "previousHash": "67fff22e348300303fce38b7dffb8c1f617ee4581bb9570740be05ebe4df4f7e",
+      "stateHash": "1ba64634d1124659f97e330c6646536d499adb3d732fb0d5d50cf0145912b3a8",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss1",
+        "round": 5,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 93,
+      "previousHash": "1ba64634d1124659f97e330c6646536d499adb3d732fb0d5d50cf0145912b3a8",
+      "stateHash": "5452fdcd1684a7b50088aa4345d5d64ddf85b8d29653daa32b81283bf9facdbe",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss0",
+        "round": 5,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 94,
+      "previousHash": "5452fdcd1684a7b50088aa4345d5d64ddf85b8d29653daa32b81283bf9facdbe",
+      "stateHash": "764d467dfcd12c7717e3222b936a80bdc65c5257459bc671697ab939e05e3c89",
+      "intent": {
+        "type": "end-round",
+        "round": 5
+      }
+    },
+    {
+      "sequence": 95,
+      "previousHash": "764d467dfcd12c7717e3222b936a80bdc65c5257459bc671697ab939e05e3c89",
+      "stateHash": "67d27374080225a13b32494e6f48d369bd24f15d72f9903b483bcd94e1b2caca",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 6,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 96,
+      "previousHash": "67d27374080225a13b32494e6f48d369bd24f15d72f9903b483bcd94e1b2caca",
+      "stateHash": "879ed8b9171b2ce6c90b75c76c46d0e38915fd38e98091c1d5b29f8643e2ba6b",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 6,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 97,
+      "previousHash": "879ed8b9171b2ce6c90b75c76c46d0e38915fd38e98091c1d5b29f8643e2ba6b",
+      "stateHash": "bf38bc3f610cdd78ef46bcb96bb32f542f346eeeb352032ce9b2b73ac4acb4ce",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 6,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 98,
+      "previousHash": "bf38bc3f610cdd78ef46bcb96bb32f542f346eeeb352032ce9b2b73ac4acb4ce",
+      "stateHash": "8adae1d5b4b12e208257f33b319b7135260ed9d8d799bf62b3be2a22b6c3da4b",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss1",
+        "round": 6,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 99,
+      "previousHash": "8adae1d5b4b12e208257f33b319b7135260ed9d8d799bf62b3be2a22b6c3da4b",
+      "stateHash": "9cb24f7c60585431a7d6f01554d302ba8f39167a00b267d54bbd261e9845290f",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss0",
+        "round": 6,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 100,
+      "previousHash": "9cb24f7c60585431a7d6f01554d302ba8f39167a00b267d54bbd261e9845290f",
+      "stateHash": "1aaa98997e1390f42eb3a3dd76f804c792590ec10672a1b68a7ad3431ce3e937",
+      "intent": {
+        "type": "end-round",
+        "round": 6
+      }
+    },
+    {
+      "sequence": 101,
+      "previousHash": "1aaa98997e1390f42eb3a3dd76f804c792590ec10672a1b68a7ad3431ce3e937",
+      "stateHash": "eeafaa18f844870cdb4c7f37387e214c25bb82462218480ee5f19b18f69ecc5b",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 7,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 102,
+      "previousHash": "eeafaa18f844870cdb4c7f37387e214c25bb82462218480ee5f19b18f69ecc5b",
+      "stateHash": "745f3511af1e24a71403ea907b1c50a386a979d3fcdcd543613985a47f71b658",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 7,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 103,
+      "previousHash": "745f3511af1e24a71403ea907b1c50a386a979d3fcdcd543613985a47f71b658",
+      "stateHash": "ad33954751e057e65cc864e95019aefbcf94110ee942a6d51e29e67a715b0e8e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party2",
+        "round": 7,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 104,
+      "previousHash": "ad33954751e057e65cc864e95019aefbcf94110ee942a6d51e29e67a715b0e8e",
+      "stateHash": "f2a61aeae5f405b2a55685c7c1e81360836f84442467962c52938fbe4ea43161",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss1",
+        "round": 7,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 105,
+      "previousHash": "f2a61aeae5f405b2a55685c7c1e81360836f84442467962c52938fbe4ea43161",
+      "stateHash": "3da092109ed37272a04e846ac3859c2871e3bd53d9b8cfbc1b4d92598396fd52",
+      "intent": {
+        "type": "use-die",
+        "dieId": "boss0",
+        "round": 7,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 106,
+      "previousHash": "3da092109ed37272a04e846ac3859c2871e3bd53d9b8cfbc1b4d92598396fd52",
+      "stateHash": "0588c65d720c01e19b0bdb4651a0f3c3b4bd15cf0243876705c12330eb3a8ab3",
+      "intent": {
+        "type": "end-round",
+        "round": 7
+      }
+    },
+    {
+      "sequence": 107,
+      "previousHash": "0588c65d720c01e19b0bdb4651a0f3c3b4bd15cf0243876705c12330eb3a8ab3",
+      "stateHash": "5634debf13550409fd78a2cce8678174a3069e6e02f3018b586f357f8b15bd50",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party0",
+        "round": 8,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 108,
+      "previousHash": "5634debf13550409fd78a2cce8678174a3069e6e02f3018b586f357f8b15bd50",
+      "stateHash": "b9f0c1c35f98313008c7f697d82247fa9797fe24a8b0619d2ec3ac6a54085384",
+      "intent": {
+        "type": "use-die",
+        "dieId": "party1",
+        "round": 8,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 109,
+      "previousHash": "b9f0c1c35f98313008c7f697d82247fa9797fe24a8b0619d2ec3ac6a54085384",
+      "stateHash": "3b13e72618a15e524d3f9110ac845703274465d4acac7a7dcea75fee5ee5a6b5",
+      "intent": {
+        "type": "claim",
+        "choice": "equipment",
+        "heroKey": "juniper-beads"
+      }
+    },
+    {
+      "sequence": 110,
+      "previousHash": "3b13e72618a15e524d3f9110ac845703274465d4acac7a7dcea75fee5ee5a6b5",
+      "stateHash": "8a03f5153001d08f78f30f0f0bd34ee087d1ee3df2501a15834ae36b1ab24d21",
+      "intent": {
+        "type": "move-equipment",
+        "heroKey": "mara",
+        "slot": 0,
+        "index": 0
+      }
+    },
+    {
+      "sequence": 111,
+      "previousHash": "8a03f5153001d08f78f30f0f0bd34ee087d1ee3df2501a15834ae36b1ab24d21",
+      "stateHash": "08779ff6d0ed47fbdf13a1d7d32233ef43ea149cc5443f95a5559a832a5afd38",
+      "intent": {
+        "type": "claim",
+        "choice": "leave"
+      }
+    },
+    {
+      "sequence": 112,
+      "previousHash": "08779ff6d0ed47fbdf13a1d7d32233ef43ea149cc5443f95a5559a832a5afd38",
+      "stateHash": "02837e2e2fb05c9e2693aa044f89c95f428c6728a72ce940b8c739925c247ade",
+      "intent": {
+        "type": "event",
+        "choice": "leave"
+      }
+    },
+    {
+      "sequence": 113,
+      "previousHash": "02837e2e2fb05c9e2693aa044f89c95f428c6728a72ce940b8c739925c247ade",
+      "stateHash": "34339fbf15b285c2641a62fde62e33f8c4796fe2f583ae9eaac317baa4113948",
+      "intent": {
+        "type": "enter",
+        "node": "causeway-road"
+      }
+    },
+    {
+      "sequence": 114,
+      "previousHash": "34339fbf15b285c2641a62fde62e33f8c4796fe2f583ae9eaac317baa4113948",
+      "stateHash": "889fb833f755a7c9b319c813284ef2697cd6b322cefd56a6721daba03d6d86ff",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 1,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 115,
+      "previousHash": "889fb833f755a7c9b319c813284ef2697cd6b322cefd56a6721daba03d6d86ff",
+      "stateHash": "c69c63b8606b0e613fcb7f7d743d8120d56c638fa0cd3c800e732c7a40984dbd",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 1,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 116,
+      "previousHash": "c69c63b8606b0e613fcb7f7d743d8120d56c638fa0cd3c800e732c7a40984dbd",
+      "stateHash": "6b5602c9b6f1b6114e78f05fbbdc13673a97d54ab5246622038809922b554194",
+      "intent": {
+        "type": "end-round",
+        "round": 1
+      }
+    },
+    {
+      "sequence": 117,
+      "previousHash": "6b5602c9b6f1b6114e78f05fbbdc13673a97d54ab5246622038809922b554194",
+      "stateHash": "d005947533d7cc538d8112b9983f343f7476646f6c388553695964d4f947e922",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 2,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 118,
+      "previousHash": "d005947533d7cc538d8112b9983f343f7476646f6c388553695964d4f947e922",
+      "stateHash": "60049c4cce1248b14f050b94bf8f1201db8de9a4da8ac83bf6e7a165f1931a49",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 2,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 119,
+      "previousHash": "60049c4cce1248b14f050b94bf8f1201db8de9a4da8ac83bf6e7a165f1931a49",
+      "stateHash": "5e68b616bd8e0c5bf0536c93061d21a5f258a76d033dd3d96fa950749ea2c426",
+      "intent": {
+        "type": "end-round",
+        "round": 2
+      }
+    },
+    {
+      "sequence": 120,
+      "previousHash": "5e68b616bd8e0c5bf0536c93061d21a5f258a76d033dd3d96fa950749ea2c426",
+      "stateHash": "c791987a67b29d231c2a7baec4ac1d67c3fad64aff3cea6a8eb5ae9c49be41a9",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 3,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 121,
+      "previousHash": "c791987a67b29d231c2a7baec4ac1d67c3fad64aff3cea6a8eb5ae9c49be41a9",
+      "stateHash": "54f43808e605b40cc27a6f92e49a673b314e3c999da209cc314fada37db9b13c",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 3,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 122,
+      "previousHash": "54f43808e605b40cc27a6f92e49a673b314e3c999da209cc314fada37db9b13c",
+      "stateHash": "dc79e8b4f60b3718e1ca3cc505ec44d362240071fa8d135454022aae153f8c15",
+      "intent": {
+        "type": "end-round",
+        "round": 3
+      }
+    },
+    {
+      "sequence": 123,
+      "previousHash": "dc79e8b4f60b3718e1ca3cc505ec44d362240071fa8d135454022aae153f8c15",
+      "stateHash": "bdb2ce0b96d2862202bb1cd728654a9e2654ace93c59b02fb93797f95b669fc3",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 4,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 124,
+      "previousHash": "bdb2ce0b96d2862202bb1cd728654a9e2654ace93c59b02fb93797f95b669fc3",
+      "stateHash": "b695bc614811a1387611ef307b9082c75f073608784ca433d898bfa8e63a1b56",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 4,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 125,
+      "previousHash": "b695bc614811a1387611ef307b9082c75f073608784ca433d898bfa8e63a1b56",
+      "stateHash": "750a860fd7858d1b21fa8fd23656bc341b5623dcddf51d38eb20ed5421755cb1",
+      "intent": {
+        "type": "end-round",
+        "round": 4
+      }
+    },
+    {
+      "sequence": 126,
+      "previousHash": "750a860fd7858d1b21fa8fd23656bc341b5623dcddf51d38eb20ed5421755cb1",
+      "stateHash": "c8445d1b11109f2f91147c542bf403e9a4c0f7a8dd315cc8862c6537453a69d8",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 5,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 127,
+      "previousHash": "c8445d1b11109f2f91147c542bf403e9a4c0f7a8dd315cc8862c6537453a69d8",
+      "stateHash": "0d48324a7543f747b048dc4aeac94645c5d935324524d707fc524af9a3820740",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 5,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 128,
+      "previousHash": "0d48324a7543f747b048dc4aeac94645c5d935324524d707fc524af9a3820740",
+      "stateHash": "7eb57d775bc4ba23e3f9e8c4c5affd47cdc4549d34df480393154ff9a428b6bc",
+      "intent": {
+        "type": "end-round",
+        "round": 5
+      }
+    },
+    {
+      "sequence": 129,
+      "previousHash": "7eb57d775bc4ba23e3f9e8c4c5affd47cdc4549d34df480393154ff9a428b6bc",
+      "stateHash": "47b97d7fc65e5349e5f6b47209fa5ada06dc66b4eef536b91b6c0392f2ea5679",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 6,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 130,
+      "previousHash": "47b97d7fc65e5349e5f6b47209fa5ada06dc66b4eef536b91b6c0392f2ea5679",
+      "stateHash": "cf4a5823e1f7ff8f7278e4827f5b03b4e6a66bcefc879b6e215c748d4a161ddb",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 6,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 131,
+      "previousHash": "cf4a5823e1f7ff8f7278e4827f5b03b4e6a66bcefc879b6e215c748d4a161ddb",
+      "stateHash": "cbd91c264d14dc22f4c6664444e766d6e175d0318e64fac5cd00bd5bbae748db",
+      "intent": {
+        "type": "end-round",
+        "round": 6
+      }
+    },
+    {
+      "sequence": 132,
+      "previousHash": "cbd91c264d14dc22f4c6664444e766d6e175d0318e64fac5cd00bd5bbae748db",
+      "stateHash": "43af1e92d7293115447532cc24790bc878457e63f8a70747a986034df5abe6c8",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 7,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 133,
+      "previousHash": "43af1e92d7293115447532cc24790bc878457e63f8a70747a986034df5abe6c8",
+      "stateHash": "80d7be1002136fe639c49c53559b6bd3c9a51ef4b8063b62f134398c4033a691",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 7,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 134,
+      "previousHash": "80d7be1002136fe639c49c53559b6bd3c9a51ef4b8063b62f134398c4033a691",
+      "stateHash": "7c967febeddfc68ea7780662d2c2d2d872704a968e8f9d0ccbc634845f055d95",
+      "intent": {
+        "type": "end-round",
+        "round": 7
+      }
+    },
+    {
+      "sequence": 135,
+      "previousHash": "7c967febeddfc68ea7780662d2c2d2d872704a968e8f9d0ccbc634845f055d95",
+      "stateHash": "52994c7d412dc4684ab41559103ec254d248495522ffbdb1df9d7e14c471ae31",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 8,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 136,
+      "previousHash": "52994c7d412dc4684ab41559103ec254d248495522ffbdb1df9d7e14c471ae31",
+      "stateHash": "b1266d60df184ff0d311d7ffc2558095a503a2ed5d7769e8dcd13fb934e348e2",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 8,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 137,
+      "previousHash": "b1266d60df184ff0d311d7ffc2558095a503a2ed5d7769e8dcd13fb934e348e2",
+      "stateHash": "ca717c8524beafb1a8b30bb1a3bb851267b83adf22e7d39be1536f375846845e",
+      "intent": {
+        "type": "end-round",
+        "round": 8
+      }
+    },
+    {
+      "sequence": 138,
+      "previousHash": "ca717c8524beafb1a8b30bb1a3bb851267b83adf22e7d39be1536f375846845e",
+      "stateHash": "56f73d007b0dbd9017a68facd6afef46a1b982956f661aa2c52aefd9893e57e4",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 9,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 139,
+      "previousHash": "56f73d007b0dbd9017a68facd6afef46a1b982956f661aa2c52aefd9893e57e4",
+      "stateHash": "ac466a702d5c597968682c29b1ab288ba9eebc26d2360916f8cb8d5f5a107614",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 9,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 140,
+      "previousHash": "ac466a702d5c597968682c29b1ab288ba9eebc26d2360916f8cb8d5f5a107614",
+      "stateHash": "faf6bfd5b989cd319c0581e9ef84ec65799a83b4ab7ec4f85f20f10f4536650b",
+      "intent": {
+        "type": "end-round",
+        "round": 9
+      }
+    },
+    {
+      "sequence": 141,
+      "previousHash": "faf6bfd5b989cd319c0581e9ef84ec65799a83b4ab7ec4f85f20f10f4536650b",
+      "stateHash": "33e3eff76b1fac38655e86fe9f1cc5011daef262bb1154ee97cbe78ec097bb32",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 10,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 142,
+      "previousHash": "33e3eff76b1fac38655e86fe9f1cc5011daef262bb1154ee97cbe78ec097bb32",
+      "stateHash": "364fd0b858a932bf82adb64fd8d8cc48d1c5b76a90af148984c6adfaab64d58d",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 10,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 143,
+      "previousHash": "364fd0b858a932bf82adb64fd8d8cc48d1c5b76a90af148984c6adfaab64d58d",
+      "stateHash": "c1531a677f68fd860b9957b47709457ed79a3856f027c629364c6430b265ee98",
+      "intent": {
+        "type": "end-round",
+        "round": 10
+      }
+    },
+    {
+      "sequence": 144,
+      "previousHash": "c1531a677f68fd860b9957b47709457ed79a3856f027c629364c6430b265ee98",
+      "stateHash": "6808e15fce7e651720c59bc713d9b6593d9d224fd1923695c42c74bfcf139626",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 11,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 145,
+      "previousHash": "6808e15fce7e651720c59bc713d9b6593d9d224fd1923695c42c74bfcf139626",
+      "stateHash": "febcc78eaae8594c49a04397326f519121d185a9ccd928d9c581c7bd05a36aee",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 11,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 146,
+      "previousHash": "febcc78eaae8594c49a04397326f519121d185a9ccd928d9c581c7bd05a36aee",
+      "stateHash": "2ce2aa2e56d6da589c89d1db7c44d3871541056e90a2ee038b9b8a1d4b60b414",
+      "intent": {
+        "type": "end-round",
+        "round": 11
+      }
+    },
+    {
+      "sequence": 147,
+      "previousHash": "2ce2aa2e56d6da589c89d1db7c44d3871541056e90a2ee038b9b8a1d4b60b414",
+      "stateHash": "37eca28feeb4057e9a0f011a1cc5e5404b5d05f00c49e9317a2b2bc9f04d251c",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 12,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 148,
+      "previousHash": "37eca28feeb4057e9a0f011a1cc5e5404b5d05f00c49e9317a2b2bc9f04d251c",
+      "stateHash": "0f4e81eea9bc50a0379d1d58500cedd978f446c46701ae6357d59114eff97ce2",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 12,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 149,
+      "previousHash": "0f4e81eea9bc50a0379d1d58500cedd978f446c46701ae6357d59114eff97ce2",
+      "stateHash": "120743650c7363bb69ed9723670aa9ec3f4a2e59cdc42f637413ec1d3ea958f7",
+      "intent": {
+        "type": "end-round",
+        "round": 12
+      }
+    },
+    {
+      "sequence": 150,
+      "previousHash": "120743650c7363bb69ed9723670aa9ec3f4a2e59cdc42f637413ec1d3ea958f7",
+      "stateHash": "5230c19ed66a35455edc789570c1df125568a36f0e8f573165abec85bd61f66e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 13,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 151,
+      "previousHash": "5230c19ed66a35455edc789570c1df125568a36f0e8f573165abec85bd61f66e",
+      "stateHash": "501e81891dcd9b39ed4858cbc0f2ad9a53ee12bcd7bc57ee2cc454bc9c1528f0",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 13,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 152,
+      "previousHash": "501e81891dcd9b39ed4858cbc0f2ad9a53ee12bcd7bc57ee2cc454bc9c1528f0",
+      "stateHash": "c13c10dd2d78ff22aa311c35f653063c6c8a53cb34e9a847cadb432a755a7c84",
+      "intent": {
+        "type": "end-round",
+        "round": 13
+      }
+    },
+    {
+      "sequence": 153,
+      "previousHash": "c13c10dd2d78ff22aa311c35f653063c6c8a53cb34e9a847cadb432a755a7c84",
+      "stateHash": "7a3d7690a17b5c5263e31c85480aa20899b9cdbbab7ec1d06e2193b3e6f49bf5",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 14,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 154,
+      "previousHash": "7a3d7690a17b5c5263e31c85480aa20899b9cdbbab7ec1d06e2193b3e6f49bf5",
+      "stateHash": "93d935a407b330fc341af8c603255e472389a843af5503542a03beabfbb26fe6",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 14,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 155,
+      "previousHash": "93d935a407b330fc341af8c603255e472389a843af5503542a03beabfbb26fe6",
+      "stateHash": "0394fac2a73affe75aba89d28d89763ca8eaa2c1f3f0f3e92ff451179c834c1d",
+      "intent": {
+        "type": "end-round",
+        "round": 14
+      }
+    },
+    {
+      "sequence": 156,
+      "previousHash": "0394fac2a73affe75aba89d28d89763ca8eaa2c1f3f0f3e92ff451179c834c1d",
+      "stateHash": "3fe4419de6a3cad1e9c34851f0ae852ab3403312adb04d986416718d41ff915a",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 15,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 157,
+      "previousHash": "3fe4419de6a3cad1e9c34851f0ae852ab3403312adb04d986416718d41ff915a",
+      "stateHash": "84b58eb85e63ccd28331db3595098a3460886b87df9088c7f3895c50277704d0",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 15,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 158,
+      "previousHash": "84b58eb85e63ccd28331db3595098a3460886b87df9088c7f3895c50277704d0",
+      "stateHash": "1535fb251b2044f1e95ad1d869fc3c27c6f52a04a6aa3fabcb796e18e93db468",
+      "intent": {
+        "type": "end-round",
+        "round": 15
+      }
+    },
+    {
+      "sequence": 159,
+      "previousHash": "1535fb251b2044f1e95ad1d869fc3c27c6f52a04a6aa3fabcb796e18e93db468",
+      "stateHash": "d565c354fe83c009ffaf603da9e7f3d16398c10628c381af4ecde7f90a45d426",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 16,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 160,
+      "previousHash": "d565c354fe83c009ffaf603da9e7f3d16398c10628c381af4ecde7f90a45d426",
+      "stateHash": "170c456d2120f23c4cd4bf67fb2b37ac2622f2b531612915a62b614360c013e4",
+      "intent": {
+        "type": "end-round",
+        "round": 16
+      }
+    },
+    {
+      "sequence": 161,
+      "previousHash": "170c456d2120f23c4cd4bf67fb2b37ac2622f2b531612915a62b614360c013e4",
+      "stateHash": "c729cf82d75def9a1b7569e6f181ddddb90502b9f7b54228a2ff959b0e6e770e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 17,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 162,
+      "previousHash": "c729cf82d75def9a1b7569e6f181ddddb90502b9f7b54228a2ff959b0e6e770e",
+      "stateHash": "d0552c731aad345958d4d5edf668af3e24fdf0e5c6088b74200af83f19d995b5",
+      "intent": {
+        "type": "end-round",
+        "round": 17
+      }
+    },
+    {
+      "sequence": 163,
+      "previousHash": "d0552c731aad345958d4d5edf668af3e24fdf0e5c6088b74200af83f19d995b5",
+      "stateHash": "592848d8c56b6e369b5624ed0817a135444e0b68ff45e23b63045769df89bb8c",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 18,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 164,
+      "previousHash": "592848d8c56b6e369b5624ed0817a135444e0b68ff45e23b63045769df89bb8c",
+      "stateHash": "a7228d9a8e16bf448db116fcfae4f0d7cf40d29b79bdbe4242b38e655bbc2901",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 18,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 165,
+      "previousHash": "a7228d9a8e16bf448db116fcfae4f0d7cf40d29b79bdbe4242b38e655bbc2901",
+      "stateHash": "cf1c65687765cac93befb76fb0caebfd10d764fc3db0e6798f6df1c627b6610e",
+      "intent": {
+        "type": "end-round",
+        "round": 18
+      }
+    },
+    {
+      "sequence": 166,
+      "previousHash": "cf1c65687765cac93befb76fb0caebfd10d764fc3db0e6798f6df1c627b6610e",
+      "stateHash": "5ba71e2f85d5b91e358aadffc093dc0d49e3252f0ac16a5e52d1ec4ba328546e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 19,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 167,
+      "previousHash": "5ba71e2f85d5b91e358aadffc093dc0d49e3252f0ac16a5e52d1ec4ba328546e",
+      "stateHash": "cfe13f4f8e7d84d1e1663c302cb7cbf2e5e513c7cad334b521e4c690ee04a6a1",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 19,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 168,
+      "previousHash": "cfe13f4f8e7d84d1e1663c302cb7cbf2e5e513c7cad334b521e4c690ee04a6a1",
+      "stateHash": "7f3d009b87edeb73e05df2f1d3e26554982e9db9c5debf39531191f71f66e4bd",
+      "intent": {
+        "type": "end-round",
+        "round": 19
+      }
+    },
+    {
+      "sequence": 169,
+      "previousHash": "7f3d009b87edeb73e05df2f1d3e26554982e9db9c5debf39531191f71f66e4bd",
+      "stateHash": "d7c7e4a94de10937d37724dff7779c2e5d4b94265832b0e7778054f69a98a669",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 20,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 170,
+      "previousHash": "d7c7e4a94de10937d37724dff7779c2e5d4b94265832b0e7778054f69a98a669",
+      "stateHash": "c44a16b52730369b8755be8e89642d2e92a1ec755f0aa5612e070e9c8a402852",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 20,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 171,
+      "previousHash": "c44a16b52730369b8755be8e89642d2e92a1ec755f0aa5612e070e9c8a402852",
+      "stateHash": "9a328866ac1d1a60445866667c6ebeab6441020ef6a29544aa13202b93222165",
+      "intent": {
+        "type": "end-round",
+        "round": 20
+      }
+    },
+    {
+      "sequence": 172,
+      "previousHash": "9a328866ac1d1a60445866667c6ebeab6441020ef6a29544aa13202b93222165",
+      "stateHash": "026f8920514dd1fe0974dd607be5ebd78917b427fd874e9b6a99ca36ff8710d7",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 21,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 173,
+      "previousHash": "026f8920514dd1fe0974dd607be5ebd78917b427fd874e9b6a99ca36ff8710d7",
+      "stateHash": "52e514e977308c16d69899305b65648ac659e0e2fbcd86fe7fc203dedf3891cc",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 21,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 174,
+      "previousHash": "52e514e977308c16d69899305b65648ac659e0e2fbcd86fe7fc203dedf3891cc",
+      "stateHash": "4be7ac66c2622b15d47c7e700b26dbdedebb1eb5ea3db19ba6cce9d440fbd649",
+      "intent": {
+        "type": "end-round",
+        "round": 21
+      }
+    },
+    {
+      "sequence": 175,
+      "previousHash": "4be7ac66c2622b15d47c7e700b26dbdedebb1eb5ea3db19ba6cce9d440fbd649",
+      "stateHash": "3741d248339037dcd37ef79733d48a4396b854cb4b0c8bd6efe7f1ab04df759d",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 22,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 176,
+      "previousHash": "3741d248339037dcd37ef79733d48a4396b854cb4b0c8bd6efe7f1ab04df759d",
+      "stateHash": "2ec35993b2ce410c1c934502358127dbfbdac8b592be15b8be6fda4b7dbc4622",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 22,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 177,
+      "previousHash": "2ec35993b2ce410c1c934502358127dbfbdac8b592be15b8be6fda4b7dbc4622",
+      "stateHash": "3d2cac1f8d889d59416d66d7fd3084c2d5842946bd93189271472f48e8a95d1c",
+      "intent": {
+        "type": "end-round",
+        "round": 22
+      }
+    },
+    {
+      "sequence": 178,
+      "previousHash": "3d2cac1f8d889d59416d66d7fd3084c2d5842946bd93189271472f48e8a95d1c",
+      "stateHash": "26423813130ac4c2a97ec74c6c983dfa609842ba9b75028407e37af4aebb29a4",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 23,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 179,
+      "previousHash": "26423813130ac4c2a97ec74c6c983dfa609842ba9b75028407e37af4aebb29a4",
+      "stateHash": "ae09b5678d466eadbf50c29ea82440adc8db30315d3d93e8820aea446daef3ce",
+      "intent": {
+        "type": "end-round",
+        "round": 23
+      }
+    },
+    {
+      "sequence": 180,
+      "previousHash": "ae09b5678d466eadbf50c29ea82440adc8db30315d3d93e8820aea446daef3ce",
+      "stateHash": "c1c477e5f046838175047ec274a9896be7a5d8fb342bf31efb85c2f1ff842ee1",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 24,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 181,
+      "previousHash": "c1c477e5f046838175047ec274a9896be7a5d8fb342bf31efb85c2f1ff842ee1",
+      "stateHash": "71a8341b024196a11c3991235ea7d255e3a8a726f78e09c43ee98f59f402d89b",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 24,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 182,
+      "previousHash": "71a8341b024196a11c3991235ea7d255e3a8a726f78e09c43ee98f59f402d89b",
+      "stateHash": "8b8065bf13de1b9904aa00932bfb835483d84e4c23b6efea4d9bb05dc313d029",
+      "intent": {
+        "type": "end-round",
+        "round": 24
+      }
+    },
+    {
+      "sequence": 183,
+      "previousHash": "8b8065bf13de1b9904aa00932bfb835483d84e4c23b6efea4d9bb05dc313d029",
+      "stateHash": "5634ba1c602fc398397f4518812e736e35fbed93e019567244f51936eeb5c18b",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 25,
+        "targetKey": "rook"
+      }
+    },
+    {
+      "sequence": 184,
+      "previousHash": "5634ba1c602fc398397f4518812e736e35fbed93e019567244f51936eeb5c18b",
+      "stateHash": "d2bb529e17aa7878769a104b53789c855061055a6474d596b51c7dc5b6db1bfa",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 25,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 185,
+      "previousHash": "d2bb529e17aa7878769a104b53789c855061055a6474d596b51c7dc5b6db1bfa",
+      "stateHash": "fcf41edc16b38791f25e6889aba2fbc544f0f8feb488f69547b81d2d06302a48",
+      "intent": {
+        "type": "end-round",
+        "round": 25
+      }
+    },
+    {
+      "sequence": 186,
+      "previousHash": "fcf41edc16b38791f25e6889aba2fbc544f0f8feb488f69547b81d2d06302a48",
+      "stateHash": "acf0d549614601d636dd32dabaa9eb5aeba64c9dde9482f67b88e97f1174ed65",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 26,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 187,
+      "previousHash": "acf0d549614601d636dd32dabaa9eb5aeba64c9dde9482f67b88e97f1174ed65",
+      "stateHash": "345b6b6f532536ad0035e47501b8cbb13efb903a55efa97ead79ac94312cc174",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 26,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 188,
+      "previousHash": "345b6b6f532536ad0035e47501b8cbb13efb903a55efa97ead79ac94312cc174",
+      "stateHash": "816519799c9d60cc69be530df9ae55ceb99371e1f22f71d8e142c52e922d14a7",
+      "intent": {
+        "type": "end-round",
+        "round": 26
+      }
+    },
+    {
+      "sequence": 189,
+      "previousHash": "816519799c9d60cc69be530df9ae55ceb99371e1f22f71d8e142c52e922d14a7",
+      "stateHash": "053e7aceadffd8050ea2fd11af5492e3c5d814306a5c4201889b3e93e86b65d9",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 27,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 190,
+      "previousHash": "053e7aceadffd8050ea2fd11af5492e3c5d814306a5c4201889b3e93e86b65d9",
+      "stateHash": "b5df6cc96e0ff723506ad960d8be760086511c848a16168efbfe8a3a0cd9fe8e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 27,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 191,
+      "previousHash": "b5df6cc96e0ff723506ad960d8be760086511c848a16168efbfe8a3a0cd9fe8e",
+      "stateHash": "a510d35941fb456fdd7e070f0b42568b3fadb03631ba5533e1f6fae779bdbf1f",
+      "intent": {
+        "type": "end-round",
+        "round": 27
+      }
+    },
+    {
+      "sequence": 192,
+      "previousHash": "a510d35941fb456fdd7e070f0b42568b3fadb03631ba5533e1f6fae779bdbf1f",
+      "stateHash": "9c83b9005f41bf45bb0a09eef51acf4a8793e11648cc23e8968f162f914d47e7",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 28,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 193,
+      "previousHash": "9c83b9005f41bf45bb0a09eef51acf4a8793e11648cc23e8968f162f914d47e7",
+      "stateHash": "08af2e3822aa35829a34577ad7e4ccf335fa743aeedfc23e9e6a58a60c37ab99",
+      "intent": {
+        "type": "end-round",
+        "round": 28
+      }
+    },
+    {
+      "sequence": 194,
+      "previousHash": "08af2e3822aa35829a34577ad7e4ccf335fa743aeedfc23e9e6a58a60c37ab99",
+      "stateHash": "32bafb1c65ebf50ce77156e368c8f00e877ceeeb979a8834d6f30cb15cd80ac0",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 29,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 195,
+      "previousHash": "32bafb1c65ebf50ce77156e368c8f00e877ceeeb979a8834d6f30cb15cd80ac0",
+      "stateHash": "4b44714a2f510c24801421765c3270e3bf180e03128b4d5a002c60739f5098c1",
+      "intent": {
+        "type": "end-round",
+        "round": 29
+      }
+    },
+    {
+      "sequence": 196,
+      "previousHash": "4b44714a2f510c24801421765c3270e3bf180e03128b4d5a002c60739f5098c1",
+      "stateHash": "65d4e2781169602d1a434b4955ec8ce9c87c3fd1b9ccdf0406dbe4da940a6b3c",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 30,
+        "targetKey": "e0"
+      }
+    },
+    {
+      "sequence": 197,
+      "previousHash": "65d4e2781169602d1a434b4955ec8ce9c87c3fd1b9ccdf0406dbe4da940a6b3c",
+      "stateHash": "1cdce337b652815537fde00b257f8b8df08756eb130114deec26944ea140bafb",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 30,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 198,
+      "previousHash": "1cdce337b652815537fde00b257f8b8df08756eb130114deec26944ea140bafb",
+      "stateHash": "a162a5fe10c2fae07a311d2638d1055b87cc60b156231683a256fa204911e635",
+      "intent": {
+        "type": "end-round",
+        "round": 30
+      }
+    },
+    {
+      "sequence": 199,
+      "previousHash": "a162a5fe10c2fae07a311d2638d1055b87cc60b156231683a256fa204911e635",
+      "stateHash": "c9f9fe89a9701153f9421352b922066736d63d1069406afb244e6635072609c7",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 31,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 200,
+      "previousHash": "c9f9fe89a9701153f9421352b922066736d63d1069406afb244e6635072609c7",
+      "stateHash": "3e8e0619ceeb3468e7e31da2ba8b234530c8fa7c3b0f0f8f37ff39180d9e2696",
+      "intent": {
+        "type": "end-round",
+        "round": 31
+      }
+    },
+    {
+      "sequence": 201,
+      "previousHash": "3e8e0619ceeb3468e7e31da2ba8b234530c8fa7c3b0f0f8f37ff39180d9e2696",
+      "stateHash": "ba1f35223e085f940a3d32d44ce5f0194e50a4c85acc5d874f816cb2ca0831e6",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 32,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 202,
+      "previousHash": "ba1f35223e085f940a3d32d44ce5f0194e50a4c85acc5d874f816cb2ca0831e6",
+      "stateHash": "b58120b28ae2cf5b98e6b5ca1bc90495b526bc960cd0cdd468f59d9dcc757ede",
+      "intent": {
+        "type": "end-round",
+        "round": 32
+      }
+    },
+    {
+      "sequence": 203,
+      "previousHash": "b58120b28ae2cf5b98e6b5ca1bc90495b526bc960cd0cdd468f59d9dcc757ede",
+      "stateHash": "29bf45de3aae0efef6f6e5365756f120d576d240fec8819312263e8a0f83e66e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 33,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 204,
+      "previousHash": "29bf45de3aae0efef6f6e5365756f120d576d240fec8819312263e8a0f83e66e",
+      "stateHash": "b821381c4e2fd1df6f0d29e8f38c347ab891e5f6d99b07f037c40379626d234b",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 33,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 205,
+      "previousHash": "b821381c4e2fd1df6f0d29e8f38c347ab891e5f6d99b07f037c40379626d234b",
+      "stateHash": "b46d0d50d976461a449349ca93090ecef8bf23232bd1ca45f934bf7a62caab20",
+      "intent": {
+        "type": "end-round",
+        "round": 33
+      }
+    },
+    {
+      "sequence": 206,
+      "previousHash": "b46d0d50d976461a449349ca93090ecef8bf23232bd1ca45f934bf7a62caab20",
+      "stateHash": "26a3f5407951937276a58e65d67b28d9457c00086506bce89cb73c48771947f1",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 34,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 207,
+      "previousHash": "26a3f5407951937276a58e65d67b28d9457c00086506bce89cb73c48771947f1",
+      "stateHash": "ef1befd59c33c68586422f6f5eb7110bd0c6754a1daa9f5cb87dab6802db330e",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 34,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 208,
+      "previousHash": "ef1befd59c33c68586422f6f5eb7110bd0c6754a1daa9f5cb87dab6802db330e",
+      "stateHash": "1f0e18b57ef0722f8e3b5efc00178257bb616d0483156736d5d76dd7dab5085f",
+      "intent": {
+        "type": "end-round",
+        "round": 34
+      }
+    },
+    {
+      "sequence": 209,
+      "previousHash": "1f0e18b57ef0722f8e3b5efc00178257bb616d0483156736d5d76dd7dab5085f",
+      "stateHash": "426da98beecd02b4f5b8d9fb0f9e37618bd2b311a9c40cb1b8e6d2f336016c51",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 35,
+        "targetKey": "mara"
+      }
+    },
+    {
+      "sequence": 210,
+      "previousHash": "426da98beecd02b4f5b8d9fb0f9e37618bd2b311a9c40cb1b8e6d2f336016c51",
+      "stateHash": "a690ca73c1df8708826a76f38183a1ac9f340d864080efb0992283fd1a649e1a",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 35,
+        "targetKey": "e1"
+      }
+    },
+    {
+      "sequence": 211,
+      "previousHash": "a690ca73c1df8708826a76f38183a1ac9f340d864080efb0992283fd1a649e1a",
+      "stateHash": "50f91264631b2c6defb3ec5337ac39494a4c5985ee435fad059836eb0a2f5705",
+      "intent": {
+        "type": "end-round",
+        "round": 35
+      }
+    },
+    {
+      "sequence": 212,
+      "previousHash": "50f91264631b2c6defb3ec5337ac39494a4c5985ee435fad059836eb0a2f5705",
+      "stateHash": "9d0502213a49a02d6ec44f324d56261c39df8b28d32566042a341c2e903d2951",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 36,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 213,
+      "previousHash": "9d0502213a49a02d6ec44f324d56261c39df8b28d32566042a341c2e903d2951",
+      "stateHash": "a12b2b55092bdad138499060081ea8e0e65a87ecef5a8dae015ecba4a24b6b3d",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe1",
+        "round": 36,
+        "targetKey": "elian"
+      }
+    },
+    {
+      "sequence": 214,
+      "previousHash": "a12b2b55092bdad138499060081ea8e0e65a87ecef5a8dae015ecba4a24b6b3d",
+      "stateHash": "adbf5ec411400f771f258deea6545311f2703b91f26fef066f2ae0afb433632b",
+      "intent": {
+        "type": "end-round",
+        "round": 36
+      }
+    },
+    {
+      "sequence": 215,
+      "previousHash": "adbf5ec411400f771f258deea6545311f2703b91f26fef066f2ae0afb433632b",
+      "stateHash": "d35a60fd60813b82b5bb6f4bab9b9e344f56d67bb46438e8746411e4bb0c13ab",
+      "intent": {
+        "type": "use-die",
+        "dieId": "foe0",
+        "round": 37,
+        "targetKey": "mara"
+      }
+    }
+  ],
+  "finalCurseSources": 4,
+  "limits": "Headless practice simulation with a fixed fixture seed. The bot forecasts from public snapshots using placeholder randomness. Run IDs are random, so compare acceptedIntentHash and checkpoints across runs. Browser play and on-chain settlement remain unverified by this fixture."
+}

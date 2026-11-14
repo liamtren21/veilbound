@@ -1,0 +1,12 @@
+{
+  "resin": { "name": "Resin", "maximum": "120" },
+  "salt": { "name": "Salt", "maximum": "120" },
+  "ash": { "name": "Ash", "maximum": "120" },
+  "iron": { "name": "Iron", "maximum": "120" },
+  "thread": { "name": "Thread", "maximum": "120" },
+  "heartwood-knot": { "name": "Heartwood Knot", "maximum": "30" },
+  "tideglass-core": { "name": "Tideglass Core", "maximum": "30" },
+  "cinder-heart": { "name": "Cinder Heart", "maximum": "30" },
+  "warden-rivet": { "name": "Warden Rivet", "maximum": "30" },
+  "veil-lens": { "name": "Veil Lens", "maximum": "30" }
+}

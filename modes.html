@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VEILBOUND | Game Modes</title>
+  <link rel="stylesheet" href="./waymark-screens.css?v=1">
+  <link rel="stylesheet" href="./expedition-dice-art.css?v=fonts-v1">
+  <link rel="stylesheet" href="./modes.css?v=mode-lobbies-v1">
+  <script type="module" src="./modes.mjs?v=mode-lobbies-v1"></script>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <a href="./">Main Menu</a>
+      <h1>Game Modes</h1>
+    </header>
+    <nav aria-label="Game modes">
+      <a href="#trials">Accord Trials</a>
+      <a href="#weekly">Weekly Oath</a>
+      <a href="#raid">The Breach</a>
+      <a href="#duel">Veil Duel</a>
+      <a href="#coop">Co-op Breach</a>
+      <a href="#rewards">Rewards</a>
+    </nav>
+    <section id="mode-screen" aria-labelledby="mode-title">
+      <header class="mode-banner">
+        <div class="mode-hero-copy">
+          <img id="mode-emblem" src="./combat-assets/talismans-v3/gate.png" alt="">
+          <h2 id="mode-title" tabindex="-1"></h2>
+          <p id="mode-description"></p>
+        </div>
+        <div id="mode-preview" aria-hidden="true"></div>
+      </header>
+      <p id="notice" role="status"></p>
+      <div id="panel"></div>
+      <div id="encounter"></div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VEILBOUND · Expedition</title>
+<link rel="stylesheet" href="expedition.css">
+<link rel="stylesheet" href="expedition-journey.css?v=compendium-v1">
+<style>
+body{min-height:100dvh;background:linear-gradient(#160e13b8,#100c12f7),url('combat-assets/veilbound-title-waymark-v2.webp') center top/cover fixed}
+.expedition-hall{--hall-frame:url('combat-assets/expedition-hall-frame-v1.png')}
+.expedition-hall{max-width:66rem;margin:auto;padding:clamp(16px,4vw,52px);height:auto;min-height:100dvh}
+.hall-header{display:grid;justify-items:center;gap:12px;text-align:center;margin-bottom:16px}
+.hall-header h1{font-size:clamp(1.65rem,5vw,3rem);color:#ffe6bd;text-shadow:0 3px 10px #000}
+.hall-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start;gap:14px}
+.hall-panel{min-width:0;padding:18px;background:linear-gradient(150deg,#4b292c,#25171d 78%);box-shadow:0 8px 24px #09060a88;--frame-size:32px}
+.hall-panel h2,.hall-panel h3{color:#ffe0b2;margin:0 0 10px}
+.hall-panel p{margin:6px 0;overflow-wrap:anywhere}
+.hall-layout button{display:inline-grid;place-items:center;text-align:center;vertical-align:middle;
+  font-family:var(--heading-font);text-transform:uppercase;text-decoration:none;font-weight:400;
+  min-height:44px;max-width:100%;padding:3px 7px;color:#34231b;background:none;border:solid transparent;
+  border-width:8px 22px;border-image:var(--orchard-nameplate) 37 96 fill / 8px 22px / 0 stretch;border-radius:0}
+.hall-panel>button,.hall-panel section>button{margin:3px}
+.hall-layout :is(input,select){min-height:40px;max-width:100%;font:inherit;padding:6px 9px;
+  background:#261b20;border:1px solid #a26851;color:#fff0d3;border-radius:3px}
+.hall-layout :is(input,a):focus-visible{outline:2px solid var(--jade);outline-offset:3px}
+.hall-layout a{color:var(--jade)}
+#status:not(:empty){margin:0 0 14px;padding:10px 14px;background:#2d1d23;overflow-wrap:anywhere}
+.hall-panel section{margin:12px 0;padding:14px;background:#1f161bb8}
+#run:empty{display:none}
+.hall-talismans,.hall-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.hall-panel .hall-loadout{background:linear-gradient(145deg,#47272a,#24171a);--frame-size:25px}
+.hall-panel .hall-slot{min-width:0;margin:0;padding:9px}
+.hall-slot h4{margin:0 0 8px;color:#ffe0b2}
+.hall-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,65px),1fr));gap:7px}
+.hall-layout .hall-item,.hall-empty{min-width:0;min-height:92px;padding:7px;
+  background:radial-gradient(ellipse at 50% 20%,#3c5e59,#20232a 93%);color:#ffe2bc;overflow-wrap:anywhere;font-size:.78rem}
+.hall-layout .hall-item[aria-pressed=true]{outline:1px solid #e8c27d;box-shadow:inset 0 0 11px #d4ae5d66}
+.hall-item img{width:100%;height:62px;object-fit:contain}
+.hall-empty{text-align:center;display:grid;place-items:center;color:#d6c0a6}
+.hall-item[data-kind]::before,.hall-empty::before{
+  content:'';display:block;width:44px;height:44px;margin:2px auto;background-repeat:no-repeat
+}
+[data-kind=relic]::before{background-image:url('combat-assets/support-relics-v1.png');background-size:400% 300%;background-position:66.666% 0}
+[data-kind=companion]::before{background-image:url('combat-assets/support-companions-v1-clean.png');background-size:300% 200%;background-position:0 0}
+[data-kind=chronicle]::before{background:url('combat-assets/account-v1/ledger.png') center / contain no-repeat}
+.hall-empty::before{opacity:.38}
+.hall-account-badge{padding:7px 10px;background:#23171a;color:#f6d6a7}
+.expedition-hall :is(.hall-panel,.hall-panel section,.hall-item,.hall-empty,.hall-account-badge,#status:not(:empty)){
+  border:2px solid transparent;
+  border-image:var(--hall-frame) 23% / var(--frame-size,18px) / 0 stretch;
+  background-clip:padding-box;
+}
+.hall-panel section,.hall-item,.hall-empty,.hall-account-badge{--frame-size:18px}
+.hall-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.expedition-hall:has(.hall-at-gate){max-width:none;padding:0}
+.expedition-hall:has(.hall-at-gate) .hall-header{display:none}
+.hall-layout:has(.hall-at-gate){grid-template-columns:minmax(0,1fr)}
+.hall-layout:has(.hall-at-gate) #account{order:1;width:min(100% - 32px,760px);margin:0 auto 16px}
+.hall-layout .hall-at-gate{padding:0;border:0;box-shadow:none}
+.orchard-gate{
+  position:relative;isolation:isolate;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto auto;gap:12px;
+  padding:clamp(14px,3vw,38px);
+  background:linear-gradient(#141019a0,transparent 24%,transparent 48%,#170e14eb),
+    var(--gate-landscape) center/cover;
+}
+.orchard-gate>header{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;
+  align-self:start;text-shadow:0 2px 6px #000}
+.orchard-gate>header h2{margin:0;font-size:clamp(1.4rem,4vw,3rem)}
+.gate-copper{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.gate-copper::before{content:'';width:23px;aspect-ratio:1;background:url('combat-assets/account-v1/copper.png') center/contain no-repeat}
+.gate-roster{width:100%;margin:auto auto 0;text-align:center;text-shadow:0 2px 5px #000}
+.gate-roster .starter-portrait{grid-template-rows:auto 2.85rem auto}
+.gate-roster figcaption{overflow-wrap:anywhere}
+.gate-hero-health{display:grid;justify-items:center;gap:2px;font-weight:400}
+.gate-roster meter{appearance:none;width:min(100%,76px);height:7px;background:#18151a}
+.gate-roster meter::-webkit-meter-bar{background:#211519;border:1px solid #9d644c;border-radius:0}
+.gate-roster meter::-webkit-meter-optimum-value{background:#85b4a0}
+.gate-dialogue{max-width:760px;width:100%;margin:auto;padding:16px 22px;text-align:center;color:#ffe5bc;
+  background:linear-gradient(155deg,#47262d,#25171e);border-image:var(--hall-frame) 23% / 24px / 0 stretch}
+.gate-dialogue p{font-size:clamp(.95rem,1.8vw,1.13rem);margin:0 0 8px}
+.gate-tools{position:relative;display:flex;justify-content:center;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.gate-drawer{position:absolute;z-index:2;inset:auto 0 calc(100% + 10px);margin-inline:auto;width:min(650px,100%);
+  max-height:48svh;overflow:auto;padding:18px;background:linear-gradient(155deg,#47262d,#25171e);
+  border-image:var(--hall-frame) 23% / 25px / 0 stretch}
+.gate-tools summary{display:flex;align-items:center;gap:6px;width:fit-content;padding:8px 12px;color:#ffe5bc;
+  background:#332128;border-image:var(--hall-frame) 23% / 16px / 0 stretch}
+.gate-tools summary::before{content:'';width:26px;aspect-ratio:1;background:url('combat-assets/account-v1/ledger.png') center/contain no-repeat}
+.gate-tools summary[data-icon=supplies]::before{background-image:url('combat-assets/wood-shop-items-v2.png');background-size:300% 300%;background-position:0 0}
+.gate-tools summary[data-icon=progress]::before{background-image:url('combat-assets/talismans-v3/gate.png')}
+.gate-drawer>section{margin:8px 0}
+.gate-tools label{display:inline-flex;align-items:center;gap:6px;margin:4px}
+.gate-tools input[type=number]{width:65px}
+.gate-stock{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;text-align:center}
+.gate-stock>div,.gate-region-list li{padding:8px 4px;background:#2b1b22;border-image:var(--hall-frame) 23% / 13px / 0 stretch}
+.gate-stock :is(strong,span),.gate-region-list small{display:block}
+.gate-stock strong{color:#ffe0a7;font-size:1.3rem}
+.gate-stock>div::before{content:'';display:block;width:34px;height:34px;margin:0 auto 4px;
+  background:url('combat-assets/wood-shop-items-v2.png') 0 0 / 300% 300% no-repeat}
+.gate-stock>[data-supply=copper]::before{background:url('combat-assets/account-v1/copper.png') center / contain no-repeat}
+.gate-stock>[data-supply=ward]::before{background:url('combat-assets/talismans-v3/gate.png') center / contain no-repeat}
+.gate-region-progress{display:block;width:100%;height:12px;accent-color:#8db8a5}
+.gate-region-list{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:5px;text-align:center}
+.gate-region-list li{display:grid;justify-items:center;align-content:start;gap:4px;padding:9px 5px}
+.gate-region-list img{width:54px;height:54px;object-fit:contain}
+.gate-region-list strong{line-height:1.15;align-self:center}
+.gate-region-list small{color:#d7bbad}
+.gate-region-list [data-cleared=true] small{color:#b9ecd4}
+.contract-offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.contract-offers button{position:relative;grid-template-rows:auto 1fr;gap:5px;padding:7px 7px 9px;
+  border:0;background:#2d1a20;color:#ffe4bf;overflow-wrap:anywhere}
+.contract-offers button::after{content:'';position:absolute;inset:0;pointer-events:none;
+  border-image:var(--hall-frame) 23% / 24px / 0 stretch}
+.contract-offers button img{width:100%;height:64px;object-fit:cover}
+.contract-offers button[aria-pressed=true]::after{filter:brightness(1.35) drop-shadow(0 0 3px #f4c98b)}
+.contract-preview{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}
+.contract-preview strong{display:block;margin-bottom:4px}
+.contract-notice,.contract-active{padding:8px 12px;background:#302229;border-left:2px solid #a5c9a7}
+.contract-active{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+.contract-active span{color:#e4c49f}
+@media(max-width:720px){.hall-layout{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:480px){.hall-slots{grid-template-columns:minmax(0,1fr)}}
+</style>
+<main class="expedition-hall">
+<header class="hall-header">
+  <h1>Expedition</h1>
+</header>
+<p id="status" role="status"></p>
+<div class="hall-layout">
+  <section id="account" class="hall-panel" aria-label="Account"></section>
+  <section id="run" class="hall-panel" aria-label="Expedition"></section>
+</div>
+</main>
+<script type="module" src="/online-expedition.mjs?v=starter-roster-v1"></script>
+</html>

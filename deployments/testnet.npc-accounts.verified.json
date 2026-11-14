@@ -1,0 +1,34 @@
+{
+  "network": "testnet",
+  "manifestDigest": "de2b857a640913131733fe2f4cf8d46776e9657f9606ad12d780c39d9e75cc6c",
+  "accounts": [
+    {
+      "accountId": "provisioner.vibebound.testnet",
+      "balanceYocto": "100000000000000000000000",
+      "blockHeight": 277613993,
+      "recoveryVerified": true,
+      "transactionHash": "J4UfUTUPcc8dztG5Am9Z15rA3oudcMvEbmW8Xh7LS5tY"
+    },
+    {
+      "accountId": "cursekeeper.vibebound.testnet",
+      "balanceYocto": "100000000000000000000000",
+      "blockHeight": 277613994,
+      "recoveryVerified": true,
+      "transactionHash": "3Z85TQyjyZN8p5gKuCvV5577s4rv8bxJRxpAjsbkGKCR"
+    },
+    {
+      "accountId": "relicsmith.vibebound.testnet",
+      "balanceYocto": "100000000000000000000000",
+      "blockHeight": 277613993,
+      "recoveryVerified": true,
+      "transactionHash": "EQCbEL5rXxinj9eyZxq5upPj1Gs9Y9JLKBxEqV3ED1j3"
+    },
+    {
+      "accountId": "quartermaster.vibebound.testnet",
+      "balanceYocto": "100000000000000000000000",
+      "blockHeight": 277613993,
+      "recoveryVerified": true,
+      "transactionHash": "24smicugBwAg5ViqU56yFcqFzodrAqojvaf5xJs1ZHsA"
+    }
+  ]
+}

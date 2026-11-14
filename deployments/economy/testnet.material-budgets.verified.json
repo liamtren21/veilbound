@@ -1,0 +1,68 @@
+{
+  "status": "VERIFIED",
+  "transaction_hash": "27GYBK7xBQCFs9WrQQ64CY34CpeoX2zVFUoaTDvXNyeo",
+  "contract": "core.vibebound.testnet",
+  "network": "testnet",
+  "budgets": [
+    {
+      "token_id": "resin",
+      "maximum": "120",
+      "block_hash": "Ba6zMVEv67gjmCdUqiRJtDWJtHMZ1muemLfnwRog9oHy",
+      "issued": "0"
+    },
+    {
+      "token_id": "salt",
+      "maximum": "120",
+      "block_hash": "Ba6zMVEv67gjmCdUqiRJtDWJtHMZ1muemLfnwRog9oHy",
+      "issued": "0"
+    },
+    {
+      "token_id": "ash",
+      "maximum": "120",
+      "block_hash": "9DWLhwHhy4BPWM4afRJp7AtmsGeqFLxDkH6aif5KHwqg",
+      "issued": "0"
+    },
+    {
+      "token_id": "iron",
+      "maximum": "120",
+      "block_hash": "9DWLhwHhy4BPWM4afRJp7AtmsGeqFLxDkH6aif5KHwqg",
+      "issued": "0"
+    },
+    {
+      "token_id": "thread",
+      "maximum": "120",
+      "block_hash": "J9WUwytsZJ8PkUM9cacMewRx2yfDgoAbiSHN2bPtu7vS",
+      "issued": "0"
+    },
+    {
+      "token_id": "heartwood-knot",
+      "maximum": "30",
+      "block_hash": "69zVT9y47KHPCMKS8BnBmz1kyXN43h4f9TizYBMfCCqw",
+      "issued": "0"
+    },
+    {
+      "token_id": "tideglass-core",
+      "maximum": "30",
+      "block_hash": "C8hU89M8aU5raFtzPHqcEqcckkgU4drHdN1m6niuTHJk",
+      "issued": "0"
+    },
+    {
+      "token_id": "cinder-heart",
+      "maximum": "30",
+      "block_hash": "C8hU89M8aU5raFtzPHqcEqcckkgU4drHdN1m6niuTHJk",
+      "issued": "0"
+    },
+    {
+      "token_id": "warden-rivet",
+      "maximum": "30",
+      "block_hash": "C8hU89M8aU5raFtzPHqcEqcckkgU4drHdN1m6niuTHJk",
+      "issued": "0"
+    },
+    {
+      "token_id": "veil-lens",
+      "maximum": "30",
+      "block_hash": "AkC6Zzk27sqDWDmHNnQiGWNoRGEdekDqUYRu2xSgY4pC",
+      "issued": "0"
+    }
+  ]
+}

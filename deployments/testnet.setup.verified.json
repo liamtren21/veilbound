@@ -1,0 +1,184 @@
+{
+  "checkedAt": "2026-11-12T08:53:54.517Z",
+  "network": "testnet",
+  "root": "vibebound.testnet",
+  "checks": {
+    "supply": {
+      "value": "100000",
+      "blockHash": "HeC15cjHxCfrkHYC4eroGMp1n3WQprvGKX7qBHtJNh84",
+      "blockHeight": 277340777
+    },
+    "custody": {
+      "value": "100000",
+      "blockHash": "CpZGfHZJ3QgJACQNu6dRhMEvwjBMyrTsPFMcL4sG6ykv",
+      "blockHeight": 277340782
+    },
+    "allocated": {
+      "value": "100000",
+      "blockHash": "4xb1mYYx2YXgVRRiVNZc3U4dkFMEjtymRRJKqsHLrhKi",
+      "blockHeight": 277340789
+    },
+    "operatorBalance": {
+      "value": {
+        "available": "100000",
+        "reserved": "0"
+      },
+      "blockHash": "A9Gx3RNmXEJsi29QfGpLdGXnFfpLBkhPavqm2uCzm9De",
+      "blockHeight": 277340794
+    },
+    "paused": {
+      "value": false,
+      "blockHash": "BRWnW9X1vo4inFTAnhW7ckJdYZVDaoF8brtUWSFBsYMm",
+      "blockHeight": 277340801
+    },
+    "starterConfiguration": {
+      "value": {
+        "copper": "1000",
+        "token_ids": [
+          "salve",
+          "ward"
+        ],
+        "quantities": [
+          "1",
+          "1"
+        ],
+        "grant_cap": "1"
+      },
+      "blockHash": "6gd1JdysC1pJ9jiJsR67CShh41m9QGzYLiuBB4xQG1a2",
+      "blockHeight": 277340808
+    },
+    "starter-001": {
+      "artifact": {
+        "value": {
+          "kind": "RELIC",
+          "vault_id": "v-starter-001.core.vibebound.testnet",
+          "status": "ready",
+          "epoch": "0",
+          "transfer_pending": false,
+          "initial_owner": "core.vibebound.testnet",
+          "creator": "vibebound.testnet",
+          "funding": "1133210000000000000000000",
+          "metadata": null
+        },
+        "blockHash": "DiXRiZ7LCyxCZ6awqM3thsbzRJEocJUmZjJ7q2ubHa5E",
+        "blockHeight": 277340813
+      },
+      "token": {
+        "value": {
+          "token_id": "starter-001",
+          "owner_id": "core.vibebound.testnet",
+          "metadata": {
+            "title": "Ferryman Starter Relic",
+            "description": null,
+            "media": null,
+            "media_hash": null,
+            "copies": null,
+            "issued_at": null,
+            "expires_at": null,
+            "starts_at": null,
+            "updated_at": null,
+            "extra": null,
+            "reference": null,
+            "reference_hash": null
+          },
+          "approved_account_ids": null
+        },
+        "blockHash": "DjFQfqvoi8ZUhdG1TTqo597Uje16aXX6rafbHerQMbaG",
+        "blockHeight": 277340819
+      },
+      "vaultKeyCount": 0
+    },
+    "shop-001": {
+      "artifact": {
+        "value": {
+          "kind": "SHOP_CHARTER",
+          "vault_id": "v-shop-001.core.vibebound.testnet",
+          "status": "ready",
+          "epoch": "0",
+          "transfer_pending": false,
+          "initial_owner": "vibebound.testnet",
+          "creator": "vibebound.testnet",
+          "funding": "1133210000000000000000000",
+          "metadata": null
+        },
+        "blockHash": "2XNTfgoNA5sU5VJqK3bPnxpNtc29QHA83LA6a6GxhqJ1",
+        "blockHeight": 277340830
+      },
+      "token": {
+        "value": {
+          "token_id": "shop-001",
+          "owner_id": "vibebound.testnet",
+          "metadata": {
+            "title": "Orchard Supply Shop",
+            "description": null,
+            "media": null,
+            "media_hash": null,
+            "copies": null,
+            "issued_at": null,
+            "expires_at": null,
+            "starts_at": null,
+            "updated_at": null,
+            "extra": null,
+            "reference": null,
+            "reference_hash": null
+          },
+          "approved_account_ids": null
+        },
+        "blockHash": "CuYPogQDPiDaq1XcH8QjnF53BwAm7durSMwdfFrvgh4n",
+        "blockHeight": 277340835
+      },
+      "vaultKeyCount": 0
+    },
+    "apothecary-ward-v1": {
+      "value": {
+        "input_ids": [
+          "salt",
+          "resin"
+        ],
+        "input_amounts": [
+          "2",
+          "1"
+        ],
+        "output_id": "ward",
+        "output_amount": "1",
+        "copper_cost": "400"
+      },
+      "blockHash": "HypHDZonVDobDfXRaRxBxkwtiDnpbo7uF2iS8QtuNi5A",
+      "blockHeight": 277340846
+    },
+    "relicsmith-inlay-v1": {
+      "value": {
+        "input_ids": [
+          "iron",
+          "resin"
+        ],
+        "input_amounts": [
+          "2",
+          "1"
+        ],
+        "output_id": "relic-inlay",
+        "output_amount": "1",
+        "copper_cost": "600"
+      },
+      "blockHash": "3TPPNASYP4cppFJXYmQ3tbqWhH4i3DEBidFojYwjsMvT",
+      "blockHeight": 277340852
+    },
+    "binder-binding-v1": {
+      "value": {
+        "input_ids": [
+          "thread",
+          "resin"
+        ],
+        "input_amounts": [
+          "2",
+          "1"
+        ],
+        "output_id": "binding",
+        "output_amount": "1",
+        "copper_cost": "500"
+      },
+      "blockHash": "EME4YgqqGc3Gt39TjujECwy4Eskn5cC5iCNZrKGtnVJG",
+      "blockHeight": 277340858
+    }
+  }
+}

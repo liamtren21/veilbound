@@ -1,0 +1,47 @@
+{
+  "network": "testnet",
+  "checkedAt": "2026-11-12T08:45:47.035Z",
+  "contracts": {
+    "copper": {
+      "accountId": "copper.vibebound.testnet",
+      "sha256": "88f47f528d11d14bc1c7f4a3ca5c56ef5903ce41c4a1d91ec696bdc3b6c7f7c9",
+      "blockHash": "EqBUDg4D12rzyUH9QeVRKaQk5EsippGSsvc6rT7yJmNe",
+      "blockHeight": 277339929
+    },
+    "core": {
+      "accountId": "core.vibebound.testnet",
+      "sha256": "e7d0fd920e2f2c6d0f7a9631d77bea5ec4241bd88b31b93ef56e1dccf9b81d4a",
+      "blockHash": "8GHhGU95RWXaCiNSQZfx2ZJDsgmx6boxs6A2ti5b6DHX",
+      "blockHeight": 277339936
+    }
+  },
+  "copperMetadata": {
+    "value": {
+      "spec": "ft-1.0.0",
+      "name": "Veilbound Copper",
+      "symbol": "COPPER",
+      "icon": null,
+      "reference": null,
+      "reference_hash": null,
+      "decimals": 2
+    },
+    "blockHash": "4LgumHGxhRKpP9tyvECmmoDsrDY3ZsXbkYZSQuVZjtwN",
+    "blockHeight": 277339943
+  },
+  "copperSupply": {
+    "value": "0",
+    "blockHash": "EtuS2KRamdJcktUdyxNbZFTmGGX1gPhCwvgayiXBUCdC",
+    "blockHeight": 277339949
+  },
+  "corePaused": {
+    "value": true,
+    "blockHash": "DGqA2vJYQNuDf9SRYGndJFPm8pbUfbBFJ9BPSzXtxVzR",
+    "blockHeight": 277339955
+  },
+  "deploymentTransactions": [
+    "A7xkpXBexkG3niVWGTPqeAwwHLaWkWcv4GPZbuuixsB2",
+    "7C4xLnuvVUdnt5NWSWJvkTa8TPXwZpKbUL6hRMpFjWg2",
+    "As5SPFWP8BG4PH96aMv4mehj3x6DMjb74m4ttor87o69"
+  ],
+  "status": "DEPLOYED_PAUSED_SETUP_PENDING"
+}

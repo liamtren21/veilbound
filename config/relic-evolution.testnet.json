@@ -1,0 +1,16 @@
+[
+  {
+    "stage": 1,
+    "media": "https://veilbound-relic-media-v1.vercel.app/ascended.png",
+    "imagePath": "combat-assets/relic-evolution-v1/ascended.png",
+    "materials": { "thread": "2", "cinder-heart": "1" },
+    "copperAtomic": "1000"
+  },
+  {
+    "stage": 2,
+    "media": "https://veilbound-relic-media-v1.vercel.app/legendary.png",
+    "imagePath": "combat-assets/relic-evolution-v1/legendary.png",
+    "materials": { "thread": "2", "veil-lens": "1" },
+    "copperAtomic": "1000"
+  }
+]

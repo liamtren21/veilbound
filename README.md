@@ -14,34 +14,34 @@ The Waymarks once guided the dead beyond the Quiet Reach. When they broke, the k
 
 **Read both dice pools.** Select a die and resolve its action. Rotate to change the lead, use Guard before a dangerous hit, or summon a companion for two rounds. Each encounter allows up to three summons.
 
-**Plan the next stop.** Collect loot, equip the squad and choose a route. Elite encounters offer a different risk and reward. Curses carry across battles in a run, and remedies compete with equipment and healing for the same Copper. Open **Expedition** for rewarded-run preparation or **Marketplace** for trading, rentals and crafting. Wallet-signed actions require a verified NEAR testnet wallet.
+**Plan the next stop.** Collect loot, equip the squad and choose a route. Elite encounters offer a different risk and reward. Curses carry across battles in a run, and remedies compete with equipment and healing for the same Crowns. Open **Expedition** for rewarded-run preparation or **Marketplace** for trading, rentals and crafting. Wallet-signed actions require a verified NEAR testnet wallet.
 
 ### Game modes
 
 - **Expedition**. Take a squad through branching routes, shops, elites, and five regional bosses.
-- **Account Trials**. Unlock additional combat constraints through qualifying clears.
-- **Weekly Oath**. Compete in a recurring challenge with a shared ruleset and leaderboard.
-- **The Breach**. Make an individual attempt against a shared boss health pool.
-- **Veil Duel**. Play a squad-versus-squad match through private rooms or bot practice.
-- **Co-op Breach**. Coordinate actions with teammates against a shared encounter.
+- **Accord Trials**. Qualifying victories unlock trials with additional combat constraints. The game records completed trials automatically.
+- **Weekly Oath**. Play a ranked attempt or practice under the weekly ruleset. Qualifying milestone rewards appear in Rewards automatically.
+- **The Breach**. Take on the raid boss and contribute damage to a shared health pool. The game records damage and grants eligible rewards when the encounter ends.
+- **Veil Duel**. Play a private room match or practice against a bot. Reopen your last room or result from the mode screen.
+- **Co-op Breach**. Share an invite link. Invitees open it and select Join Room. The encounter begins once all three players are ready.
 
 ## From Expedition to the economy
 
 ![The Expedition loot screen shows the squad, equipment slots and rewards](docs/readme/expedition-loot.webp)
 
-*The loot panel shows in-run Copper, supplies and equipment.*
+*The loot panel shows the run balance, supplies and equipment. The current UI calls the run currency Crowns.*
 
 The browser renders combat and handles input. For rewarded online runs, the game API keeps authoritative state and validates the action replay. NEAR contracts handle settlement, ownership, escrow and spending limits.
 
 ### Games With Real Economies
 
-- **Copper and checkpoint claims.** Copper is the single in-game currency. Route choices and combat shape what a run earns and spends. For eligible checkpoints, the server prepares a signed receipt bound to the linked beneficiary, ruleset and checkpoint. Core checks the signed amount, prevents duplicate claims and enforces reward budgets.
+- **Crowns and Copper.** Earn and spend Crowns within an Expedition. Copper (COPPER) is the NEAR testnet token used for checkpoint rewards, trading and crafting. Select **Claim Copper** at an eligible checkpoint. If the claim requires a storage top-up, the wallet can approve both in one transaction. Core verifies the signed receipt and enforces claim and budget limits.
 - **Materials and crafting.** Players can trade recovered materials or spend them on recipes. Core reserves funded balances for market orders, so the same Copper cannot back two open orders.
 - **NPC procurement and Field Contracts.** Dedicated NPC accounts can post buy orders under bounded budgets. Field Contracts give players another reason to take an elite route before reaching the corresponding boss.
 
 ### NFTs That Do Something
 
-- **Relic.** Adds an eligible loadout option. Reservation and rental rules control who can equip it and when.
+- **Relic.** Adds an eligible loadout option. Choose **Start with Loadout** to reserve the selected Relic and Companion in one wallet transaction. Reservation and rental rules control who can equip them and when.
 - **Chronicle.** Records eligible milestones that Core can check against evolution requirements.
 - **Companion.** Represents a summon option that can be reserved for an eligible run. The encounter still enforces its summon rules.
 - **Shop Charter.** Authorizes shop operations tied to an artifact vault. Core checks ownership and custody.
@@ -56,7 +56,7 @@ The Living Journey plan connects story choices, combat, the player economy, and 
 | --- | --- | --- |
 | Story encounters across five regions | Inspect scenes, talk to NPCs, and take optional actions with a cost or a consequence. In Hollow Orchard, carry the Lost Letter, learn who should receive it, and deliver it before facing the Mother of Closed Doors to weaken her opening defense. | Story effects are wired into boss entry. A deterministic run cleared all five regions. Full browser playthrough and visual review remain open. |
 | NPC memory and dialogue | NPC responses draw on the current Expedition and eligible choices. The rules validate offers and apply their effects. | Contextual dialogue and authored fallback are implemented. Live NEAR AI inference and production budget verification remain pending. |
-| NFT loadout | Pick eligible Relics and Companion Bonds from inventory, compare the dice outcomes, or try the sample loadout. A bonded Companion can replace its warden's Strike with Summon when that warden leads. Relic upgrades follow the staged evolution recipes. | Public preview available. Player-signed NFT rental and reservation still need end-to-end testnet receipts. |
+| NFT loadout | Pick eligible Relics and Companion Bonds from inventory, compare the dice outcomes, or try the sample loadout. A bonded Companion can replace its warden's Strike with Summon when that warden leads. Relic upgrades follow the staged evolution recipes. | Loadout selection and bundled reservation are deployed. The combined wallet transaction and player-signed rental still need end-to-end testnet receipts. |
 | Professions and crafting | Unlock Apothecary, Relicsmith, and Binder through Expedition checkpoints. Use recipes or commissions to turn materials into supplies and services. | Profession progression, crafting and craft-order paths have local or sandbox coverage. Live player commission settlement remains open. |
 | Shop Charter and NPC procurement | View Charter stock, fund the shop vault, and place Copper orders. NPC operators can procure materials with scoped keys, finite budgets, and price limits. Field Contracts pay after a verified objective and checkpoint. | Finalized NPC buy orders and cancellations are recorded. Player fills, Charter service and retail transactions, and Field payouts still need public player receipts. |
 | Copper accounting | Rewards draw from capped allocations. Marketplace and Charter orders reserve funds in escrow. Copper, materials, supplies, and settlement are tracked separately. | Reward caps and settlement paths have test coverage. Sustained economy telemetry and live player settlement remain open. |

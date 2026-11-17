@@ -10,6 +10,8 @@ export const heroes = [
 ];
 
 export const actions = {
+  idle:{name:'Wait',type:'idle',target:'self',text:'Use this die without taking an action.'},
+  'bulk-up':{name:'Bulk Up',type:'boost',target:'self',text:'The lead gains 2 attack until the end of the turn.'},
   strike:{name:'Strike', type:'hit', target:'enemy'},
   guard:{name:'Guard', type:'guard', target:'self', text:'Block the next attack.'},
   shift:{name:'Shift', type:'shift', target:'adjacent', text:'Swap formation slots with a living neighbor.'},
@@ -70,6 +72,12 @@ export const tokens={
   'full-heal-all':{name:'Full Juniper Draught',symbol:'✥',effect:'Fully heal each living warden.'},
 };
 export const tokenCapacity=5;
+export const ferrymanStages = Object.freeze([
+  { name: 'Base', defense: 3, window: null, text: 'Gain 3 personal Defense each time a rotation moves Mara into the lead.' },
+  { name: 'Ascended', defense: 5, window: 'round', text: 'Gain 5 personal Defense on the first rotation into the lead each round.' },
+  { name: 'Legendary', defense: 9, window: 'battle', text: 'Gain 9 personal Defense on the first rotation into the lead each battle.' },
+]);
+
 export const equipmentCapacity=5;
 export const equipment={
   'bark-shield':{name:'Bark Shield',icon:3,trigger:'On Spawn',text:'Gain Guard when the battle starts.'},
@@ -228,3 +236,76 @@ export const story = {
 };
 
 for(const region of regions.slice(1))story[region.entry]={copy:'A bound spirit offers Copper for a willing bearer of its curse.',choices:[['leave','Pass without a bargain','Leave freely.'],['bargain','Accept a curse bargain','Choose a hero and curse. Tier and Copper reward are shown before acceptance.']]};
+
+export const STORY_VERSION = 1;
+export const storyOpportunities = Object.freeze({
+  memorial: { id:'deliver-letter', label:'Deliver the Lost Letter',
+    description:'Give the Lost Letter to the Namekeeper. The Mother loses 14 opening Squad Defense.',
+    cost:{letter:1}, boss:'sanctum', reduction:14 },
+  'causeway-camp': { id:'sound-the-reed-bell', label:'Sound the reed bell',
+    description:'Offer 6 Copper. The Drowned Belfry starts with 6 less Ward.',
+    cost:{copper:6}, boss:'drowned-belfry', reduction:6 },
+  'terraces-camp': { id:'cool-the-embers', label:'Cool the embers',
+    description:'Use a Reed Salve to protect the guide. The Hunger Kiln starts with 8 less Ward.',
+    cost:{salve:1}, boss:'hunger-kiln', reduction:8 },
+  'mourning-camp': { id:'repair-the-toll-chain', label:'Repair the toll chain',
+    description:'Offer 10 Copper to the smith. The Mourning Foundry boss starts with 10 less Ward.',
+    cost:{copper:10}, boss:'mourning-foundry', reduction:10 },
+  'basin-camp': { id:'read-the-lost-names', label:'Read the lost names',
+    description:'Offer one Heartwood to the keeper. The Sunken Tribunal boss starts with 12 less Ward.',
+    cost:{heartwood:1}, boss:'sunken-tribunal', reduction:12 },
+});
+
+export function storyOffer(state) {
+  if (state?.storyVersion !== STORY_VERSION || state.phase !== 'event') return null;
+  const offer = Object.hasOwn(storyOpportunities, state.node) && storyOpportunities[state.node];
+  if (!offer) return null;
+  const eligible = Object.entries(offer.cost).every(([item, amount]) =>
+    (item === 'copper' ? state.copper : state.pack[item] ?? 0) >= amount);
+  if (offer.id === 'deliver-letter' && !eligible) return null;
+  return { ...offer, eligible };
+}
+
+export function storyChoices(state) {
+  const choices = story[state.node]?.choices ?? [];
+  if (state.storyVersion !== STORY_VERSION || state.node !== 'house') return choices;
+  return choices.map(([id, label, description]) => [id, label, id === 'letter'
+    ? 'Take the Lost Letter to the Namekeeper before facing the Mother.' : description]);
+}
+
+export const storyPresentation = {
+  threshold:{speaker:'Mara Venn',hero:'mara',backdrop:'event-scene-threshold.webp',
+    inspect:['Read the gate marker','The road leads past a broken crossing and the old orchard house. Pick your two technique faces before you go.']},
+  creek:{speaker:'The Tollkeeper',portrait:'event-tollkeeper-v1.webp',backdrop:'event-scene-creek.webp',
+    inspect:['Test the crossing','The lantern marks the safe stones. Below them, a purse is caught in the roots. The current is strong enough to injure every living warden.']},
+  house:{speaker:'The Letter Keeper',portrait:'event-letter-keeper-v1.webp',backdrop:'event-scene-house.webp',
+    inspect:['Examine the seal','The seal bears the Mother’s mark. Carrying the letter weakens her opening Defense. The satchel contains two Reed Salves.']},
+  camp:{speaker:'Orin Thatch',portrait:'wood-npc-orin-thatch-v2.png',backdrop:'event-scene-camp.webp',
+    inspect:['Check the party','The fire can tend everyone still standing, or you can use it to call back one fallen warden.']},
+  memorial:{speaker:'The Namekeeper',portrait:'event-namekeeper-v1.webp',backdrop:'event-scene-memorial.webp',
+    inspect:['Read the carved names','Your names are already on the Heartwood. Speak them aloud to take it and heal the party.']},
+  salvage:{speaker:'Rook Calder',hero:'rook',backdrop:'event-scene-salvage.webp',
+    inspect:['Inspect the basket','The kiln baked the latch shut. A Reed Salve and a purse of 14 Copper survived inside.']},
+  'causeway-entry':{backdrop:'event-scene-causeway-entry.webp',
+    inspect:['Read the mooring stones','The spirit’s price is carved into the stones. Choose a warden and a curse to see the terms.']},
+  'causeway-camp':{speaker:'Mara Venn',hero:'mara',backdrop:'event-scene-causeway-camp.webp',
+    inspect:['Examine the camp','The reed bell can still be sounded. Six Copper will pay for the work.']},
+  'terraces-entry':{backdrop:'event-scene-terraces-entry.webp',
+    inspect:['Inspect the scorched marks','The spirit’s offer is stronger here. Check which curse and tier a warden would carry before accepting.']},
+  'terraces-camp':{speaker:'Rook Calder',hero:'rook',backdrop:'event-scene-terraces-camp.webp',
+    inspect:['Examine the camp','A Reed Salve will protect the guide while the embers are quenched.']},
+  'mourning-entry':{backdrop:'event-scene-mourning-entry.webp',
+    inspect:['Examine the toll chain','The chain is stamped with the promise of Copper. The warden who accepts pays with a tier III curse.']},
+  'mourning-camp':{speaker:'Rook Calder',hero:'rook',backdrop:'event-scene-mourning-camp.webp',
+    inspect:['Examine the camp','The smith can save the toll chain for ten Copper.']},
+  'basin-entry':{backdrop:'event-scene-basin-entry.webp',
+    inspect:['Peer into the well','There is no water. The spirit still offers Copper and its strongest curse to a warden who will bear it.']},
+  'basin-camp':{speaker:'Elian Reed',hero:'elian',backdrop:'event-scene-basin-camp.webp',
+    inspect:['Examine the camp','One Heartwood will hold the names long enough to read them aloud.']},
+};
+for(const region of regions.slice(1)){
+  const entry=storyPresentation[region.entry];
+  Object.assign(entry,{speaker:'The Bound Spirit',portrait:'event-bound-spirit-v1.webp'});
+  const campId=region.prefix+'-camp';
+  storyPresentation[campId]={...storyPresentation.camp,...storyPresentation[campId]};
+}

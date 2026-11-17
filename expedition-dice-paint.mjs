@@ -24,13 +24,25 @@ export function framedSkill(actor,key,side){
 }
 
 export function dicePainting(actor,key,side){
+  if(side==='party'&&key==='idle')return {cutout:assets+'dice-wait-hourglass-v1.png'};
   if(side==='party'&&key===SUMMON_FACE){
     if(Object.hasOwn(companions,actor))return {companion:assets+actor+'.png'};
     return {atlas:'party',index:common.indexOf('idle')};
   }
   if(side==='party'&&actor==='mara'&&key==='strike')return {cutout:assets+'dice-oarhook-cutout-v1.png'};
-  const framed=framedSkill(actor,key,side);
-  if(framed)return {framed};
+  if(side==='party'&&key==='strike'){
+    const index=['rook','elian','tess'].indexOf(actor);
+    if(index>=0)return {weapon:index};
+  }
+  // The skill preview keeps the framed illustration. Dice render an alpha-cut glyph.
+  if(side==='party'&&heroSkills[actor]?.[key]){
+    key=({'open-seam':'strike',undertow:'shift','ferry-line':'shift','brace-line':'brace',
+      'take-weight':'guard','mending-note':'salve','fracture-chime':'strike',
+      'clear-tone':'witness-seal','red-thread':'ranged','pin-hem':'ranged','final-delivery':'ranged'})[key]??key;
+  }
+  if(side==='foe'&&regionalBossMoves[actor]?.includes(key)){
+    key=regionalBossMoves[actor].indexOf(key)===0?'rake':'siege';
+  }
   const flip=key==='rotate-right';
   if(flip)key='rotate-left';
   if(side==='foe'){
@@ -56,11 +68,14 @@ export function paintDiceFace(element,actor,key,side){
     icon.style.backgroundImage='url('+art.companion+')';
     icon.style.backgroundPosition='0 0';
     icon.style.backgroundSize='400% 200%';
-  }else if(art.framed||art.cutout){
+  }else if(art.weapon!==undefined){
+    icon.classList.add('dice-weapon-icon');
+    icon.style.backgroundPosition=art.weapon*50+'% 50%';
+  }else if(art.cutout){
     const image=document.createElement('img');
-    image.src=art.cutout??art.framed;
+    image.src=art.cutout;
     image.alt='';
-    icon.classList.add(art.cutout?'dice-skill-cutout':'dice-skill-crop');
+    icon.classList.add('dice-skill-cutout');
     icon.append(image);
   }else{
     icon.dataset.atlas=art.atlas;

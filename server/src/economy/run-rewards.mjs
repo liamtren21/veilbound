@@ -150,7 +150,12 @@ export function openRunRewards(file, {
         !Number.isSafeInteger(evidence.checkpointSequences[position])) fail('BANK_NOT_READY');
       return transact(() => {
         const prior = db.prepare('SELECT payload FROM run_reward_claims WHERE run_id = ? AND region = ?').get(evidence.runId, region);
-        if (prior) return JSON.parse(prior.payload);
+        if (prior) {
+          const payload = JSON.parse(prior.payload);
+          // Repair the transaction wrapper without changing the signed receipt or operation ID.
+          payload.transaction.actions[0].params.deposit = '0';
+          return payload;
+        }
         if (record.domain !== domain || now() >= epochEndsAtMs ||
             db.prepare('SELECT 1 FROM run_reward_releases WHERE run_id = ?').get(evidence.runId)) fail('REWARD_EPOCH_CLOSED');
         // Cumulative allocation makes payout independent of the order checkpoints are claimed.
@@ -182,7 +187,7 @@ export function openRunRewards(file, {
           status: 'prepared', receipt, signature, maximumAtomic: record.maximum,
           transaction: { network: 'testnet', receiverId: contractId, actions: [{
             type: 'FunctionCall', params: { methodName: 'claim_reward', args: { receipt, signature },
-              gas: '150000000000000', deposit: '1' },
+              gas: '150000000000000', deposit: '0' },
           }] },
         };
         db.prepare('INSERT INTO run_reward_claims VALUES (?, ?, ?)').run(evidence.runId, region, JSON.stringify(payload));

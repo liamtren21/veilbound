@@ -16,13 +16,18 @@ const feedback = {
   profile_conflict: 'This wallet belongs to a different game profile.',
   ECONOMIC_OPERATION_UNAVAILABLE: 'The market could not complete this request. Refresh and check the current terms.',
   INTENTS_PREVIEW_UNAVAILABLE: 'The Tidepool testnet preview is unavailable. Try again later.',
+  charter_unavailable: 'This Charter is listed, transferring, or unavailable. Refresh your Charters.',
+  shop_funding_unavailable: 'Your market balance does not cover this funding request.',
+  order_unavailable: 'This order is closed or no longer available.',
   NOT_FOUND: 'The economy API is unavailable on this server.',
 };
 let wallet;
 let accountId;
 let salesCursor = null;
 let busy = false;
-const materialFilter = new URLSearchParams(location.search).get('material');
+const marketParams = new URLSearchParams(location.search);
+const materialFilter = marketParams.get('material');
+const materialSide = marketParams.get('side') === 'sell' ? 'Sell' : 'Buy';
 const marketPages = [...document.querySelectorAll('.market-page')];
 const marketLinks = [...document.querySelectorAll('nav[aria-label="Market sections"] a')];
 function showMarketAction(page, action) {
@@ -151,7 +156,9 @@ async function loadMarket(linkedAccount) {
       $('listing-inventory').replaceChildren(node('p', error.message));
     });
   }
-  const results = await Promise.allSettled([loadBalances(), loadOrders(), loadSales(), loadCredit(), loadProfession(), loadCheckout()]);
+  const updates = [loadBalances(), recoverOrders().then(loadOrders), loadSales(), loadCredit(), loadProfession(), loadCheckout()];
+  if (!$('charter').hidden) updates.push(loadCharters());
+  const results = await Promise.allSettled(updates);
   const failures = results.filter(result => result.status === 'rejected');
   if (failures.length) {
     if (results[0].status === 'rejected') $('balances').textContent = 'Copper balances are currently unavailable.';
@@ -165,31 +172,15 @@ async function loadBalances() {
     + ' · Reserved ' + copper(allocation.value.reserved) + ' · Wallet ' + copper(walletBalance.value);
 }
 
-function review(transaction, title, summary) {
-  const dialog = $('review');
-  $('review-title').textContent = title;
-  const details = node('dl', '');
-  const add = (label, value) => details.append(node('dt', label), node('dd', value));
-  add('Action', summary);
-  add('Signer', accountId);
-  add('Contract', transaction.receiverId);
-  add('Attached deposit', near(transaction.actions[0].params.deposit));
-  $('review-details').replaceChildren(details, node('p', 'The wallet will show the network fee.'));
-  dialog.returnValue = 'cancel';
-  dialog.showModal();
-  return new Promise(resolve => dialog.addEventListener('close', () => resolve(dialog.returnValue === 'sign'), { once: true }));
-}
-
 async function transact(path, input, title, summary, { reconcile, refresh = [], expectedDeposit } = {}) {
   requireAccount();
   const transaction = await economy(path, input);
   if (transaction.network !== 'testnet' || transaction.actions?.length !== 1 ||
       transaction.actions[0]?.type !== 'FunctionCall') throw new Error('The server returned an unexpected transaction.');
   if (expectedDeposit !== undefined && transaction.actions[0].params.deposit !== expectedDeposit) {
-    throw new Error('The price changed. Refresh the listing and review the new price.');
+    throw new Error('The price changed. Refresh the listing to see the new price.');
   }
-  if (!await review(transaction, title, summary)) return;
-  announce('Approve the transaction in your wallet.');
+  announce(title + ' � ' + summary + ' Approve in your wallet.');
   if (!wallet) {
     const selected = await connector.connect();
     const accounts = await selected.getAccounts({ network: 'testnet' });
@@ -238,14 +229,14 @@ on('intents-preview', async () => {
 
 async function loadOrders() {
   const { orders } = await economy('orders');
-  const visible = materialFilter ? orders.filter(({ value }) => value.token_id === materialFilter && value.side === 'Buy') : orders;
+  const visible = materialFilter ? orders.filter(({ value }) => value.token_id === materialFilter && value.side === materialSide) : orders;
   fill('orders', visible.map(({ owner, orderId, value }) => {
     const article = node('article', '');
     article.append(node('h3', value.token_id + ' · ' + value.side),
       node('p', value.remaining + ' remaining · ' + copper(value.price) + ' per unit'),
       node('p', owner + ' · Expires ' + timestamp(value.expires_at_ns)));
     if (owner === accountId) {
-      article.append(actionButton('Review cancellation', () => transact('prepare-cancel', { orderId },
+      article.append(actionButton('Cancel order', () => transact('prepare-cancel', { orderId },
         'Cancel material order', value.side + ' ' + value.token_id, { refresh: [loadOrders, loadBalances] })));
     } else {
       const form = node('form', '');
@@ -257,7 +248,7 @@ async function loadOrders() {
       quantity.inputMode = 'numeric';
       quantity.value = '1';
       label.append(quantity);
-      form.append(label, node('button', 'Review fill'));
+      form.append(label, node('button', 'Fill order'));
       listen(form, 'submit', () => {
         if (BigInt(quantity.value) > BigInt(value.remaining)) throw new Error('Enter a quantity within the order’s remaining stock.');
         const input = { owner, orderId, quantity: quantity.value, expectedVersion: value.version };
@@ -273,7 +264,7 @@ async function loadOrders() {
       article.append(form);
     }
     return article;
-  }), materialFilter ? 'No open buy orders for ' + materialFilter + '.' : 'No published material orders are open.');
+  }), materialFilter ? 'No open ' + materialSide.toLowerCase() + ' orders for ' + materialFilter + '.' : 'No published material orders are open.');
   if (materialFilter) {
     const all = node('a', 'Show all material orders');
     all.href = './economy.html#materials';
@@ -373,7 +364,7 @@ async function loadRental(tokenId) {
     article.append(node('p', 'Renter ' + value.renter + ' · Expires ' + timestamp(value.expires_at_ns)));
   } else {
     const own = value.owner === accountId;
-    article.append(actionButton(own ? 'Review cancellation' : 'Review rental', () => transact('prepare-nft-rental', {
+    article.append(actionButton(own ? 'Cancel rental' : 'Rent', () => transact('prepare-nft-rental', {
       tokenId, action: own ? 'cancel' : 'accept', priceYocto: value.price, expectedEpoch: value.epoch,
     }, own ? 'Cancel rental offer' : 'Rent relic',
     tokenId + (own ? '' : ' · ' + near(value.price) + ' for ' + value.duration_hours + ' hours'),
@@ -414,53 +405,197 @@ function guildFields() {
 }
 
 on('connect', connect);
-on('refresh-orders', async () => { await Promise.all([loadOrders(), loadBalances()]); });
+on('refresh-orders', async () => { await Promise.all([recoverOrders().then(loadOrders), loadBalances()]); });
 on('refresh-sales', async () => { await Promise.all([loadSales(), loadCredit()]); });
 on('more-sales', () => loadSales(true));
 on('withdraw-credit', () => transact('prepare-nft-sale-withdrawal', {}, 'Withdraw sale credit',
   $('sale-credit').textContent + ' to your testnet wallet.', { refresh: [loadCredit] }));
-submit('publish-order', async ({ transactionHash }) => {
-  await economy('orders/publish', { transactionHash });
-  await loadOrders();
-  announce('Finalized order published.');
-});
+function pendingOrders() {
+  const key = 'veilbound-pending-market-orders:' + accountId;
+  let hashes = [];
+  try { hashes = JSON.parse(localStorage.getItem(key) ?? '[]'); } catch {}
+  const save = () => localStorage.setItem(key, JSON.stringify(hashes));
+  return {
+    hashes,
+    add(hash) { if (!hashes.includes(hash)) { hashes.push(hash); save(); } },
+    remove(hash) { hashes = hashes.filter(entry => entry !== hash); save(); },
+  };
+}
+async function publishSignedOrder(hash) {
+  const orders = pendingOrders();
+  orders.add(hash);
+  for (const ms of [0, 900, 1800, 3000, 4000]) {
+    if (ms) await new Promise(resolve => setTimeout(resolve, ms));
+    try {
+      await economy('orders/publish', { transactionHash: hash });
+      orders.remove(hash);
+      return;
+    } catch { /* A submitted order may take several blocks to finalize. */ }
+  }
+  throw new Error('The game will retry publishing when you reopen the market.');
+}
+async function recoverOrders() {
+  const orders = pendingOrders();
+  await Promise.allSettled(orders.hashes.map(async hash => {
+    await economy('orders/publish', { transactionHash: hash });
+    pendingOrders().remove(hash);
+  }));
+}
 submit('place-order', ({ side, tokenId, quantity, price, hours }) => {
   const priceAtomic = toAtomic(price, 2, 'Copper');
   return transact('prepare-order', {
     orderId: operationId(), side, tokenId, quantity, price: priceAtomic, expiresAtMs: Date.now() + Number(hours) * 3600000,
   }, 'Place Copper order', side + ' ' + quantity + ' × ' + tokenId + ' · ' + copper(priceAtomic) + ' per unit · ' + hours + ' hours', {
-    reconcile: async transactionHash => {
-      try { await economy('orders/publish', { transactionHash }); }
-      catch (error) {
-        $('publish-order').elements.transactionHash.value = transactionHash;
-        showMarketAction($('materials'), 'publish-order');
-        throw new Error('Retry with Publish order after the transaction finalizes.');
-      }
-    },
+    reconcile: publishSignedOrder,
     refresh: [loadOrders, loadBalances],
   });
 });
-submit('charter-fund', ({ charterId, expectedEpoch, copper: amount, tokenId, quantity }) => {
-  const funding = Number(amount) === 0 ? '0' : toAtomic(amount, 2, 'Copper');
-  if (Boolean(tokenId) !== Boolean(quantity)) throw new Error('Enter both the item ID and its quantity.');
+const charterPicker = $('charter-picker');
+const charterItems = new Map([
+  ['salt', 'Salt'], ['resin', 'Resin'], ['iron', 'Iron'], ['thread', 'Thread'],
+  ['ash', 'Ash'], ['salve', 'Reed Salve'], ['ward', 'Ward'],
+  ['relic-inlay', 'Relic Inlay'], ['binding', 'Binding'],
+]);
+$('charter-item-catalog').replaceChildren(...[...charterItems].map(([id, title]) => new Option(title, id)));
+
+let charterRequest = 0;
+let charterSnapshot = null;
+
+function selectedCharter() {
+  const charterId = charterPicker.value;
+  if (!charterSnapshot || charterSnapshot.id !== charterId) throw new Error('Refresh your Shop Charter before trading.');
+  return { charterId, expectedEpoch: charterSnapshot.epoch };
+}
+
+async function loadCharters() {
+  requireAccount();
+  const status = $('charter-stock-status');
+  const previous = charterPicker.value;
+  ++charterRequest;
+  charterSnapshot = null;
+  charterPicker.closest('.charter-selector').hidden = true;
+  $('charter-actions').hidden = $('charter-forms').hidden = true;
+  $('charter-stock').replaceChildren();
+  status.textContent = 'Loading your Shop Charters…';
+  const owned = [];
+  let cursor = '0';
+  try {
+    for (let page = 0; cursor !== null && page < 20; page++) {
+      const result = await economy(query('listing-inventory', { cursor }));
+      owned.push(...result.items.filter(item => item.kind === 'SHOP_CHARTER'));
+      cursor = result.nextCursor;
+    }
+  } catch (error) {
+    status.textContent = 'Shop Charters are temporarily unavailable.';
+    throw error;
+  }
+  const ready = owned.filter(item => !item.sale);
+  charterPicker.replaceChildren(...owned.map(({ token, sale }) => {
+    const title = token.metadata?.title || token.token_id;
+    const item = new Option(title + (sale ? ' · Listed for sale' : ''), token.token_id);
+    item.disabled = Boolean(sale);
+    return item;
+  }));
+  const listed = owned.length - ready.length;
+  status.textContent = owned.length
+    ? ready.length + ' ready' + (listed ? ' · ' + listed + ' listed for sale' : '')
+    : 'You do not own a ready Shop Charter.';
+  charterPicker.closest('.charter-selector').hidden = !owned.length;
+  charterPicker.disabled = !ready.length;
+  if (!ready.length) return;
+  charterPicker.value = ready.find(({ token }) => token.token_id === previous)?.token.token_id ?? ready[0].token.token_id;
+  await showCharterStock();
+}
+
+function charterMetric(label, value) {
+  const wrapper = node('div', '');
+  wrapper.append(node('dt', label), node('dd', value));
+  return wrapper;
+}
+
+async function showCharterStock() {
+  const request = ++charterRequest;
+  const charterId = charterPicker.value;
+  const panel = $('charter-stock');
+  charterSnapshot = null;
+  $('charter-actions').hidden = $('charter-forms').hidden = true;
+  panel.replaceChildren();
+  if (!charterId) return;
+  panel.append(node('p', 'Reading finalized shop stock…'));
+  try {
+    const snapshot = await economy(query('charter-stock', { charterId }));
+    if (request !== charterRequest) return;
+    const metrics = node('dl', '');
+    metrics.className = 'charter-metrics';
+    metrics.append(
+      charterMetric('Available', copper(snapshot.copper.available)),
+      charterMetric('Reserved', copper(snapshot.copper.reserved)),
+      charterMetric('Open orders', String(snapshot.openOrders)),
+    );
+    const stocked = snapshot.stock.filter(item => BigInt(item.available) || BigInt(item.reserved));
+    panel.replaceChildren(metrics);
+    if (!stocked.length) panel.append(node('p', 'No stock in this vault.'));
+    else {
+      const stock = node('ul', '');
+      stock.className = 'charter-stock-list';
+      for (const item of stocked) {
+        const row = node('li', '');
+        const name = charterItems.get(item.id) ?? item.id;
+        row.append(node('strong', name), node('span', item.available + ' available · ' + item.reserved + ' reserved'));
+        if (BigInt(item.available)) {
+          const sell = node('button', 'Sell stock');
+          sell.type = 'button';
+          sell.onclick = () => {
+            const form = $('charter-place');
+            form.elements.side.value = 'sell';
+            form.elements.tokenId.value = item.id;
+            form.elements.quantity.value = '1';
+            showMarketAction($('charter'), 'charter-place');
+            form.elements.price.focus();
+          };
+          row.append(sell);
+        }
+        stock.append(row);
+      }
+      panel.append(stock);
+    }
+    charterSnapshot = { id: charterId, epoch: String(snapshot.epoch) };
+    $('charter-actions').hidden = $('charter-forms').hidden = false;
+  } catch (error) {
+    if (request === charterRequest) panel.replaceChildren(node('p', error.message));
+  }
+}
+charterPicker.addEventListener('change', showCharterStock);
+on('charter-refresh', loadCharters);
+
+submit('charter-fund', ({ copper: amount, tokenId, quantity }) => {
+  const charter = selectedCharter();
+  const funding = /^0+(?:\.0{1,2})?$/.test(amount) ? '0' : toAtomic(amount, 2, 'Copper');
+  if (Boolean(tokenId) !== Boolean(quantity)) throw new Error('Enter both an item and its quantity.');
   const items = tokenId ? [{ tokenId, amount: quantity }] : [];
   if (funding === '0' && !items.length) throw new Error('Enter Copper or an item to fund the shop.');
-  return transact('prepare-charter-order', { action: 'fund', charterId, expectedEpoch, copper: funding, items },
-    'Fund shop vault', charterId + ' / ' + copper(funding) + (tokenId ? ' / ' + quantity + ' × ' + tokenId : ''),
-    { refresh: [loadBalances] });
+  return transact('prepare-charter-order', { action: 'fund', ...charter, copper: funding, items },
+    'Fund shop vault', charter.charterId + ' / ' + copper(funding) + (tokenId ? ' / ' + quantity + ' × ' + tokenId : ''),
+    { refresh: [loadBalances, showCharterStock] });
 });
-submit('charter-place', ({ charterId, expectedEpoch, side, tokenId, quantity, price }) => {
+submit('charter-place', ({ side, tokenId, quantity, price }) => {
+  const charter = selectedCharter();
   const priceAtomic = toAtomic(price, 2, 'Copper');
   const orderId = operationId();
   return transact('prepare-charter-order', {
-    action: 'place', charterId, expectedEpoch, side, tokenId, quantity, price: priceAtomic,
+    action: 'place', ...charter, side, tokenId, quantity, price: priceAtomic,
     orderId, expiresAtMs: Date.now() + 3600000,
-  }, 'Place shop order', charterId + ' / ' + side + ' ' + quantity + ' × ' + tokenId +
-    ' / ' + copper(priceAtomic) + ' per unit / order ' + orderId);
+  }, 'Place shop order', charter.charterId + ' / ' + side + ' ' + quantity + ' × ' + tokenId +
+    ' / ' + copper(priceAtomic) + ' per unit / order ' + orderId, {
+    reconcile: publishSignedOrder, refresh: [loadOrders, loadBalances, showCharterStock],
+  });
 });
-submit('charter-cancel', ({ charterId, expectedEpoch, orderId }) =>
-  transact('prepare-charter-order', { action: 'cancel', charterId, expectedEpoch, orderId },
-    'Cancel shop order', charterId + ' / order ' + orderId));
+submit('charter-cancel', ({ orderId }) => {
+  const charter = selectedCharter();
+  return transact('prepare-charter-order', { action: 'cancel', ...charter, orderId },
+    'Cancel shop order', charter.charterId + ' / order ' + orderId,
+    { refresh: [loadOrders, loadBalances, showCharterStock] });
+});
 
 const specialties = { apothecary: 'Apothecary', relicsmith: 'Relicsmith', binder: 'Binder' };
 const recipeLabels = {
@@ -481,6 +616,20 @@ for (const id of ['craft-item', 'craft-commission']) {
     select.append(option);
   }
 }
+const craftRecipe = $('craft-item').elements.recipeId;
+const craftMaterials = $('craft-materials');
+function showCraftMaterials() {
+  const recipe = recipes.find(entry => entry.id === craftRecipe.value);
+  craftMaterials.replaceChildren(...Object.keys(recipe?.inputs ?? {}).map(item => {
+    const link = node('a', 'Find ' + item);
+    link.href = './economy.html?' + new URLSearchParams({ material: item, side: 'sell' }) + '#materials';
+    const row = node('li', '');
+    row.append(link);
+    return row;
+  }));
+}
+craftRecipe.addEventListener('change', showCraftMaterials);
+showCraftMaterials();
 function renderProfession({ region, active, unlocked, quests = [] }) {
   $('profession-status').textContent = 'Highest checkpoint ' + region + ' / Active specialty ' +
     (specialties[active] ?? 'None');
@@ -506,10 +655,16 @@ submit('profession-select', async ({ specialty }) => {
   renderProfession(await api('professions/select', { specialty }));
   announce('Specialty selected.');
 });
-submit('craft-item', ({ recipeId, workshop }) => {
-  const recipe = recipes.find(row => row.id === recipeId);
+submit('craft-item', async ({ recipeId, workshop }) => {
+  const quote = await api('economy/craft-quote?recipeId=' + encodeURIComponent(recipeId));
+  const inputs = quote.inputs.map(({ itemId, required, available }) =>
+    required + ' × ' + itemId + ' (' + available + ' available)');
+  const fee = BigInt(quote.copperAtomic);
+  const copper = (fee / 100n) + '.' + String(fee % 100n).padStart(2, '0') + ' Copper';
+  if (!quote.affordable) throw new Error('Not enough materials or Copper. ' + [...inputs, copper].join(' · '));
   return transact('prepare-craft', { recipeId, workshop, operationId: operationId() },
-    'Craft ' + recipeLabels[recipeId], recipeSummary(recipe), { refresh: [loadBalances] });
+    'Craft ' + recipeLabels[recipeId], [...inputs, copper, 'Makes ' + quote.output.quantity + ' × ' + quote.output.itemId].join(' · '),
+    { refresh: [loadBalances] });
 });
 submit('craft-commission', ({ recipeId, worker, wage, hours }) => {
   const recipe = recipes.find(row => row.id === recipeId);
@@ -595,7 +750,7 @@ submit('list-sale', async ({ price }) => {
   if (BigInt(priceYocto) < 100n) throw new Error('Enter a higher listing price.');
   const token = listingToken;
   $('listing-dialog').close();
-  await nftSale({ tokenId: token.token_id, action: 'list', priceYocto }, 'Review listing',
+  await nftSale({ tokenId: token.token_id, action: 'list', priceYocto }, 'List artifact',
     (token.metadata?.title || token.token_id) + ' · ' + near(priceYocto) + ' · Until sold or cancelled');
   await loadListingInventory();
 });

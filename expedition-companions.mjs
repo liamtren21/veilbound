@@ -1,6 +1,13 @@
 export const SUMMON_FACE='summon';
 export const SUMMON_LIMIT=3;
 export const SUMMON_ROUNDS=2;
+export const BOND_ARRIVAL_DEFENSE=4;
+
+export function hasTacticalBond(state, hero) {
+  const bond=state.nftLoadout;
+  return bond?.companionRules===1 && Boolean(bond.companionId) &&
+    bond.companionId===companionForHero(hero);
+}
 
 export const companions=Object.freeze({
   brinewisp:{name:'Brinewisp',bond:'Mara Venn',element:'Water',hp:6,str:9,int:0,def:1,

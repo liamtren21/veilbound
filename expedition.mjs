@@ -1,18 +1,19 @@
-import {actions, equipment, equipmentCapacity, heroes, instantItems, intent, map, nodes, nodeTypes, regionOf, regions, story, tokenCapacity, tokens, training} from './expedition-data.mjs';
-import {active, available, buy, canEndRound, canEngrave, chooseEvent, claim, configure, currentNode, describe, dieActor, dieFaces, discardEquipment, endRound, enter, equipBarkShield, faceKey, fieldSalve, hasEquipment, hasTutorialLoot, isScriptedDie, leaveShop, living, moveEquipment, newRun, nextRegion, pendingEnemyDice, rerollableDice, rerollDice, resolve, restoreRun, rewardOffer, shopInventory, tokenCount, tutorialLoot, visitTrainer,previewRemedy,useRemedy} from './expedition-rules.mjs?v=copper-wallet-v1';
+import {tumbleIntoHud} from './expedition-opening-dice.mjs?v=sfx-v2';
+import {actions, equipment, equipmentCapacity, heroes, instantItems, intent, map, nodes, nodeTypes, regionOf, regions, story, storyChoices, storyOffer, storyOpportunities, storyPresentation, STORY_VERSION, tokenCapacity, tokens, training} from './expedition-data.mjs';
+import {active, available, bargainPreview, buy, canEndRound, canEngrave, chooseEvent, claim, configure, currentNode, describe, dieActor, dieFaces, discardEquipment, endRound, enter, equipBarkShield, faceKey, fieldSalve, hasEquipment, hasTutorialLoot, isScriptedDie, leaveShop, living, moveEquipment, newRun, nextRegion, pendingEnemyDice, rerollableDice, rerollDice, resolve, restoreRun, rewardOffer, shopInventory, tokenCount, tutorialLoot, visitTrainer,previewRemedy,useRemedy} from './expedition-rules.mjs?v=copper-wallet-v1';
 import {canAffordCopper} from './expedition-economy.mjs';
 import {REMEDY_CATALOG,REMEDY_CAPACITY,remedyCount} from './expedition-remedies.mjs';
 import {CURSE_DEFINITIONS} from './expedition-curses.mjs';
 import {companions,companionForHero,SUMMON_LIMIT,SUMMON_FACE} from './expedition-companions.mjs';
 import {displayFaces} from './expedition-dice-rng.mjs';
-import {createJourney, lessonPage} from './expedition-journey.mjs?v=menu-session-v1';
+import {createJourney, lessonPage} from './expedition-journey.mjs?v=sfx-v2';
 import {trialLabel} from './expedition-progression.mjs';
-import {asset, createArena, routeIcon, wardenPreview} from './expedition-art.mjs?v=companion-bond-v2';
-import {applySettings,settings,cue} from './expedition-options.mjs';
+import {asset, createArena, routeIcon, wardenPreview} from './expedition-art.mjs?v=sfx-v2';
+import {applySettings,settings,cue,setMusicScene} from './expedition-options.mjs?v=sfx-v2';
 import {cinematic,motionWindow} from './expedition-cinematics.mjs';
 import {paintDiceFace,framedSkill} from './expedition-dice-paint.mjs?v=companion-bond-v2';
 import {createDiceVfx} from './expedition-dice-vfx.mjs?v=orbit-v25';
-import {beats} from './expedition-motion-library.mjs';
+import {beats} from './expedition-motion-library.mjs?v=sfx-v2';
 
 const $=id=>document.getElementById(id);
 const expeditionId=new URLSearchParams(location.search).get('expedition');
@@ -24,7 +25,6 @@ let savedRunAvailable=false;
 let journey;
 const reduced=()=>settings.motion;
 const diceVfx=createDiceVfx($('combat'),reduced);
-$('reduced').onchange=()=>applySettings({motion:$('reduced').checked});
 applySettings({});
 const arena=createArena($('battlefield'),reduced,$('action-flash'));
 let state=load();
@@ -34,6 +34,7 @@ let rollStamp=state.phase==='battle'&&(!lessonPage(state)||['light','dark','cont
 let rollingDice=null;
 let onConfirm;
 let lastStage;
+let storyResult;
 const utilities=[...document.querySelectorAll('.utility')];
 for(const menu of utilities)menu.addEventListener('toggle',()=>{
   if(menu.open)for(const other of utilities)if(other!==menu)other.open=false;
@@ -47,18 +48,9 @@ document.addEventListener('keydown',event=>{
   if(menu){menu.open=false;menu.querySelector('summary').focus();}
   else if(selection&&!busy){selection=null;renderCombat();}
   else if(!busy&&!document.querySelector('main').inert){
-    if(expeditionId)$('settings').open=!$('settings').open;
-    else journey?.pause();
+    journey?.pause();
   }
 });
-const fullscreen=$('fullscreen');
-fullscreen.hidden=!document.fullscreenEnabled;
-fullscreen.onclick=async()=>{
-  try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}
-  catch{$('announcement').textContent='Full screen is unavailable.';}
-};
-document.addEventListener('fullscreenchange',()=>fullscreen.textContent=document.fullscreenElement?'Exit full screen':'Full screen');
-
 function load(){
   try{
     const saved=JSON.parse(localStorage.getItem(storage));
@@ -108,6 +100,7 @@ function backdrop(node){
   return node.art.endsWith('.png')?node.art:'wood-'+node.art+'-v1.png';
 }
 function battleBackdrop(node){
+  if(node.id==='road'&&state.tutorial?.quick&&state.tutorial.enabled)return 'tutorial-listening-road-v1.webp';
   return node.type==='boss' ? backdrop(node) : 'expedition-scenes-v2/battle-'+regionOf(node).id+'.webp';
 }
 async function expeditionApi(path,body){
@@ -182,7 +175,7 @@ function collectReward(kind,recipient,skill,control,recipientAvatar){
     : null;
   const motion=prepareLootMotion(control,target);
   void update(()=>claim(state,kind,recipient,skill),{type:'claim',choice:kind,heroKey:recipient,skill},
-    ()=>playLootMotion(motion));
+    ()=>playLootMotion(motion,'loot-'+kind));
 }
 
 function ask(title,copy,callback){
@@ -196,7 +189,6 @@ $('confirmation').onclose=()=>{
   if($('confirmation').returnValue==='confirm')onConfirm?.();
   onConfirm=null;
 };
-$('restart').onclick=()=>journey.selectStarter(false);
 
 const routeTypes={
   story:'Main story',battle:'Battle',coin:'Copper battle',crossing:'Crossing',hidden:'Hidden encounter',
@@ -209,13 +201,9 @@ function routeBadge(node,unknown){
     node.type==='supply'?'coin':node.type;
   const badge=html('span','','route-badge');
   badge.dataset.frame=frameType;
-  let icon;
-  if(unknown||node.type==='hidden')icon=html('span','?','route-glyph');
-  else if(node.type==='story')icon=html('span','!','route-glyph');
-  else if(node.type==='coin')icon=html('span','◉','route-glyph');
-  else if(node.type==='camp'&&node.id!=='trainer')icon=html('span','✚','route-glyph heal');
-  else icon=routeIcon(nodeTypes[node.type][1]);
-  badge.append(icon);
+  const mark=unknown?'Hidden Trail':node.type==='coin'?'Copper':
+    node.id==='trainer'?'Crossing':nodeTypes[node.type][1];
+  badge.append(routeIcon(mark));
   badge.setAttribute('aria-hidden','true');
   return badge;
 }
@@ -347,8 +335,8 @@ function renderLoadout(parent){
 }
 
 const lootDetails={
-  shield:{name:'Bark Shield',type:'Equipment',effect:'On spawn · Grants Guard.',description:'Guard blocks the next attack against this warden.'},
-  salve:{name:'Reed Salve',type:'Combat token',effect:'Restores 50% of Max HP.',description:'Use it in battle to heal a warden.'},
+  shield:{name:'Bark Shield',effect:'Grants Guard at battle start. Guard blocks the next attack.'},
+  salve:{name:'Reed Salve',effect:'Use in battle to restore 50% of a warden’s Max HP.'},
 };
 function lootIcon(item){
   const icon=html('span','','loot-icon loot-icon-'+item);
@@ -421,20 +409,19 @@ function rewardEquipmentIcon(id){
   paintDiceFace(icon,'rook','curse','foe');
   return framedItemIcon(icon);
 }
-function lootRow(item,collected){
+function lootRow(item,collected,blockedReason){
   const info=lootDetails[item];
-  const row=button(info.name,event=>collectTutorialLoot(item,event.currentTarget),{disabled:collected,className:'loot-row'});
+  const frame=item==='shield'?rewardEquipmentIcon('bark-shield'):framedItemIcon(lootIcon(item));
+  const row=rewardButton(info.name,frame,event=>collectTutorialLoot(item,event.currentTarget),
+    {disabled:collected||Boolean(blockedReason),caption:blockedReason||info.effect});
+  row.classList.add('loot-row');
   row.id='loot-'+item;
   row.setAttribute('aria-label',collected?info.name+' · Collected':'Collect '+info.name);
-  row.setAttribute('aria-describedby',row.id+'-details');
-  row.replaceChildren(item==='shield'?rewardEquipmentIcon('bark-shield'):framedItemIcon(lootIcon(item)),html('span',info.name,'loot-item-copy'));
+  const caption=row.querySelector('small');
+  caption.id=row.id+'-details';
+  row.setAttribute('aria-describedby',caption.id);
   if(collected)row.append(html('span','✓','loot-check'));
-  const details=html('span','','loot-details');
-  details.id=row.id+'-details';
-  details.append(html('strong',info.name),html('small',info.type),html('b',info.effect),html('span',info.description));
-  const entry=html('div','','loot-entry');
-  entry.append(row,details);
-  return entry;
+  return row;
 }
 
 function hasSpoils(offer){
@@ -549,9 +536,11 @@ function frameResult(panel){
 function renderDecision(){
   const node=currentNode(state),panel=$('decision');
   const titles={complete:'The Waymarks restored',defeat:'Expedition lost',reward:'Collect your loot'};
-  const phase=state.phase;
+  const phase=storyResult?.node===node.id&&state.phase==='map'?'story-result':state.phase;
   $('loot-diary').hidden=phase!=='reward';
   $('shopkeeper').hidden=true;
+  $('event-actor').hidden=true;
+  panel.classList.remove('story-panel');
   delete document.body.dataset.vendor;
   panel.hidden=phase==='map';
   $('map').hidden=phase!=='map';
@@ -559,18 +548,16 @@ function renderDecision(){
   scenery.hidden=phase==='map'||hasTutorialLoot(state);
   if(phase==='map')return;
   const isMarket=node.id==='market',isWitch=node.vendor==='hester';
-  let sceneArt=backdrop(node);
+  const storyScene=(phase==='event'||phase==='story-result')&&storyPresentation[node.id];
+  let sceneArt=storyScene?.backdrop??backdrop(node);
   if(phase==='reward')sceneArt=battleBackdrop(node);
   const vendor=phase==='shop'?(isWitch?'hester':isMarket?'merrin':'sable'):node.id==='trainer'?'orin':null;
   if(vendor){
     document.body.dataset.vendor=vendor;
     sceneArt='wood-stall-'+vendor+'-v1.webp';
-    const portrait={merrin:'wood-npc-merrin-holt-v2.png',sable:'wood-npc-sable-fen-v2.png',orin:'wood-npc-orin-thatch-v2.png',hester:'wood-npc-hester-wren-v1.webp'}[vendor];
-    if(portrait){
-      const keeper=$('shopkeeper');
-      keeper.src=asset(portrait);
-      keeper.hidden=false;
-    }
+    const keeper=$('shopkeeper');
+    keeper.src=asset('stall-portrait-'+vendor+'-v2.webp');
+    keeper.hidden=false;
   }
   const sceneUrl=asset(sceneArt);
   if(scenery.getAttribute('src')!==sceneUrl)scenery.src=sceneUrl;
@@ -595,17 +582,10 @@ function renderDecision(){
     if(hasTutorialLoot(state)){
       title.textContent='Collect all your loot!';
       const loot=state.battle.tutorialLoot??{};
-      const shieldInPouch=state.pack.equipment.includes('bark-shield');
-      const salve=lootRow('salve',loot.salve);
-      if(!loot.salve&&tokenCount(state)>=tokenCapacity){
-        salve.querySelector('button').disabled=true;
-        salve.querySelector('button').title='Token pouch is full.';
-      }
-      const shield=lootRow('shield',loot.shield);
-      if(!loot.shield&&state.pack.equipment.length>=equipmentCapacity){
-        shield.querySelector('button').disabled=true;
-        shield.querySelector('button').title='Equipment pouch is full.';
-      }
+      const salve=lootRow('salve',loot.salve,
+        !loot.salve&&tokenCount(state)>=tokenCapacity?'Token pouch is full.':undefined);
+      const shield=lootRow('shield',loot.shield,
+        !loot.shield&&state.pack.equipment.length>=equipmentCapacity?'Equipment pouch is full.':undefined);
       panel.append(shield,salve,button(loot.shield&&loot.salve?'Continue':'Skip',()=>{
           if(loot.shield&&loot.salve)update(()=>tutorialLoot(state,'leave'));
           else ask('Leave loot behind?','Uncollected items will be left on the road.',()=>update(()=>tutorialLoot(state,'leave')));
@@ -709,7 +689,7 @@ function renderDecision(){
       const description=reason||item.text||tokens[item.id]?.effect||'';
       details.append(title,html('small',description));
       row.title=description||item.name;
-      const pay=button(item.price+' Copper',()=>update(()=>buy(state,item.id),{type:'buy',itemId:item.id}),
+      const pay=button(item.price+' Copper',()=>update(()=>buy(state,item.id),{type:'buy',itemId:item.id},()=>cue('shop-buy')),
         {disabled:Boolean(reason)||!canAffordCopper(state,item.price),className:'secondary'});
       pay.setAttribute('aria-label','Buy '+item.name+' for '+item.price+' Copper');
       details.append(pay);
@@ -763,29 +743,211 @@ function renderDecision(){
       lessons.append(button(lesson.label,()=>{
         if(!pupil)return;
         const heroKey=pupil.key;
-        update(()=>visitTrainer(state,key,heroKey),{type:'trainer',choice:key,heroKey});
+        update(()=>visitTrainer(state,key,heroKey),{type:'trainer',choice:key,heroKey},()=>cue('training'));
       },{disabled:!pupil}));
     }
-    lessons.append(button('Revive and heal party',()=>update(()=>visitTrainer(state,'rest'),{type:'trainer',choice:'rest'})));
+    lessons.append(button('Revive and heal party',()=>update(()=>visitTrainer(state,'rest'),{type:'trainer',choice:'rest'},()=>cue('revive'))));
     panel.append(button('Leave',()=>update(()=>visitTrainer(state,'leave'),{type:'trainer',choice:'leave'}),{className:'secondary'}));
     return;
   }
   const event=story[state.node];
-  panel.append(html('p',event.copy));
-  if(node.id==='threshold'&&!expeditionId)renderLoadout(panel);
-  if(node.id==='threshold'&&expeditionId)panel.append(button('Expedition Kit',()=>location.assign('/online-expedition.html'),{className:'secondary'}));
-  if(expeditionId && event.choices.some(([key])=>key==='bargain')){
-    for(const hero of active(state.heroes))for(const curseId of ['withered','brittle','blood-debt']){
-      panel.append(button(hero.name+' · '+CURSE_DEFINITIONS[curseId].name,()=>update(
-        ()=>chooseEvent(state,'bargain',hero.key,curseId),{type:'event',choice:'bargain',heroKey:hero.key,curseId}
-      ),{className:'choice'}));
+  if(event)renderStoryEvent(panel,node,event,phase==='story-result'?storyResult:null);
+}
+
+const storyChoiceMarks={
+  enter:'Crossing',ford:'Crossing',toll:'Merchant',letter:'Story',supplies:'Supply Cache',
+  rest:'Camp',revive:'Camp',remember:'Story',salvage:'Supply Cache',leave:'Crossing',bargain:'Hidden Trail',
+};
+
+function renderStoryEvent(panel,node,event,result){
+  panel.classList.add('story-panel');
+  const presentation=storyPresentation[node.id];
+  if(presentation){
+    const actor=$('event-actor');
+    if(actor.dataset.node!==node.id||!actor.childElementCount||actor.querySelector('canvas')){
+      let portrait;
+      if(presentation.hero){
+        portrait=wardenPreview(presentation.hero,{highResolution:true});
+      }else{
+        portrait=html('img');
+        portrait.src=asset(presentation.portrait);
+        portrait.alt='';
+      }
+      actor.replaceChildren(portrait);
+      actor.dataset.node=node.id;
     }
+    actor.hidden=false;
+    panel.querySelector('h2').after(html('span',presentation.speaker,'story-speaker'));
   }
-  for(const [key,label,caption] of event.choices){
-    if(expeditionId&&key==='bargain')continue;
-    panel.append(button(label,()=>update(()=>chooseEvent(state,key),{type:'event',choice:key}),{className:'choice',caption,
-      disabled:key==='toll'&&state.copper<8||key==='revive'&&living(state.heroes).length===state.heroes.length}));
+  if(result){
+    panel.append(html('p',result.label,'story-outcome-title'));
+    if(!result.changes.length)panel.append(html('p',state.report,'story-copy'));
+    else {
+      const changes=html('ul','','story-outcome');
+      changes.append(...result.changes.map(change=>html('li',change)));
+      panel.append(changes);
+    }
+    const next=button('Continue to map',()=>{storyResult=undefined;render();});
+    panel.append(next);
+    next.focus({preventScroll:true});
+    return;
   }
+
+  const copy=html('p',event.copy,'story-copy');
+  copy.setAttribute('aria-live','polite');
+  panel.append(copy);
+  if(presentation?.inspect){
+    const [label,originalDetail]=presentation.inspect;
+    const detail=node.id==='house'&&state.storyVersion===STORY_VERSION
+      ? 'The seal names the Namekeeper. Take the letter to the memorial to weaken the Mother’s opening Defense.'
+      : originalDetail;
+    const inspect=button(label,()=>{
+      const expanded=inspect.getAttribute('aria-pressed')==='true';
+      inspect.setAttribute('aria-pressed',String(!expanded));
+      copy.textContent=expanded?event.copy:detail;
+      if(!expanded&&event.choices.some(([key])=>key==='rest')){
+        const wounded=state.heroes.filter(hero=>hero.hp>0&&hero.hp<hero.maxHp).length;
+        const fallen=state.heroes.filter(hero=>!hero.hp).length;
+        copy.textContent+=' '+wounded+' wounded · '+fallen+' fallen.';
+      }
+    },{className:'story-inspect'});
+    inspect.setAttribute('aria-pressed','false');
+    panel.append(inspect);
+  }
+  const offer=storyOffer(state);
+  if(presentation)panel.append(storyDialogue(node.id,presentation.speaker,offer));
+  if(node.id==='threshold'&&!expeditionId)renderLoadout(panel);
+  if(node.id==='threshold'&&expeditionId){
+    panel.append(button('Expedition Kit',()=>location.assign('/online-expedition.html'),{className:'secondary'}));
+  }
+
+  const choices=html('div','','story-choices');
+  panel.append(choices);
+  const options=[...storyChoices(state)];
+  if(offer)options.push([offer.id,offer.label,offer.description]);
+  for(const [key,label,caption] of options){
+    const action=button('',key==='bargain'?()=>showBargain(choices):()=>{
+      completeStoryChoice(label,key);
+    },{className:'story-choice',
+      disabled:(key===offer?.id&&!offer.eligible)||(key==='toll'&&state.copper<8)||(key==='revive'&&!state.heroes.some(hero=>!hero.hp))||
+        (key==='supplies'&&tokenCount(state)+2>tokenCapacity)});
+    const copy=html('span','','story-choice-copy');
+    copy.append(html('strong',label),html('small',caption));
+    action.append(routeIcon(storyChoiceMarks[key]??'Story'),copy);
+    choices.append(action);
+  }
+}
+
+function storyDialogue(node,speaker,offer){
+  const chat=html('details','','story-dialogue');
+  const log=html('div','','story-dialogue-log');
+  log.setAttribute('role','log');
+  const form=html('form');
+  const input=html('input');
+  input.type='text';
+  input.maxLength=300;
+  input.required=true;
+  input.placeholder='Ask about this place…';
+  input.setAttribute('aria-label','Message for '+speaker);
+  const send=html('button','Ask');
+  send.type='submit';
+  const status=html('small','','story-dialogue-status');
+  status.setAttribute('role','status');
+  const history=[];
+  form.append(input,send);
+  const suggestion=node==='house'?'Who should receive the letter?':offer?'What can you offer us?':'What happened here?';
+  const suggested=button(suggestion,()=>{
+    input.value=suggestion;
+    form.requestSubmit();
+  },{className:'secondary'});
+  chat.append(html('summary','Talk to '+speaker),log,suggested,form,status);
+  form.onsubmit=async event=>{
+    event.preventDefault();
+    const message=input.value.trim();
+    if(!message||send.disabled)return;
+    send.disabled=true;
+    status.textContent=speaker+' is listening…';
+    try{
+      const response=await fetch('/api/npc/dialogue',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({node,message,history:history.slice(-4),runId:expeditionId??undefined}),
+      });
+      if(response.status===429){status.textContent='Give them a moment, then try again.';return;}
+      if(!response.ok)throw new Error('NPC dialogue unavailable');
+      const {text}=await response.json();
+      if(!chat.isConnected)return;
+      history.push({role:'user',content:message},{role:'assistant',content:text});
+      log.append(html('p',message,'story-question'),html('p',text,'story-answer'));
+      while(log.childElementCount>8)log.firstElementChild.remove();
+      log.scrollTop=log.scrollHeight;
+      input.value='';
+      status.textContent='';
+    }catch{
+      status.textContent='Could not send your question. Try again.';
+    }finally{send.disabled=false;}
+  };
+  return chat;
+}
+
+function showBargain(choices){
+  const existing=choices.querySelector('.story-bargain');
+  if(existing){existing.querySelector('select').focus();return;}
+  const form=html('div','','story-bargain');
+  const warden=html('select');
+  const curse=html('select');
+  for(const hero of active(state.heroes))warden.add(new Option(hero.name,hero.key));
+  for(const [id,definition] of Object.entries(CURSE_DEFINITIONS))curse.add(new Option(definition.name,id));
+  const wardenLabel=html('label','Warden');
+  const curseLabel=html('label','Curse');
+  wardenLabel.append(warden);
+  curseLabel.append(curse);
+  const confirm=button('Accept bargain',()=>{
+    const heroKey=warden.value,curseId=curse.value;
+    completeStoryChoice('Bargain accepted','bargain',heroKey,curseId);
+  });
+  const price=html('p','','story-bargain-price');
+  function refresh(){
+    const offer=bargainPreview(state,warden.value,curse.value);
+    confirm.disabled=!offer;
+    price.textContent=offer?CURSE_DEFINITIONS[offer.curseId].name+' '+['I','II','III'][offer.tier-1]+
+      ' · +'+offer.copper+' Copper':'No bargain available';
+  }
+  warden.onchange=curse.onchange=refresh;
+  form.append(wardenLabel,curseLabel,price,confirm);
+  choices.append(form);
+  refresh();
+  warden.focus();
+
+}
+
+function completeStoryChoice(label,choice,heroKey,curseId){
+  const node=state.node;
+  const copper=state.copper;
+  const pack={...state.pack};
+  const health=new Map(state.heroes.map(hero=>[hero.key,hero.hp]));
+  void update(()=>chooseEvent(state,choice,heroKey,curseId),{type:'event',choice,heroKey,curseId},()=>{
+    if(state.phase!=='map'||state.node!==node)return;
+    const changes=[];
+    const copperChange=state.copper-copper;
+    if(copperChange)changes.push((copperChange>0?'+':'')+copperChange+' Copper');
+    for(const [key,name] of [['letter','Lost Letter'],['salve','Reed Salve'],['heartwood','Heartwood']]){
+      const amount=(state.pack[key]??0)-(pack[key]??0);
+      if(amount>0)changes.push('+'+amount+' '+name+(amount>1&&key==='salve'?'s':''));
+    }
+    for(const hero of state.heroes){
+      const previous=health.get(hero.key);
+      const change=hero.hp-previous;
+      if(previous===0&&hero.hp>0)changes.push(hero.name+' revived · '+hero.hp+' HP');
+      else if(change)changes.push(hero.name+' · '+(change>0?'+':'')+change+' HP');
+    }
+    if(choice==='bargain'){
+      const hero=state.heroes.find(hero=>hero.key===heroKey);
+      const source=hero?.curseSources?.find(source=>source.sourceId===node+':bargain:'+heroKey);
+      if(source)changes.push(hero.name+' · '+CURSE_DEFINITIONS[curseId].name+' '+['I','II','III'][source.tier-1]);
+    }
+    cue(choice==='bargain'?'curse':choice==='revive'?'revive':choice==='rest'?'heal':'quest');
+    storyResult={node,label,changes};
+  });
 }
 
 function prepareLootMotion(control,target){
@@ -794,8 +956,8 @@ function prepareLootMotion(control,target){
   return {control,frame,target};
 }
 
-async function playLootMotion(motion){
-  if(!motion){cue('loot');return;}
+async function playLootMotion(motion,sound='loot'){
+  if(!motion){cue(sound);return;}
   const {control,frame,target}=motion;
   const from=frame.getBoundingClientRect();
   const to=target.getBoundingClientRect();
@@ -817,7 +979,7 @@ async function playLootMotion(motion){
       {transform:`translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.6)`,opacity:1},
     ],{duration:160,easing:beats.settleEase,fill:'forwards'}).finished;
     token.remove();
-    cue('loot');
+    cue(sound);
     document.body.append(pulse);
     await pulse.animate([
       {transform:'translate(-50%,-50%) scale(.7)',opacity:1},
@@ -836,7 +998,7 @@ async function collectTutorialLoot(item,control){
   const motion=prepareLootMotion(control,target);
   if(!tutorialLoot(state,item))return;
   save();
-  await playLootMotion(motion);
+  await playLootMotion(motion,item==='shield'?'loot-equipment':'loot-token');
   render();
 }
 
@@ -914,7 +1076,10 @@ function renderParty(){
     const spirit=companions[companionForHero(hero)];
     if(spirit){
       const bond=html('details','','companion-bond');
-      bond.append(html('summary',spirit.name+' · '+spirit.element),
+      const summary=html('summary');
+      summary.append(html('span',spirit.name,'companion-name'),
+        html('span',spirit.element,'companion-element'));
+      bond.append(summary,
         html('small',spirit.hp+' Spirit HP · '+spirit.str+' STR · '+spirit.int+' INT · '+spirit.def+' Defense'),
         html('small',spirit.skill+' · '+spirit.text));
       card.append(bond);
@@ -1089,7 +1254,7 @@ function renderDie(die,index){
   const plan=describe(state,die.id);
   const key=die.resolvedKey??faceKey(die,actor);
   const action=plan?.action??(enemy?intent:actions)[key]??{};
-  const name=key==='ranged'?'Range Attack':plan?.name??action.name??(key.startsWith('rotate')?'Rotation':'Wait');
+  const name=key==='ranged'?'Range Attack':plan?.name??action.name??(dieRotationNames[key]??'Action');
   const el=button('',event=>useDie(die,plan,event),
     {className:'die '+die.side+(die.spent?' spent':''),disabled:busy||die.spent||!plan});
   el.id='die-'+die.id;
@@ -1139,6 +1304,19 @@ function renderDie(die,index){
   return attachDieHelp(el,hint,name);
 }
 
+function openingStoryCue(node){
+  if(node.type!=='boss'||state.battle.round!==1)return null;
+  const milestone=state.storyMilestones?.find(entry=>entry.boss===node.id);
+  const offer=milestone&&storyOpportunities[milestone.node];
+  if(offer?.id===milestone?.choice&&offer){
+    return {label:offer.label,reduction:offer.reduction,defense:node.id==='sanctum'?'Squad Defense':'Ward'};
+  }
+  if(node.id==='sanctum'&&state.storyVersion!==STORY_VERSION&&state.pack.letter){
+    return {label:'Lost Letter',reduction:storyOpportunities.memorial.reduction,defense:'Squad Defense'};
+  }
+  return null;
+}
+
 function renderCombat(){
   const battle=state.battle;
   const node=currentNode(state);
@@ -1153,6 +1331,12 @@ function renderCombat(){
   if(battle.lead)$('battle-meta').textContent+=' · '+active(state.heroes)[0]?.name+' / '+active(battle.enemies)[0]?.name;
   if(battle.defense.party||battle.defense.foe)$('battle-meta').textContent+=
     ' · Squad Defense '+battle.defense.party+' / '+battle.defense.foe;
+  const storyCue=openingStoryCue(node);
+  const cueBanner=$('boss-story-cue');
+  cueBanner.hidden=!storyCue;
+  if(storyCue){
+    cueBanner.querySelector('span').textContent=storyCue.label+' · '+storyCue.reduction+' less opening '+storyCue.defense;
+  }
   const warning=battle.dice.find(die=>!die.spent&&isScriptedDie(die));
   $('boss-warning').hidden=!warning||Boolean(rollingDice);
   if(warning)$('boss-warning').textContent=warning.face==='siege'?'⚠ All wardens':'⚠ Front + rear';
@@ -1197,6 +1381,8 @@ function renderCombat(){
         renderCombat();
         $('command').querySelector('button')?.focus({preventScroll:true});
       },{disabled:busy||!plan||Boolean(plan.reason)});
+      const icon=shopItemIcon({id:key==='heal-all'||key==='full-heal-all'?'salve':key});
+      if(icon)control.replaceChildren(icon);
       control.title=plan?.reason||token.effect;
       control.setAttribute('aria-label','Use '+token.name);
       tokenBar.append(control);
@@ -1218,12 +1404,19 @@ function renderCombat(){
 }
 
 function rollMotions(space,index){
-  if(reduced())return [space.animate([{opacity:.35},{opacity:1}],{duration:150})];
+  if(reduced()){
+    if(index===0)cue('dice-land');
+    return [space.animate([{opacity:.35},{opacity:1}],{duration:150})];
+  }
   // Dicefolk RollCoroutine spins for .35–.75 s, then eases into the result for .25–.50 s.
   // Presentation variation stays separate from the gameplay RNG.
   const spin=(beats.rollSpinMin+Math.random()*beats.rollSpinRange)/settings.speed;
   const settle=(beats.rollSettleMin+Math.random()*beats.rollSettleRange)/settings.speed;
   const duration=spin+settle;
+  if(index===0){
+    cue('dice-spin',settings.speed);
+    setTimeout(()=>{if(rollingDice)cue('dice-land');},spin);
+  }
   const landing=spin/duration;
   const delay=index*beats.rollStagger/settings.speed;
   const side=space.closest('.die')?.classList.contains('foe')?-1:1;
@@ -1257,8 +1450,6 @@ async function animateRoll(ids,message,reroll=false){
   const status=$('roll-status');
   status.textContent=message;
   status.hidden=false;
-  $('restart').disabled=true;
-  $('title-menu').disabled=true;
   renderCombat();
   const motions=[...$('combat').querySelectorAll('.rolling')].flatMap(rollMotions);
   await Promise.allSettled(motions.map(animation=>animation.finished));
@@ -1266,9 +1457,29 @@ async function animateRoll(ids,message,reroll=false){
   busy=false;
   status.hidden=true;
   $('announcement').textContent=state.report;
-  $('restart').disabled=false;
-  $('title-menu').disabled=false;
   renderCombat();
+}
+
+async function animateOpeningRoll(){
+  busy=true;
+  selection=null;
+  renderCombat();
+  const status=$('roll-status');
+  status.textContent='Rolling both sides';
+  status.hidden=false;
+  cue('roll');
+  try{
+    if(!reduced())await tumbleIntoHud([...$('party-dice').querySelectorAll('.die')].slice(0,3),{
+      speed:settings.speed,onContact:()=>cue('dice-land',settings.speed),
+      onDock:()=>cue('dice-reveal',settings.speed),
+    });
+    else cue('dice-reveal');
+  }finally{
+    status.hidden=true;
+    busy=false;
+    renderCombat();
+    journey?.refresh();
+  }
 }
 
 function getOverride(){
@@ -1457,6 +1668,7 @@ async function play(){
   if(activated){
     diceVfx.highlight(activated,false);
     diceVfx.shatter(activated);
+    cue('dice-shatter');
     activated.dataset.state='resolving';
   }
   busy=true;selection=null;
@@ -1465,8 +1677,6 @@ async function play(){
   $('command').hidden=true;
   $('target-layer').replaceChildren();
   $('combat').querySelectorAll('button,select').forEach(control=>control.disabled=true);
-  $('restart').disabled=true;
-  $('title-menu').disabled=true;
   journey?.refresh();
   try{await arena.play(before,state,result);}
   catch(error){console.error(error);$('announcement').textContent='Action resolved. Animation could not finish.';}
@@ -1498,6 +1708,7 @@ async function showBattleOutcome(){
       outcome.append(fleck);
     }
   }
+  if(!victory)cue('defeat');
   if(!victory&&!reduced())for(let index=0;index<24;index++){
     const ash=html('i');
     ash.style.setProperty('--fall-x',(24+(index*13)%53)+'%');
@@ -1535,8 +1746,10 @@ function render(){
   $('region-name').textContent=regionOf(currentNode(state)).name;
   const inCombat=state.phase==='battle';
   const lootScene=hasTutorialLoot(state);
-  const stage=state.phase+':'+state.node;
-  document.body.dataset.phase=state.phase;
+  const showingStoryResult=storyResult?.node===state.node&&state.phase==='map';
+  const visiblePhase=showingStoryResult?'event':state.phase;
+  const stage=visiblePhase+':'+state.node;
+  document.body.dataset.phase=visiblePhase;
   document.body.classList.toggle('tutorial-loot',lootScene);
   document.body.classList.toggle('field-loot',state.phase==='reward'&&!lootScene);
   const enteringStage=stage!==lastStage;
@@ -1555,19 +1768,20 @@ function render(){
           {duration:beats.sceneIn,easing:beats.settleEase});
       }
     }
+    if(!$('journey-overlay') || $('journey-overlay').hidden){
+      setMusicScene(inCombat&&currentNode(state).type==='boss'?'boss':'expedition');
+    }
     lastStage=stage;
   }
   $('travel').hidden=inCombat;
   $('combat').hidden=!(inCombat||lootScene);
   $('combat').inert=lootScene;
   $('journal').hidden=!inCombat;
-  $('field-guide').hidden=state.phase!=='map';
-  $('restart').disabled=busy;
-  $('title-menu').disabled=busy;
+  $('field-guide').hidden=state.phase!=='map'||showingStoryResult;
   $('purse').textContent='◉ '+state.copper;
   $('purse').setAttribute('aria-label',state.copper+' Copper');
   $('purse').title=state.copper+' Copper';
-  $('satchel').textContent=tokenCount(state)+' / '+tokenCapacity+' combat tokens · '+
+  $('satchel').textContent=tokenCount(state)+' / '+tokenCapacity+' items · '+
     (Object.entries(tokens).filter(([key])=>state.pack[key]).map(([key,token])=>state.pack[key]+' '+token.name).join(' · ')||'Empty pouch')+
     ' · '+state.pack.heartwood+' Heartwood'+
     (state.pack.letter?' · Lost Letter':'')+(state.pack.charm?' · Bramble Charm':'');
@@ -1580,10 +1794,11 @@ function render(){
     combat.dataset.lesson=lesson??'';
     document.querySelector('.battle-hud').inert=Boolean(lesson);
     const stamp=state.node+':'+state.battle.round;
-    const showRoll=!lesson||['light','dark','controls'].includes(lesson);
+    const showRoll=!lesson;
     if(showRoll&&stamp!==rollStamp){
       rollStamp=stamp;
-      void animateRoll(state.battle.dice.map(die=>die.id),'Rolling both sides');
+      if(state.battle.round===1)void animateOpeningRoll();
+      else void animateRoll(state.battle.dice.map(die=>die.id),'Rolling both sides');
     }else renderCombat();
     const field=battleBackdrop(currentNode(state));
     $('arena').style.backgroundImage='url("'+asset(field)+'")';
@@ -1611,11 +1826,12 @@ function render(){
   }
   journey?.refresh();
 }
-journey=createJourney({getState:()=>state,saveRun:save,isBusy:()=>busy,reduced,wardenPreview,
+journey=createJourney({leaveBattle:expeditionId?()=>location.assign('/online-expedition.html'):undefined,getState:()=>state,saveRun:save,isBusy:()=>busy,reduced,wardenPreview,
   hasSave:()=>savedRunAvailable,
   deleteSave:()=>{try{localStorage.removeItem(storage);}catch{}savedRunAvailable=false;state=fresh();selection=null;rollStamp='';render();},
   newJourney:(tutorial,options)=>{
     state=fresh(tutorial,{...options,runId:crypto.randomUUID()});rollStamp='';selection=null;
+    state.tutorial.quick=Boolean(options.quickTutorial);
     state.enterOnResume=true;
     save();
   },
@@ -1632,16 +1848,12 @@ journey=createJourney({getState:()=>state,saveRun:save,isBusy:()=>busy,reduced,w
     save();render();
   },
 });
-$('title-menu').onclick=()=>journey.title();
-$('settings').querySelector('summary').onclick=event=>{if(!expeditionId){event.preventDefault();journey.pause();}};
+$('settings').onclick=()=>journey.pause();
 async function launchRewardedExpedition(){
   $('save-status').textContent='Saved to your account';
-  $('restart').hidden=true;
-  $('title-menu').textContent='Expedition Kit';
-  $('title-menu').onclick=()=>location.assign('/online-expedition.html');
   try{
     remoteRun=await expeditionApi('');
-    if(remoteRun.mode!=='expedition'||!remoteRun.state)throw new Error('Invalid expedition');
+    if(!['expedition','journey'].includes(remoteRun.mode)||!remoteRun.state)throw new Error('Invalid expedition');
     state=remoteRun.state;
     if(remoteRun.version===0&&(remoteRun.loadoutPreparation?.purseAtomic||remoteRun.loadoutPreparation?.ownedItems)){
       location.replace('/online-expedition.html');

@@ -41,7 +41,7 @@
 .route-badge[data-frame=coin]{--route-frame:url('combat-assets/route-frames-v1/coin.png')}
 .route-badge[data-frame=scroll]{--route-frame:url('combat-assets/route-frames-v1/scroll.png')}
 .route-badge[data-frame=unseen]{--route-frame:url('combat-assets/route-frames-v1/unseen.png')}
-#route-plot .route-badge canvas{width:48%;height:auto;filter:none}
+#route-plot .route-badge .route-mark{width:48%;height:auto;filter:none}
 #route-plot .node[data-unknown]{opacity:.66}
 #route-plot .node.passed .route-badge{filter:grayscale(.55) brightness(.84)}
 #route-plot .node.current .route-badge{opacity:0}
@@ -56,7 +56,7 @@
 }
 #route-marker img{width:63%;aspect-ratio:1;border-radius:50%;object-fit:cover;translate:0 -4%}
 #legend .route-badge{width:30px;flex:none}
-#legend .route-badge canvas{width:48%;height:auto}
+#legend .route-badge .route-mark{width:48%;height:auto}
 #route-plot .node-label{top:110%;font-weight:750;font-size:clamp(.55rem,1.03vw,.79rem);text-align:center;padding:3px 5px}
 #route-plot .node.current .node-label{display:block}
 #route-readout{color:#f2dcae;font-size:clamp(.7rem,1.2vw,.92rem);min-height:1.3em;margin-top:8px;text-shadow:0 1px 5px #000}
@@ -67,3 +67,6 @@
   #route-plot .node.current .node-label{display:none}
   #route-plot .node::after{content:'';position:absolute;inset:-6px}
 }
+
+.route-mark{display:block;width:48%;aspect-ratio:1;object-fit:contain}
+.story-choice .route-mark{width:34px;height:34px;flex:none}

@@ -1,9 +1,9 @@
 import { active, canEndRound, canEngrave, describe, rerollableDice, shopInventory } from './expedition-rules.mjs';
 import { actions, equipment, instantItems, foes, heroes, nodes, regionOf, story, tokens, training } from './expedition-data.mjs';
-import { asset, wardenPreview } from './expedition-art.mjs';
+import { asset, playWardenPreview, wardenPreview } from './expedition-art.mjs?v=sfx-v2';
 import { dicePainting, paintDiceFace } from './expedition-dice-paint.mjs';
-import { beats } from './expedition-motion-library.mjs';
-import { cue, settings } from './expedition-options.mjs';
+import { beats } from './expedition-motion-library.mjs?v=sfx-v2';
+import { cue, cueAttack, settings, setMusicScene } from './expedition-options.mjs?v=sfx-v2';
 import { companionForHero } from './expedition-companions.mjs';
 
 
@@ -194,7 +194,7 @@ function battlefield(title, round, art, allies, opponents, status = '') {
       target.setAttribute('aria-label', 'Target ' + unit.name);
       target.tabIndex = -1;
       target.disabled = true;
-      target.append(wardenPreview(unit.id, { animate: boss && Boolean(unit.hp) && !settings.motion, highResolution: boss }));
+      target.append(wardenPreview(unit.id, { animate: Boolean(unit.hp) && !settings.motion && !matchMedia('(prefers-reduced-motion: reduce)').matches, highResolution: boss }));
       if (unit.mirrored) target.dataset.mirrored = '';
       const caption = el('figcaption', null, figure);
       el('strong', unit.name, caption);
@@ -277,11 +277,21 @@ function battlefield(title, round, art, allies, opponents, status = '') {
     el('span', name, tile);
     return tile;
   }
-  return { header, controls, hint, action };
+  async function animate(actor, keys = [], clip = 'attack') {
+    const source = targets.find(({unit}) => (unit.key ?? unit.id) === actor)?.target;
+    const strike = source && playWardenPreview(source.querySelector('canvas'), clip);
+    if (!strike) return;
+    const impacts = targets.filter(({unit}) => keys.includes(unit.key ?? unit.id));
+    await Promise.all([strike, ...impacts.map(({target}) => target.animate([
+      {filter:'none', offset:0}, {filter:'none', offset:.45},
+      {filter:'brightness(1.6) sepia(.2)', offset:.56}, {filter:'none', offset:1},
+    ], {duration:620}).finished.catch(()=>{}))]);
+  }
+  return { header, controls, hint, action, animate };
 }
 
 function playModeRoll(view, tiles, reroll = false) {
-  if (!tiles.length || settings.motion) return;
+  if (!tiles.length || settings.motion || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const { controls, hint } = view;
   const previousHint = hint.textContent;
   controls.inert = true;
@@ -296,7 +306,9 @@ function playModeRoll(view, tiles, reroll = false) {
     cube.className = 'mode-roll-cube';
     for (const key of ['strike', 'guard', 'rotate', 'salve', 'brace']) {
       const side = el('span', null, cube);
-      paintDiceFace(side, '', key, 'party');
+      const faction=tile.dataset.side;
+      const mark=faction==='foe'&&!dicePainting('',key,faction)?'rake':key;
+      paintDiceFace(side, '', mark, faction);
     }
     const result = el('span', null, cube);
     for (const mark of [...face.children]) {
@@ -328,6 +340,7 @@ function playModeRoll(view, tiles, reroll = false) {
     controls.inert = false;
     controls.removeAttribute('aria-busy');
     hint.textContent = previousHint;
+    if(controls.isConnected)cue('dice-land',settings.speed);
   });
 }
 
@@ -341,14 +354,28 @@ function renderRun(kind, run, rerolledIds = []) {
   const node = nodes.find(node => node.id === state.node);
   beginEncounter();
   const battle = state.phase === 'battle' && !['WON', 'LOST'].includes(lifecycle);
+  setMusicScene(battle&&node?.type==='boss'?'boss':'expedition');
   if (!battle) el('h3', node?.name ?? 'Expedition', encounter);
   if (!battle) el('p', (state.report || 'Choose your next action.') + ' · ' + state.copper + ' Copper', encounter);
+  let combatView;
   const go = async intent => {
     const rerolled = intent.type === 'reroll' ? rerollableDice(state).map(die => die.id) : [];
     const next = await request('/api/runs/' + runId + '/actions', {
       operationId: operationId(), expectedVersion: run.version, intent,
     });
-    if (page === origin) renderRun(kind, next, rerolled);
+    if (page !== origin) return;
+    if (intent.type === 'use-die') {
+      const plan = describe(state, intent.dieId, intent.itemId ? { action: intent.itemId } : undefined);
+      if (plan) {
+        cueAttack(plan.key, plan.actor.id, plan.enemy ? 'foe' : 'party', plan.action.petId);
+        const hitTargets = next.state?.battle?.enemies?.concat(next.state.heroes ?? []) ?? [];
+        const previousUnits = state.battle.enemies.concat(state.heroes);
+        const hit = hitTargets.filter(unit => previousUnits.some(before => before.key === unit.key && before.hp > unit.hp));
+        await combatView?.animate(plan.actor.key, hit.map(unit => unit.key));
+        if (page !== origin) return;
+      }
+    }
+    renderRun(kind, next, rerolled);
   };
   const pick = (parent, name, type, fields = {}) => button(parent, name, () => go({ type, ...fields }));
   const team = state.heroes.filter(hero => !hero.bench);
@@ -384,7 +411,7 @@ function renderRun(kind, run, rerolledIds = []) {
     const region = regionOf(node);
     const art = node?.type === 'boss' ? 'boss-arena-' + region.id + '-v1.png'
       : 'expedition-scenes-v2/battle-' + region.id + '.webp';
-    const view = battlefield(node?.name ?? names[kind], round, art, team, enemies, names[kind]);
+    const view = combatView = battlefield(node?.name ?? names[kind], round, art, team, enemies, names[kind]);
     el('p', state.copper + ' Copper', view.header).className = 'mode-battle-meta';
     const stamp = JSON.stringify([runId, state.node, state.visited.length, round]);
     const freshRound = origin.rollStamp !== stamp;
@@ -621,6 +648,7 @@ async function openBreach(id) {
   renderBreach(state);
 }
 function renderBreach(state) {
+  setMusicScene(['won','lost'].includes(state.phase)?'menu':'boss');
   const origin = page;
   const { runId, phase, round, version } = state;
   beginEncounter();
@@ -634,7 +662,14 @@ function renderBreach(state) {
   for (const type of state.available) {
     view.action(type === 'wardbreak' ? 'Break ward' : label(type), type, 'rook', 'party', async () => {
       const result = await mode('raid/' + runId + '/act', { version, type });
-      if (page === origin) renderBreach(result);
+      if (page === origin) {
+        cueAttack(actionArt[type] ?? type, 'rook', 'party');
+        if (result.bossHp < state.bossHp || result.ward < state.ward) {
+          await view.animate('rook', ['kiln-that-hungers']);
+        }
+        if (result.partyHp < state.partyHp) await view.animate('kiln-that-hungers', ['rook']);
+        if (page === origin) renderBreach(result);
+      }
     });
   }
   if (phase !== 'active') {
@@ -817,10 +852,29 @@ function renderRoom(connection, state) {
   const origin = page;
   const { kind, id } = connection;
   const path = roomPath(kind, id);
+  let combatView;
   const go = async (action, body = {}) => {
     const result = await mode(path + '/' + action, body);
     // An HTTP response may arrive after a newer WebSocket snapshot.
     if (activeRoom !== connection || room !== state && room.nonce >= (result.nonce ?? -1)) return;
+    if (action === 'act' && combatView) {
+      if (body.type === 'pass') cue('turn');
+      else if (kind === 'duel') cueAttack(body.type, body.die, 'party');
+      else if (kind === 'coop') cueAttack(body.type, state.actors.find(actor => actor.accountId === account)?.heroId, 'party');
+      if (kind === 'duel' && body.type === 'strike') {
+        const rival = state.players.find(player => player.id !== account);
+        await combatView.animate(account + ':' + body.die, [rival.id + ':' + body.target]);
+      } else if (kind === 'coop' && result.timeline?.length > state.timeline.length) {
+        const turn = result.timeline.at(-1);
+        await Promise.all(turn.actions.filter(move => move.type === 'strike')
+          .map(move => combatView.animate(move.heroId, ['bell-drowned'])));
+        if (result.actors.some(actor => state.actors.some(before => before.accountId === actor.accountId && before.hp > actor.hp))) {
+          await combatView.animate('bell-drowned', result.actors.filter(actor => state.actors.some(before =>
+            before.accountId === actor.accountId && before.hp > actor.hp)).map(actor => actor.heroId));
+        }
+      }
+      if (activeRoom !== connection || room !== state && room.nonce >= (result.nonce ?? -1)) return;
+    }
     updateRoom(connection, result);
     if (state.phase === undefined && result.phase && !socket) {
       clearTimeout(refreshTimer);
@@ -882,7 +936,7 @@ function renderRoom(connection, state) {
       ...hero, maxHp: 20, key: side.id + ':' + hero.id, name: wardenName(hero.id), mirrored,
       detail: hero.guard ? hero.guard + ' Guard' : '',
     }));
-    const view = battlefield('Veil Duel', state.round, 'boss-arena-metal-v1.png',
+    const view = combatView = battlefield('Veil Duel', state.round, 'boss-arena-metal-v1.png',
       fighters(mine), fighters(rival, true),
       state.ranked ? 'Ranked match' : state.practice ? 'Bot practice' : 'Private duel');
     roomBattleMeta(view.header, state, path);
@@ -921,7 +975,7 @@ function renderRoom(connection, state) {
     detail: who(actor.accountId) + (actor.action ? ' · ' + label(actor.action) + ' locked' : actor.locked ? ' · Locked' : ''),
   }));
   const boss = { id: 'bell-drowned', name: foes['bell-drowned'].name, hp: state.bossHp, maxHp: 64 };
-  const view = battlefield('Co-op Breach', state.round, 'boss-arena-water-v1.png', allies, [boss], label(state.phase));
+  const view = combatView = battlefield('Co-op Breach', state.round, 'boss-arena-water-v1.png', allies, [boss], label(state.phase));
   roomBattleMeta(view.header, state, path);
   const latest = state.timeline.at(-1);
   if (latest) el('p', latest.actions.map(action => wardenName(action.heroId) + ' · ' + label(action.type) +
@@ -951,6 +1005,7 @@ async function showPage(focus = false) {
   const kind = match?.[1] ?? 'trials';
   const origin = page = { kind };
   document.body.dataset.mode = kind;
+  setMusicScene('menu');
   clearTimeout(rankedTimer);
   clearRoom();
   panel.replaceChildren();

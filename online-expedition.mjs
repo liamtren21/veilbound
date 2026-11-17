@@ -1,7 +1,11 @@
+import { openTitleLogin } from './expedition-title-auth.mjs';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { NearConnector } from '@hot-labs/near-connect';
 import { active, describe, canEndRound, rerollableDice, shopInventory } from './expedition-rules.mjs';
-import { equipment, instantItems, map, regions, story, tokens, training } from './expedition-data.mjs';
+import { equipment, ferrymanStages, instantItems, map, regions, story, tokens, training } from './expedition-data.mjs';
+import { companions, SUMMON_LIMIT, SUMMON_ROUNDS, BOND_ARRIVAL_DEFENSE } from './expedition-companions.mjs';
+import { paintDiceFace } from './expedition-dice-paint.mjs';
+import { previewLoadout } from './expedition-loadout-sample.mjs';
 import { talismans } from './expedition-progression.mjs';
 
 const account = document.querySelector('#account');
@@ -16,6 +20,7 @@ let expeditionHistory = [];
 let rewardStorage;
 let nearStorageEnabled = false;
 let archiveRun;
+const journeyLinks = new Map();
 const supplyStatus = new Map();
 const evolutionQuotes = new Map();
 const loadoutAmount = { purse: '0', salve: '0', ward: '0' };
@@ -39,6 +44,10 @@ async function api(path, body) {
     const messages = {
       NEAR_SOCIAL_ACCOUNT_NEEDS_TESTNEAR: 'Fund your derived NEAR Auth testnet account before signing.',
       NEAR_SOCIAL_STORAGE_UNAVAILABLE: 'There is no reward storage top-up to sign.',
+      STARTER_CLAIM_PENDING: 'The starter claim is awaiting confirmation on NEAR testnet. Wait a few seconds and try Claim Starter Pack again.',
+      STARTER_LINK_CONFLICT: 'This Starter Pack is linked to another testnet wallet.',
+      STARTER_SPEND_PENDING: 'Your previous Starter Pack activity is still settling. Try again shortly.',
+      FINISH_ACTIVE_RUN_BEFORE_CLAIM: 'Finish the expedition using your Starter Pack before claiming it to your wallet.',
       WALLET_AUTH_UNAVAILABLE: 'NEAR testnet could not verify your wallet. Reconnect and approve the sign-in message again.',
       challenge_unavailable: 'Your sign-in request expired or no longer matches this tab. Click Connect NEAR Wallet here and approve the new message.',
       PROFESSION_CHECKPOINT_REQUIRED: 'Complete a profession objective or clear a checkpoint first.',
@@ -77,7 +86,7 @@ async function resume() {
   loadoutCapabilities = await api('runs/loadout-capabilities');
   expeditionHistory = identity.accountId ? await api('runs/expedition-history') : [];
   archiveRun = undefined;
-  rewardStorage = undefined;
+  rewardStorage = identity.accountId ? await api('economy/reward-storage').catch(() => undefined) : undefined;
   nearStorageEnabled = Boolean(identity.accountId && (await api('auth/near/transaction').catch(() => null))?.enabled);
   supplyStatus.clear();
   evolutionQuotes.clear();
@@ -94,7 +103,7 @@ async function resume() {
 const starterItemNames = { salve: 'Salve', ward: 'Ward' };
 function starterText(pack) {
   if (pack?.status === 'claimed') return 'Starter Pack claimed';
-  if (pack?.status === 'issued') return 'Starter Pack ready for Practice';
+  if (pack?.status === 'issued') return identity?.accountId ? 'Starter Pack ready to claim' : 'Starter Pack available';
   if (pack?.reason === 'starter_pool_empty') return 'Starter Packs are out of stock';
   if (pack?.reason === 'chain_not_configured') return 'Starter Packs are currently unavailable';
   return 'Starter Pack pending';
@@ -125,6 +134,7 @@ async function send(transaction) {
     }
     wallet = candidate;
   }
+  status.textContent = 'Approve in your wallet.';
   const result = await wallet.signAndSendTransaction({ ...transaction, signerId: identity.accountId });
   const hash = result?.transaction?.hash ?? result?.transaction_outcome?.id;
   if (result?.status?.Failure || result?.receipts_outcome?.some(entry => entry.outcome?.status?.Failure)) {
@@ -218,18 +228,29 @@ function renderEvent(state) {
     option(lesson.label + ' / ' + hero.name, 'trainer', { choice, heroKey: hero.key });
   }
 }
+async function waitForChain(read, done) {
+  status.textContent = 'Waiting for NEAR testnet confirmation…';
+  for (const ms of [0, 700, 1500, 2700, 4000]) {
+    if (ms) await new Promise(resolve => setTimeout(resolve, ms));
+    const value = await read().catch(() => undefined);
+    if (value && done(value)) return value;
+  }
+}
+async function signOnce(key, transaction, read, done) {
+  const storageKey = 'veilbound-pending:' + identity.accountId + ':' + key;
+  const submitted = sessionStorage.getItem(storageKey) ?? await send(transaction);
+  sessionStorage.setItem(storageKey, submitted);
+  const confirmed = await waitForChain(read, done);
+  if (confirmed) sessionStorage.removeItem(storageKey);
+  return { submitted, confirmed };
+}
 async function claimReward(path, input) {
   const prepare = () => api(path, input);
   const claim = await prepare();
   if (!claim.transaction) return 'Reward status: ' + claim.status;
-  const submitted = await send(claim.transaction);
-  try {
-    const confirmed = await prepare();
-    if (!confirmed.transaction) return submitted + ' / Reward status: ' + confirmed.status;
-  } catch {
-    return submitted + ' / Final confirmation pending.';
-  }
-  return submitted + ' / Final confirmation pending. Use Check reward status to refresh.';
+  const { submitted, confirmed } = await signOnce(path + JSON.stringify(input), claim.transaction,
+    prepare, result => !result.transaction);
+  return confirmed ? 'Reward status: ' + confirmed.status : submitted + ' · Awaiting confirmation.';
 }
 function renderCheckpoints(run = snapshot, container = panel) {
   const { runId, checkpoints } = run;
@@ -241,13 +262,9 @@ function renderCheckpoints(run = snapshot, container = panel) {
       button(container, 'Bank checkpoint ' + checkpoint.region + ' via NEAR Auth',
         () => signNearAuthTransaction({ runId, ...bankInput }));
     }
-    button(container, 'Check reward status for checkpoint ' + checkpoint.region, async () =>
-      'Reward status: ' + (await api(prefix + 'prepare-bank', bankInput)).status);
     for (const material of checkpoint.materials ?? []) {
       const input = { entitlementId: material.entitlementId };
       button(container, 'Claim ' + material.itemId, () => claimReward(prefix + 'prepare-material-claim', input));
-      button(container, 'Check reward status for ' + material.itemId, async () =>
-        'Reward status: ' + (await api(prefix + 'prepare-material-claim', input)).status);
       add(container, 'a', 'Find buyers for ' + material.itemId).href =
         './economy.html?' + new URLSearchParams({ material: material.itemId }) + '#materials';
     }
@@ -365,6 +382,52 @@ function renderFieldContracts(runId, container = panel) {
     }
   }
 }
+const sampleFaceNames = {strike:'Strike', summon:'Summon', idle:'Wait', rotate:'Rotate'};
+
+function loadoutComparison(parent, preview, companionId) {
+  if (!preview) {
+    add(parent, 'p', 'The required warden is outside this Talismanâ€™s active squad.');
+    return;
+  }
+  const board = add(parent, 'div', '');
+  board.className = 'loadout-comparison';
+  const comparison = [
+    ['Without NFT', 'before', preview.before?.defense],
+    ['With NFT', 'after', preview.after?.defense],
+  ];
+  for (const [heading, side, defense] of comparison) {
+    const column = add(board, 'div', '');
+    add(column, 'strong', heading);
+    for (const change of preview.changes) {
+      const row = add(column, 'div', '');
+      row.className = 'loadout-preview-row';
+      const key = change[side];
+      const tile = add(row, 'span', '');
+      tile.className = 'loadout-preview-tile face';
+      tile.setAttribute('aria-hidden', 'true');
+      paintDiceFace(tile, key === 'summon' ? companionId : preview.hero.id, key, 'party');
+      add(row, 'span', (change.die ? 'Die ' + change.die + ' Â· ' : '') + (sampleFaceNames[key] ?? key) +
+        (defense === undefined ? '' : ' Â· +' + defense + ' Defense'));
+    }
+  }
+  const details = add(parent, 'details', '');
+  details.className = 'loadout-sample-result';
+  add(details, 'summary', 'Show sample outcome');
+  add(details, 'p', 'The Listening Road Â· Fixed demonstration action');
+  const events = add(details, 'ul', '');
+  for (const line of preview.result ?? preview.after.result) add(events, 'li', line);
+}
+
+function renderLoadoutSample() {
+  const details = add(panel, 'details', '');
+  details.className = 'hall-sample';
+  add(details, 'summary', 'Preview an NFT loadout');
+  add(details, 'h4', 'The Gate Wardens Â· Flintback');
+  loadoutComparison(details, previewLoadout('gate', {companionId:'flintback'}), 'flintback');
+  add(details, 'h4', 'The Gate Wardens Â· Ferrymanâ€™s Cord');
+  loadoutComparison(details, previewLoadout('gate', {relicStage:0}));
+}
+
 function renderLoadout() {
   const section = add(panel, 'section', '');
   section.className = 'hall-loadout';
@@ -390,6 +453,22 @@ function renderLoadout() {
       tile.className = 'hall-item';
       tile.dataset.kind = name.toLowerCase();
       tile.setAttribute('aria-pressed', String(loadout[key] === item.id));
+    }
+    const selected = items.find(item => item.id === loadout[key]);
+    if (selected && key === 'relicToken') {
+      const cord = equipment['ferryman-cord'];
+      const stage = ferrymanStages[selected.stage] ?? ferrymanStages[0];
+      add(slot, 'p', 'Mara Venn Â· ' + cord.name + ' Â· ' + stage.name);
+      add(slot, 'p', stage.text + ' Uses an equipment slot.');
+      loadoutComparison(slot, previewLoadout(chosenTalisman, {relicStage:ferrymanStages.indexOf(stage)}));
+    }
+    if (selected && key === 'companionToken' && Object.hasOwn(companions, selected.companion)) {
+      const companion = companions[selected.companion];
+      add(slot, 'p', companion.name + ' Â· ' + companion.bond);
+      add(slot, 'p', companion.skill + ' Â· ' + companion.text);
+      add(slot, 'p', SUMMON_LIMIT + ' summons per battle Â· ' + SUMMON_ROUNDS + ' rounds per summon.');
+      add(slot, 'p', 'When the bonded warden leads, Summon replaces Strike. On arrival the bonded warden gains ' + BOND_ARRIVAL_DEFENSE + ' Defense.');
+      loadoutComparison(slot, previewLoadout(chosenTalisman, {companionId:selected.companion}), selected.companion);
     }
     if (loadout[key] && key !== 'chronicleToken') button(slot, 'Reserve ' + name, async () => {
       const { transaction } = await api('runs/prepare-nft-lock', { tokenId: loadout[key], operationId: upcomingOperation() });
@@ -447,10 +526,12 @@ function renderRunCustody(run = snapshot, container = panel) {
       if (amountAtomic === '0') throw new Error('Enter at least 1 Copper.');
       const tx = await api(prefix + 'vault-purse/prepare', { amountAtomic });
       snapshot = await api('runs/' + runId);
-      return send(tx);
+      const { submitted, confirmed } = await signOnce(prefix + 'vault-purse', tx,
+        () => api(prefix + 'vault-purse/confirm', {}), result => Boolean(result.runId));
+      if (confirmed) snapshot = confirmed;
+      return confirmed ? 'Copper reserved.' : submitted + ' · Awaiting confirmation.';
     });
     if (purseAtomic) {
-      update('Confirm Copper reservation', 'vault-purse/confirm');
       update('Cancel Copper preparation', 'vault-purse/cancel');
     }
   }
@@ -463,11 +544,25 @@ function renderRunCustody(run = snapshot, container = panel) {
       if (!Object.keys(items).length) throw new Error('Choose at least one item.');
       const tx = await api(prefix + 'owned-items/prepare', { items });
       snapshot = await api('runs/' + runId);
-      return send(tx);
+      const { submitted, confirmed } = await signOnce(prefix + 'owned-items', tx,
+        () => api(prefix + 'owned-items/confirm', {}), result => Boolean(result.runId));
+      if (confirmed) snapshot = confirmed;
+      return confirmed ? 'Items reserved.' : submitted + ' · Awaiting confirmation.';
     });
     if (ownedItems) {
-      update('Confirm item reservation', 'owned-items/confirm');
       update('Cancel item preparation', 'owned-items/cancel');
+    }
+  }
+  if (terminal) {
+    const path = journeyLinks.get(runId);
+    if (path) {
+      const link = add(section, 'a', 'Open shared Chronicle');
+      link.href = path;
+    } else {
+      button(section, 'Share Chronicle', async () => {
+        const result = await api('runs/' + runId + '/share-journey', {});
+        journeyLinks.set(runId, result.path);
+      });
     }
   }
   const hasPurse = terminal && state.vaultPurse && loadoutCapabilities.purse;
@@ -491,14 +586,34 @@ function renderRunCustody(run = snapshot, container = panel) {
     for (const [region, achievement] of [[3, 'region-3-clear'], [5, 'five-region-clear']]) {
       if (checkpoints.some(checkpoint => checkpoint.region === region)) {
         const key = runId + '/' + achievement;
+        const readQuote = () => api(prefix + 'quote-evolution', { achievement });
         const quote = evolutionQuotes.get(key);
-        if (!quote || quote.status === 'milestone_pending') {
-          submit('Record Chronicle milestone ' + region, 'prepare-chronicle', { achievement });
+        if (!quote) {
+          evolutionQuotes.set(key, { status: 'loading' });
+          void readQuote().then(result => evolutionQuotes.set(key, result),
+            () => evolutionQuotes.set(key, { status: 'unavailable' })).then(() => {
+            if (!working && section.isConnected) render();
+          });
         }
-        button(section, 'Check Relic evolution ' + region, async () => {
-          evolutionQuotes.set(key, await api(prefix + 'quote-evolution', { achievement }));
-        });
-        if (!quote) continue;
+        if (!quote || quote.status === 'loading') {
+          add(section, 'p', 'Checking Relic evolution…');
+          continue;
+        }
+        if (quote.status === 'unavailable') {
+          button(section, 'Retry evolution check', async () => {
+            evolutionQuotes.set(key, await readQuote());
+          });
+          continue;
+        }
+        if (quote.status === 'milestone_pending') {
+          button(section, 'Record milestone', async () => {
+            const transaction = await api(prefix + 'prepare-chronicle', { achievement });
+            const { confirmed, submitted } = await signOnce(key + ':milestone', transaction,
+              readQuote, result => result.status !== 'milestone_pending');
+            if (confirmed) evolutionQuotes.set(key, confirmed);
+            return confirmed ? 'Milestone recorded.' : submitted + ' · Awaiting confirmation.';
+          });
+        }
         const messages = {
           milestone_pending: 'The Chronicle milestone is awaiting on-chain confirmation.',
           evolved: 'Evolution confirmed on chain.',
@@ -514,10 +629,15 @@ function renderRunCustody(run = snapshot, container = panel) {
           add(section, 'p', ['Evolution cost', Number(quote.cost.copperAtomic) / 100 + ' Copper', ...cost].join(' / '));
         }
         if (quote.status === 'ready') {
-          button(section, 'Sign Relic evolution', async () => {
-            const result = await send(quote.transaction);
-            evolutionQuotes.delete(key);
-            return result;
+          button(section, 'Evolve Relic', async () => {
+            const latest = await readQuote();
+            evolutionQuotes.set(key, latest);
+            if (latest.status !== 'ready') return messages[latest.status] ?? 'Evolution terms changed.';
+            if (JSON.stringify(quote.cost) !== JSON.stringify(latest.cost)) return 'Evolution cost changed. Check the new cost.';
+            const { submitted, confirmed } = await signOnce(key + ':evolve', latest.transaction,
+              readQuote, result => result.status === 'evolved');
+            if (confirmed) evolutionQuotes.set(key, confirmed);
+            return confirmed ? 'Evolution confirmed on chain.' : submitted + ' · Awaiting confirmation.';
           });
         } else if (messages[quote.status]) add(section, 'p', messages[quote.status]);
       }
@@ -667,6 +787,13 @@ function openExpedition() {
 }
 const addPlayExpedition = parent => button(parent, snapshot.version ? 'Resume' : 'Play Expedition', openExpedition);
 const gateDisclosures = new Set();
+async function connectExpeditionWallet() {
+  await openTitleLogin('wallet');
+  wallet = undefined;
+  await resume();
+  if (!identity?.accountId) throw new Error('Wallet verification did not complete.');
+  return 'Wallet connected: ' + identity.accountId;
+}
 function render() {
   account.replaceChildren();
   panel.replaceChildren();
@@ -674,11 +801,18 @@ function render() {
     snapshot.mode === 'expedition' && !['WON', 'LOST'].includes(snapshot.lifecycle) ||
     snapshot.state.node === 'threshold' && snapshot.state.phase === 'event'
   )));
-  account.hidden = !identity;
-  if (!identity) {
-    add(panel, 'p', 'Open Expedition from the game after signing in.');
-    return;
+  account.hidden = false;
+  account.classList.toggle('hall-needs-wallet', !identity?.accountId);
+  if (!identity?.accountId) {
+    add(account, 'h2', 'Connect your wallet');
+    add(account, 'p', 'Use a NEAR testnet wallet for Starter Pack claims and Expedition rewards.');
+    button(account, 'Connect NEAR Wallet', connectExpeditionWallet);
+    if (!identity) {
+      panel.hidden = true;
+      return;
+    }
   }
+  panel.hidden = false;
   add(account, 'h2', 'Expedition Kit');
   if (identity.accountId) {
     const badge = add(account, 'p', identity.accountId);
@@ -691,16 +825,28 @@ function render() {
     const items = ids.map((id, index) => quantities[index] + ' Ã— ' + (starterItemNames[id] ?? id));
     add(account, 'p', [starterPack.relicId, Number(copper) / 100 + ' Copper', ...items].join(' / '));
   }
-  if (starterPack?.status !== 'issued' && starterPack?.status !== 'claimed') {
-    button(account, 'Check Starter Pack', async () => {
+  if (starterPack?.status !== 'claimed' && identity.accountId && starterPack?.claimAvailable) {
+    button(account, 'Claim Starter Pack', async () => {
+      if (starterPack.status !== 'issued') {
+        starterPack = await api('starter/provision', {});
+        if (starterPack.status !== 'issued') return starterText(starterPack);
+      }
+      const prepared = await api('starter/prepare-claim', {});
+      if (!prepared.transaction) {
+        starterPack = await api('starter');
+        return starterText(starterPack);
+      }
+      const { submitted, confirmed } = await signOnce('starter:' + prepared.grantId, prepared.transaction,
+        () => api('starter'), result => result.status === 'claimed');
+      starterPack = confirmed ?? starterPack;
+      return confirmed ? starterText(starterPack) : submitted + ' · Awaiting confirmation.';
+    });
+  } else if (!identity.accountId && !['issued', 'claimed'].includes(starterPack?.status)) {
+    button(account, 'Get Starter Pack', async () => {
       starterPack = await api('starter/provision', {});
       return starterText(starterPack);
     });
   }
-  if (identity.accountId && starterPack?.claimAvailable && starterPack.status === 'issued') button(account, 'Claim Starter Pack', async () => {
-    const prepared = await api('starter/prepare-claim', {});
-    return prepared.transaction ? send(prepared.transaction) : 'Starter Pack: ' + prepared.status;
-  });
   if (!snapshot?.state || ['WON', 'LOST'].includes(snapshot.lifecycle)) {
     add(panel, 'h2', 'Prepare Expedition');
     const talismanField = add(panel, 'div', '');
@@ -715,13 +861,16 @@ function render() {
       tile.prepend(art);
     }
     if (identity.accountId) renderLoadout();
+    renderLoadoutSample();
     const actions = add(panel, 'div', '');
     actions.className = 'hall-actions';
     if (identity.accountId) button(actions, 'Start', () => start('expedition'));
     else add(panel, 'p', 'Verify your NEAR testnet wallet to unlock Rewarded Expedition and reward storage.');
   }
   if (identity.accountId) {
-    button(account, 'Check Storage', async () => { rewardStorage = await api('economy/reward-storage'); });
+    if (!rewardStorage) button(account, 'Retry storage check', async () => {
+      rewardStorage = await api('economy/reward-storage');
+    });
     if (rewardStorage?.transaction) {
       const deposit = rewardStorage.deposit.padStart(25, '0');
       const amount = deposit.slice(0, -24) + '.' + deposit.slice(-24).replace(/0+$/, '');
@@ -729,9 +878,10 @@ function render() {
         button(account, 'Fund reward storage via NEAR Auth (' + amount + ' testNEAR)', () => signNearAuthTransaction({}));
       }
       button(account, 'Fund reward storage (' + amount + ' testNEAR)', async () => {
-        const result = await send(rewardStorage.transaction);
-        rewardStorage = undefined;
-        return result;
+        const { submitted, confirmed } = await signOnce('reward-storage', rewardStorage.transaction,
+          () => api('economy/reward-storage'), value => !value.transaction);
+        rewardStorage = confirmed ?? rewardStorage;
+        return confirmed ? 'Reward storage is funded.' : submitted + ' · Awaiting confirmation.';
       });
     } else if (rewardStorage) {
       add(account, 'p', 'Reward storage is funded.');

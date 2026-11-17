@@ -1,3 +1,4 @@
+import { speakToNpc } from './npc/dialogue.mjs';
 import { createServer } from 'node:http';
 import { attachRealtime } from './realtime/ws.mjs';
 import { checkoutMethods, previewTestnetIntentQuote } from './economy/intents-checkout.mjs';
@@ -26,7 +27,7 @@ async function readBody(request) {
   throw Object.assign(new Error(), { status: 400, code: 'INVALID_JSON' });
 }
 
-export function createGameServer({ sessions, runs, modes, field, professions, marketIndex, shop, chronicle, walletAuth, socialAuth, nearSocialAuth, economy, starter, telemetry, serveGame, origin, secureCookies = true }) {
+export function createGameServer({ sessions, runs, journeys, modes, field, professions, marketIndex, shop, chronicle, walletAuth, socialAuth, nearSocialAuth, economy, starter, telemetry, serveGame, origin, secureCookies = true }) {
   if (!origin) throw new Error('Expected a configured application origin');
   const cookie = (token, maxAge) => `${cookieName}=${token}; Path=/api; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${secureCookies ? '; Secure' : ''}`;
   const server = createServer(async (request, response) => {
@@ -37,8 +38,29 @@ export function createGameServer({ sessions, runs, modes, field, professions, ma
       if (path === '/health' && method === 'GET') return reply(response, 200, { ok: true });
       if (!path.startsWith('/api/') && await serveGame?.(request, response, path)) return;
       if (method === 'POST' && request.headers.origin !== origin) return reply(response, 403, { error: 'INVALID_ORIGIN' });
+      const share = /^\/api\/journeys\/([0-9a-f-]{36})$/.exec(path);
+      if (journeys && share && method === 'GET') {
+        const journey = journeys.read(share[1]);
+        return reply(response, journey ? 200 : 404, journey ?? { error: 'NOT_FOUND' });
+      }
       const token = getToken(request);
       const playerId = sessions.read(token);
+      const challenge = /^\/api\/journeys\/([0-9a-f-]{36})\/challenge$/.exec(path);
+      if (journeys && challenge && method === 'POST') {
+        if (!playerId) return reply(response, 401, { error: 'SESSION_REQUIRED' });
+        const run = await journeys.challenge(playerId, challenge[1]);
+        return reply(response, run ? 200 : 404, run ? { runId: run.runId } : { error: 'NOT_FOUND' });
+      }
+      if (method === 'POST' && path === '/api/npc/dialogue') {
+        const input = await readBody(request);
+        if (input.runId !== undefined && (typeof input.runId !== 'string' ||
+            !/^[A-Za-z0-9_-]{1,96}$/.test(input.runId))) return reply(response, 400, { error: 'INVALID_RUN_ID' });
+        if (input.runId && !playerId) return reply(response, 401, { error: 'SESSION_REQUIRED' });
+        const context = input.runId ? await runs.dialogueContext(playerId, input.runId) : null;
+        if (context && context.node !== input.node) return reply(response, 409, { error: 'NPC_SCENE_CHANGED' });
+        const {status, body} = await speakToNpc(playerId, input, context);
+        return reply(response, status, body);
+      }
       if (path === '/api/auth/near/config' && method === 'GET') {
         return reply(response, 200, { enabled: Boolean(nearSocialAuth), ...(nearSocialAuth ? { clientId: nearSocialAuth.clientId } : {}) });
       }
@@ -210,8 +232,12 @@ export function createGameServer({ sessions, runs, modes, field, professions, ma
         if (!accountId) return reply(response, 409, { error: 'LINKED_CHAIN_ACCOUNT_REQUIRED' });
         try { return reply(response, 200, await runs.prepareStarterClaim(playerId, accountId)); }
         catch (error) {
-          return reply(response, 409, { error: error.code === 'FINISH_ACTIVE_RUN_BEFORE_CLAIM'
-            ? error.code : 'STARTER_CLAIM_PENDING' });
+          const claimErrors = {
+            FINISH_ACTIVE_RUN_BEFORE_CLAIM: 'FINISH_ACTIVE_RUN_BEFORE_CLAIM',
+            STARTER_SPEND_PENDING: 'STARTER_SPEND_PENDING',
+            starter_link_conflict: 'STARTER_LINK_CONFLICT',
+          };
+          return reply(response, 409, { error: claimErrors[error.code ?? error.message] ?? 'STARTER_CLAIM_PENDING' });
         }
       }
       if (economy && path.startsWith('/api/economy/')) {
@@ -250,11 +276,19 @@ export function createGameServer({ sessions, runs, modes, field, professions, ma
           if (method === 'POST' && path === '/api/economy/prepare-order') {
             return reply(response, 200, economy.prepareMarketOrder(await readBody(request)));
           }
+          if (method === 'GET' && path === '/api/economy/charter-stock') {
+            const charterId = new URL(request.url, origin).searchParams.get('charterId');
+            return reply(response, 200, await economy.charterStock(accountId, charterId));
+          }
           if (method === 'POST' && path === '/api/economy/prepare-charter-order' && process.env.VEILBOUND_CHARTER_MARKET_ENABLED === 'true') {
             return reply(response, 200, await economy.prepareCharterOrder(accountId, await readBody(request)));
           }
           if (method === 'POST' && path === '/api/economy/prepare-cancel') {
             return reply(response, 200, await economy.prepareMarketCancel(accountId, await readBody(request)));
+          }
+          if (method === 'GET' && path === '/api/economy/craft-quote') {
+            const recipeId = new URL(request.url, origin).searchParams.get('recipeId');
+            return reply(response, 200, await economy.craftQuote(accountId, recipeId));
           }
           if (method === 'POST' && path === '/api/economy/prepare-craft') {
             const input = await readBody(request);
@@ -412,6 +446,8 @@ export function createGameServer({ sessions, runs, modes, field, professions, ma
       }
       const route = /^\/api\/runs\/([\w-]+)(?:\/(actions|replay|prepare-bank))?$/.exec(path);
       if (route && method === 'GET' && !route[2]) return reply(response, 200, await runs.get(playerId, route[1]));
+      const shareRun = /^\/api\/runs\/([\w-]+)\/share-journey$/.exec(path);
+      if (journeys && shareRun && method === 'POST') return reply(response, 200, await journeys.publish(playerId, shareRun[1]));
       if (route?.[2] === 'replay' && method === 'GET') return reply(response, 200, await runs.replay(playerId, route[1]));
       if (route?.[2] === 'prepare-bank' && method === 'POST') {
         const body = await readBody(request);

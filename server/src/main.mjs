@@ -1,3 +1,4 @@
+import { openJourneyShares } from './runs/journey-shares.mjs';
 import { readFileSync } from 'node:fs';
 import { openLocalStarterChain } from './economy/local-starter-chain.mjs';
 import { mkdirSync } from 'node:fs';
@@ -151,7 +152,8 @@ const modes = openGameModes(resolve(directory, 'modes.sqlite'), {
   runs, combat: expeditionModeCombat(runs), ...gameModeConfig(process.env),
 });
 const serveGame = process.env.VEILBOUND_PUBLIC_DIR ? createPublicGame(resolve(process.env.VEILBOUND_PUBLIC_DIR)) : undefined;
-const server = createGameServer({ sessions, runs, modes, field: createFieldRoutes(fieldContracts), professions, marketIndex, shop, chronicle, walletAuth, socialAuth, nearSocialAuth, economy, starter, telemetry, serveGame, origin, secureCookies: new URL(origin).protocol === 'https:' });
+const journeys = openJourneyShares(resolve(directory, 'journey-shares.sqlite'), runs);
+const server = createGameServer({ sessions, runs, journeys, modes, field: createFieldRoutes(fieldContracts), professions, marketIndex, shop, chronicle, walletAuth, socialAuth, nearSocialAuth, economy, starter, telemetry, serveGame, origin, secureCookies: new URL(origin).protocol === 'https:' });
 server.listen(port, bind, () => console.log(`VEILBOUND API listening on ${bind}:${server.address().port}`));
 let fieldRecovery;
 const fieldRecoveryTimer = fieldContracts && setInterval(() => {
@@ -174,6 +176,7 @@ const shutdown = () => {
     localStarter?.close();
     socialAuth?.close();
     nearSocialAuth?.close();
+    journeys.close();
     runs.close();
     professions.close();
     marketIndex?.close();

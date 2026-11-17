@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
+import { setTimeout as delay } from 'node:timers/promises';
 
 export function openStarterGrants(file, { chain, relicIds = [], now = Date.now, cacheTtlMs = 300_000 } = {}) {
   const db = new DatabaseSync(file);
@@ -154,10 +155,18 @@ export function openStarterGrants(file, { chain, relicIds = [], now = Date.now, 
         if (prior.linkedAccount === accountId) return { ...prior, transaction: chain.claimTransaction(row.grant_id) };
         // Account must come from the verified identity mapping at the API boundary.
         db.prepare('UPDATE guest_starter_jobs SET linked_account = ? WHERE player = ?').run(accountId, player);
-        await chain.link({ grant_id: row.grant_id, account_id: accountId });
-        const linked = await confirmed(row);
-        if (linked?.linkedAccount !== accountId) throw new Error('starter_link_pending');
-        return { ...linked, transaction: chain.claimTransaction(row.grant_id) };
+        try { await chain.link({ grant_id: row.grant_id, account_id: accountId }); }
+        catch { /* The transaction may have reached NEAR even if the RPC response failed. */ }
+        for (const waitMs of [0, 300, 650, 1300, 2000]) {
+          if (waitMs) await delay(waitMs);
+          const linked = await confirmed(row).catch(() => null);
+          if (linked?.linkedAccount === accountId) {
+            return linked.status === 'claimed' ? linked
+              : { ...linked, transaction: chain.claimTransaction(row.grant_id) };
+          }
+          if (linked?.linkedAccount) throw new Error('starter_link_conflict');
+        }
+        throw new Error('starter_link_pending');
       });
     },
     close() { db.close(); },

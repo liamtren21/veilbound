@@ -34,19 +34,14 @@
   display:block;
   position:absolute;
   pointer-events:none;
-  inset:0;
+  inset:10%;
   background-repeat:no-repeat;
   background-size:400% 400%;
 }
 .dice-painted-icon[data-atlas=party]{background-image:url('combat-assets/dice-ink-party-v3.png')}
 .dice-painted-icon[data-atlas=foe]{background-image:url('combat-assets/dice-ink-foe-v3.png')}
 .dice-icon-flip{transform:scaleX(-1)}
-.dice-skill-crop{
-  inset:3%;
-  overflow:hidden;
-  clip-path:polygon(18% 6%,82% 6%,94% 18%,94% 82%,82% 94%,18% 94%,6% 82%,6% 18%);
-}
-.dice-skill-crop img{width:100%;height:100%;display:block;object-fit:cover}
+.dice-weapon-icon{background-image:url('combat-assets/dice-weapons-v1.png');background-size:300% 100%}
 .loot-icon-shield{position:relative}
 .framed-skill-preview{width:48px;height:48px;object-fit:contain}
 .paper-popover{
@@ -126,4 +121,6 @@
   border:1px dashed #d3ad79a6;
   box-shadow:none;
 }
-.dice-skill-cutout{inset:2%}.dice-skill-cutout img{display:block;width:100%;height:100%;object-fit:contain}
+.dice-skill-cutout{inset:10%}.dice-skill-cutout img{display:block;width:100%;height:100%;object-fit:contain}
+
+.die.spent .face-0 .dice-painted-icon { opacity: .68; }

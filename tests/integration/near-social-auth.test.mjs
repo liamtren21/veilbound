@@ -35,7 +35,7 @@ test('NEAR Auth sponsors only the session-bound signed login payload and resumes
         const { functionCall } = signed.transaction.actions[0];
         assert.equal(functionCall.methodName, expectedMethod);
         const storage = expectedMethod === 'fund_storage';
-        assert.equal(String(functionCall.deposit), storage ? deposit : '1');
+        assert.equal(String(functionCall.deposit), storage ? deposit : '0');
         const args = JSON.parse(Buffer.from(functionCall.args));
         assert.equal(storage ? args.account_id : args.receipt.account_id, accountId);
         broadcasts++;
@@ -59,7 +59,7 @@ test('NEAR Auth sponsors only the session-bound signed login payload and resumes
     assert.equal(runId, 'expedition-1');
     assert.equal(region, 1);
     return { transaction: { network: 'testnet', receiverId: 'core.vibebound.testnet', actions: [
-      { type: 'FunctionCall', params: { methodName: 'claim_reward', deposit: '1', gas: '150000000000000',
+      { type: 'FunctionCall', params: { methodName: 'claim_reward', deposit: '0', gas: '150000000000000',
         args: { receipt: { account_id: accountId }, signature: 'fixture' } } },
     ] } };
   } };

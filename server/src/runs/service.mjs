@@ -1,6 +1,7 @@
 import { createHash, createHmac, randomBytes, randomUUID } from 'node:crypto';
 import { newRun } from '../../../expedition-rules.mjs';
-import { heroes, regions } from '../../../expedition-data.mjs';
+import { heroes, map, regions } from '../../../expedition-data.mjs';
+import { dialogueContext, recordStoryMemory } from '../npc/context.mjs';
 import { companionForHero } from '../../../expedition-companions.mjs';
 import { freshProgress, settleRun, talismans, talismanStats, talismanUnlocked } from '../../../expedition-progression.mjs';
 import { applyCombatIntent, COMBAT_VERSION, seededValue, validateIntent } from '../combat/resolve.mjs';
@@ -153,7 +154,7 @@ function advance(run, before, intent, sequence, priorMetrics, priorCheckpoints) 
   return { state, action: json(action), metrics, checkpoints };
 }
 
-function calculateReplay(run) {
+function calculateReplay(run, observeFrame) {
   let state = run.initialState;
   let metrics = baseMetrics();
   let checkpoints = [];
@@ -181,6 +182,7 @@ function calculateReplay(run) {
     stateHash = runHash(run, state, metrics, checkpoints);
     if (stateHash !== event.stateHash) fail('RUN_REPLAY_MISMATCH', 500);
     version = event.sequence;
+    observeFrame?.(state, event.intent, version);
   }
   if (stateHash !== run.stateHash || version !== run.version ||
     runHash(run, run.state, run.metrics, run.checkpoints) !== run.stateHash) fail('RUN_REPLAY_MISMATCH', 500);
@@ -190,7 +192,7 @@ function calculateReplay(run) {
 const currentRun = account => Object.values(account.runs).reverse().find(run =>
   ['practice', 'expedition'].includes(run.mode) && !isTerminal(lifecycleFor(run.state)));
 
-export function createRunService({ repository, modeSecret, entropy = randomBytes, rewards, materialClaims, ownedItems, vaultPurse, starter } = {}) {
+export function createRunService({ repository, modeSecret, entropy = randomBytes, rewards, materialClaims, ownedItems, vaultPurse, starter, storyVersion } = {}) {
   async function flushStarterSpend(player) {
     const pending = await repository.read(player, account => account.pendingStarterSpend);
     if (!pending) return;
@@ -337,7 +339,7 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
       }
       if (operationId !== undefined && !validOperation(operationId)) fail('INVALID_OPERATION', 400);
       const nftIdentity = binding => {
-        const { expiresAtNs, ...identity } = binding ?? {};
+        const { expiresAtNs, companionRules, ...identity } = binding ?? {};
         return hash(identity);
       };
       const fingerprint = hash({ mode, talisman, tutorial, chronicleToken: chronicleBinding?.tokenId,
@@ -371,7 +373,7 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
             mode, talisman, tutorial, xp: talismanStats(progress, talisman).xp, secret: entropy(32).toString('hex'),
             runId: mode === 'expedition' ? hash(['rewarded-run', accountId, operationId]) : undefined,
             starterRelic, starterInventory: starterRelic ? starter.inventoryForRun?.(accountId) : null,
-            nftBinding,
+            nftBinding, storyVersion,
           });
           if (mode === 'expedition') {
             run.rewardReservation = rewards.reserve(accountId, run.runId);
@@ -450,6 +452,10 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
         return run ? publicRun(run) : null;
       });
     },
+    dialogueContext(accountId, runId) {
+      validateAccount(accountId);
+      return repository.read(accountId, account => dialogueContext(runFor(account, runId), account.storyMemory));
+    },
     get(accountId, runId) {
       validateAccount(accountId);
       return repository.read(accountId, account => publicRun(runFor(account, runId)));
@@ -483,6 +489,7 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
         run.version = sequence;
         run.stateHash = runHash(run, run.state, run.metrics, run.checkpoints);
         run.events.push({ sequence, previousHash, stateHash: run.stateHash, intent });
+        if (intent.type === 'event') recordStoryMemory(account, run, intent.choice);
         if (isTerminal(lifecycleFor(run.state))) {
           if (run.initialState.starterInventory) {
             const initial = run.initialState.starterInventory;
@@ -514,6 +521,45 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
           stateHash: run.stateHash, events: run.events,
         });
       });
+    },
+    journeyProof(accountId, runId) {
+      validateAccount(accountId);
+      return repository.read(accountId, account => {
+        const run = runFor(account, runId);
+        if (!run.summary || !isTerminal(lifecycleFor(run.state))) fail('RUN_NOT_COMPLETE', 409);
+        const frames = [];
+        const units = members => members.map(({ name, hp, maxHp, ward }) =>
+          ({ name, hp, maxHp, defense: ward ?? 0 }));
+        const { observations } = calculateReplay(run, (state, intent, sequence) => {
+          frames.push({
+            sequence, action: intent.type, location: map[state.node].name, phase: state.phase,
+            report: state.report, party: units(state.heroes), enemies: units(state.battle?.enemies ?? []),
+          });
+        });
+        return { ...publicRun(run), outcome: run.summary.outcome, observations, frames };
+      });
+    },
+    startJourneyChallenge(player, sourcePlayer, sourceRun, journeyId) {
+      validateAccount(player);
+      const settings = repository.read(sourcePlayer, account => {
+        const source = runFor(account, sourceRun);
+        if (!source.summary || !isTerminal(lifecycleFor(source.state))) fail('RUN_NOT_COMPLETE', 409);
+        return {
+          talisman: source.initialState.talisman,
+          tutorial: Boolean(source.initialState.tutorial?.enabled),
+          storyVersion: source.initialState.storyVersion ?? 0,
+          graph: source.graph,
+        };
+      });
+      const start = ({ talisman, tutorial, storyVersion, graph }) => repository.update(player, account => {
+        const active = Object.values(account.runs).find(run =>
+          run.mode === 'journey' && run.challenge?.journeyId === journeyId && !isTerminal(lifecycleFor(run.state)));
+        return publicRun(active ?? addRun(account, {
+          mode: 'journey', talisman, tutorial, storyVersion, xp: 0, graph,
+          secret: entropy(32).toString('hex'), challenge: { journeyId },
+        }));
+      });
+      return settings?.then ? settings.then(start) : start(settings);
     },
     async prepareBank(accountId, runId, region) {
       validateAccount(accountId);
@@ -589,10 +635,9 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
   };
 }
 
-function addRun(account, { mode, talisman, tutorial, xp, secret, challenge, roster, accordTrial, accordSupport, starterRelic, starterInventory, nftBinding, runId = randomUUID() }) {
-  const graph = generateMap(seededValue(secret, 0, 'map'), { tutorial });
+function addRun(account, { mode, talisman, tutorial, xp, secret, challenge, roster, accordTrial, accordSupport, starterRelic, starterInventory, nftBinding, storyVersion, graph = generateMap(seededValue(secret, 0, 'map'), { tutorial }), runId = randomUUID() }) {
   const state = json(newRun(seededValue(secret, 0, 'run'), {
-    runId, talisman, tutorial, xp, accordTrial, accordSupport,
+    runId, talisman, tutorial, xp, accordTrial, accordSupport, storyVersion,
   }));
   if (tutorial) state.tutorial.videoVersion = 1;
   if (starterRelic) {
@@ -643,4 +688,3 @@ function addRun(account, { mode, talisman, tutorial, xp, secret, challenge, rost
 export function openRuns(file, options = {}) {
   return createRunService({ ...options, repository: openSqliteRunRepository(file) });
 }
-

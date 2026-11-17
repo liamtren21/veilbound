@@ -5,6 +5,7 @@
 <title>VEILBOUND · Expedition</title>
 <link rel="stylesheet" href="expedition.css">
 <link rel="stylesheet" href="expedition-journey.css?v=compendium-v1">
+<link rel="stylesheet" href="expedition-dice-art.css?v=fonts-v1">
 <style>
 body{min-height:100dvh;background:linear-gradient(#160e13b8,#100c12f7),url('combat-assets/veilbound-title-waymark-v2.webp') center top/cover fixed}
 .expedition-hall{--hall-frame:url('combat-assets/expedition-hall-frame-v1.png')}
@@ -37,13 +38,23 @@ body{min-height:100dvh;background:linear-gradient(#160e13b8,#100c12f7),url('comb
 .hall-layout .hall-item[aria-pressed=true]{outline:1px solid #e8c27d;box-shadow:inset 0 0 11px #d4ae5d66}
 .hall-item img{width:100%;height:62px;object-fit:contain}
 .hall-empty{text-align:center;display:grid;place-items:center;color:#d6c0a6}
-.hall-item[data-kind]::before,.hall-empty::before{
-  content:'';display:block;width:44px;height:44px;margin:2px auto;background-repeat:no-repeat
+.hall-item[data-kind]::before,.hall-empty[data-kind]::before{
+  content:'';display:block;width:44px;height:44px;margin:2px auto;
+  background:url('combat-assets/expedition-loadout-glyphs-v1.webp') var(--glyph-position,0%) center / 300% 100% no-repeat
 }
-[data-kind=relic]::before{background-image:url('combat-assets/support-relics-v1.png');background-size:400% 300%;background-position:66.666% 0}
-[data-kind=companion]::before{background-image:url('combat-assets/support-companions-v1-clean.png');background-size:300% 200%;background-position:0 0}
-[data-kind=chronicle]::before{background:url('combat-assets/account-v1/ledger.png') center / contain no-repeat}
+.hall-slot [data-kind=companion]{--glyph-position:50%}
+.hall-slot [data-kind=chronicle]{--glyph-position:100%}
 .hall-empty::before{opacity:.38}
+.hall-sample{margin-block:12px;border:1px solid #9a654b;padding:12px;background:#28191e;color:#ffe2bc}
+.hall-sample summary,.loadout-sample-result summary{cursor:pointer;color:#efcb9a}
+.hall-sample h4{margin:12px 0 6px}
+.loadout-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-block:8px}
+.loadout-comparison>div{min-width:0;background:#291b22;padding:6px;color:#ffe2bc}
+.loadout-preview-row{display:flex;gap:5px;align-items:center;margin-top:5px;font-size:.78rem;overflow-wrap:anywhere}
+.loadout-preview-tile.face{position:relative;inset:auto;width:24px;aspect-ratio:1;flex:none;
+  border:0;background:url('combat-assets/ui-orchard-v1/warden-tile.png') center/contain no-repeat;box-shadow:none}
+.loadout-sample-result{margin-block:8px;color:#ffe2bc}
+.loadout-sample-result ul{padding-inline-start:18px}
 .hall-account-badge{padding:7px 10px;background:#23171a;color:#f6d6a7}
 .expedition-hall :is(.hall-panel,.hall-panel section,.hall-item,.hall-empty,.hall-account-badge,#status:not(:empty)){
   border:2px solid transparent;
@@ -56,6 +67,7 @@ body{min-height:100dvh;background:linear-gradient(#160e13b8,#100c12f7),url('comb
 .expedition-hall:has(.hall-at-gate) .hall-header{display:none}
 .hall-layout:has(.hall-at-gate){grid-template-columns:minmax(0,1fr)}
 .hall-layout:has(.hall-at-gate) #account{order:1;width:min(100% - 32px,760px);margin:0 auto 16px}
+.hall-layout:has(.hall-at-gate) #account.hall-needs-wallet{order:-1}
 .hall-layout .hall-at-gate{padding:0;border:0;box-shadow:none}
 .orchard-gate{
   position:relative;isolation:isolate;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto auto;gap:12px;
@@ -130,5 +142,5 @@ body{min-height:100dvh;background:linear-gradient(#160e13b8,#100c12f7),url('comb
   <section id="run" class="hall-panel" aria-label="Expedition"></section>
 </div>
 </main>
-<script type="module" src="/online-expedition.mjs?v=starter-roster-v1"></script>
+<script type="module" src="/online-expedition.mjs?v=wallet-actions-v1"></script>
 </html>

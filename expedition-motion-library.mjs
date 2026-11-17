@@ -6,8 +6,8 @@ export const combatMotion=Object.freeze({
   heal:effect(600,'rise','#a5e1a8','heal'),
   buff:effect(600,'rise','#e9c275','buff'),
   debuff:effect(600,'sink','#c590ba','debuff'),
-  miss:effect(350,'streak','#bbb9b2','dodge'),
-  generic:effect(420,'ring','#ded2a8','select','ground'),
+  miss:effect(350,'streak','#bbb9b2','miss'),
+  generic:effect(420,'ring','#ded2a8','ui-choice','ground'),
   guardOn:effect(350,'shield','#91c8ce','guard'),
   guardOff:effect(470,'shield','#c0e1df','break'),
   dodge:effect(800,'streak','#a7d6c5','dodge'),
@@ -17,8 +17,8 @@ export const combatMotion=Object.freeze({
   death:effect(1000,'ash','#c2aa9d','fall'),
   relentlessOff:effect(600,'burst','#ee925e','break'),
   purification:effect(600,'rise','#c6f2e7','cleanse'),
-  revive:effect(900,'rise','#efdf9e','heal'),
-  blame:effect(600,'sink','#d66d74','debuff'),
+  revive:effect(900,'rise','#efdf9e','revive'),
+  blame:effect(600,'sink','#d66d74','curse'),
 });
 export const damageMotion=Object.freeze({
   claw:effect(310,'claw','#ebbb93','hit'),

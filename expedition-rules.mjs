@@ -1,8 +1,8 @@
-import {actions, enemyCurses, enemyCopper, equipment, equipmentCapacity, foes, heroes, instantItems, intent, intentPools, map, regionalBossMoves, regionOf, regions, stock, story, tokenCapacity, tokens, training} from './expedition-data.mjs';
+import {actions, enemyCurses, enemyCopper, equipment, equipmentCapacity, ferrymanStages, foes, heroes, instantItems, intent, intentPools, map, regionalBossMoves, regionOf, regions, stock, storyChoices, storyOffer, storyOpportunities, STORY_VERSION, tokenCapacity, tokens, training} from './expedition-data.mjs';
 import {canAffordCopper,copperForKill,mergeLegacyWallet} from './expedition-economy.mjs';
 import {talismans,xpRewards} from './expedition-progression.mjs';
 import {battleRng,pickFromStream} from './expedition-dice-rng.mjs';
-import {companions,companionForHero,restoreCompanionBond,canOfferSummon,SUMMON_FACE,SUMMON_LIMIT,SUMMON_ROUNDS} from './expedition-companions.mjs';
+import {companions,companionForHero,restoreCompanionBond,canOfferSummon,hasTacticalBond,BOND_ARRIVAL_DEFENSE,SUMMON_FACE,SUMMON_LIMIT,SUMMON_ROUNDS} from './expedition-companions.mjs';
 
 import {CURSE_DEFINITIONS,applyCurse,effectiveTier,adjustHealing,adjustDefense,bloodDebtDamage,migrateCurseState,applyPilgrimLantern,effectiveFatiguedStat} from './expedition-curses.mjs';
 import {witchShopInventory,buyRemedy,remedyCount,REMEDY_CAPACITY,REMEDY_CATALOG} from './expedition-remedies.mjs';
@@ -29,11 +29,11 @@ const unit = (definition, key) => ({
   int:definition.int??definition.atk, ward:0, guard:false, cover:null, bleed:0, mark:0, crack:0, rooted:0, ready:{},
 });
 
-export function newRun(seed, {tutorial=false,talisman='gate',trial=0,xp=0,runId,accordTrial,accordSupport}={}) {
+export function newRun(seed, {tutorial=false,talisman='gate',trial=0,xp=0,runId,accordTrial,accordSupport,storyVersion=STORY_VERSION}={}) {
   if(accordTrial)trial=0;
   const starter=talismans.find(entry=>entry.id===talisman)??talismans[0];
   const run={
-    version:1, seed:seed>>>0 || 1, economySeed:(seed^0x9e3779b9)||1, phase:'event', node:'threshold', visited:[], copper:0,
+    version:1, ...(storyVersion ? {storyVersion, storyMilestones:[]} : {}), seed:seed>>>0 || 1, economySeed:(seed^0x9e3779b9)||1, phase:'event', node:'threshold', visited:[], copper:0,
     combatStyle:'lead', benchKey:'tess', modifiers:{rerollAll:false}, tutorial:{enabled:tutorial, completed:[]},
     pack:{salve:0, heartwood:0, letter:0, charm:0, seed:0, equipment:[]}, bought:{}, shopOffers:{}, tokenChance:0, route:[],
     heroes:heroes.map(hero=>({...unit(hero,hero.id), level:1, equipment:[null], skills:hero.skills.slice(0,2), reach:hero.reach, relic:hero.relic})),
@@ -187,7 +187,21 @@ export function bargainPreview(state,heroKey,curseId){
   return {heroKey,curseId,tier,copper:[8,12,16][tier-1],sourceId:state.node+':bargain:'+heroKey};
 }
 export function chooseEvent(state, choice, heroKey, curseId) {
-  if(state.phase!=='event'||!story[state.node]?.choices.some(([id])=>id===choice)) return false;
+  if(state.phase!=='event') return false;
+  const offer=storyOffer(state);
+  if(offer?.id===choice){
+    if(!offer.eligible)return false;
+    for(const [item,amount] of Object.entries(offer.cost)){
+      if(item==='copper')state.copper-=amount;
+      else state.pack[item]-=amount;
+    }
+    state.storyMilestones.push({node:state.node,choice,boss:offer.boss});
+    state.route.push(offer.label);
+    finishNode(state,offer.description);
+    return true;
+  }
+  const selected=storyChoices(state).find(([id])=>id===choice);
+  if(!selected)return false;
   if(choice==='bargain'){
     const preview=bargainPreview(state,heroKey,curseId);
     if(!preview||state.curseBargains?.[state.node])return false;
@@ -217,8 +231,8 @@ export function chooseEvent(state, choice, heroKey, curseId) {
     living(state.heroes).forEach(hero=>heal(hero,12));
   }
   if(choice==='salvage'){addToken(state,'salve');state.copper+=14;}
-  const message=story[state.node].choices.find(([id])=>id===choice)[2];
-  state.route.push(story[state.node].choices.find(([id])=>id===choice)[1]);
+  const [,label,message]=selected;
+  state.route.push(label);
   finishNode(state,message);
   return true;
 }
@@ -328,7 +342,14 @@ function startBattle(state,node) {
       enemy.atk=enemy.int=8;
     }
   }
-  const defense={party:node.type==='boss'&&state.pack.charm?8:0,foe:node.id==='sanctum'&&!state.pack.letter?14:0};
+  const milestone=state.storyMilestones?.find(entry=>entry.boss===node.id);
+  const storyModifier=milestone && storyOpportunities[milestone.node];
+  const reducedOpeningDefense=state.storyVersion===STORY_VERSION
+    ? storyModifier?.id==='deliver-letter' : Boolean(state.pack.letter);
+  const defense={party:node.type==='boss'&&state.pack.charm?8:0,foe:node.id==='sanctum'&&!reducedOpeningDefense?14:0};
+  if(storyModifier && node.id!=='sanctum'){
+    for(const enemy of enemies)enemy.ward=Math.max(0,enemy.ward-storyModifier.reduction);
+  }
   const nodeSeed=Array.from(node.id).reduce((seed,char)=>Math.imul(seed,31)+char.charCodeAt(0)|0,state.seed);
   state.battle={round:0,enemies,defense,rng:battleRng(nodeSeed),copperPaid:[],dice:[],lead:state.combatStyle==='lead',reserve:true,log:[],actions:{},bossPhase:1,cursePhase:1,curseWards:{},curseFatigue:{},curseReceipts:{},curseCasts:{}};
   state.phase='battle';
@@ -374,7 +395,10 @@ function nextRound(state) {
   const units=living(state.heroes);
   battle.dice=units.map((hero,index)=>{
     const faces=playerFaces(hero);
-    if(index===0&&canOfferSummon(state))faces[faces.length-1]=SUMMON_FACE;
+    if(index===0&&canOfferSummon(state)){
+      const replace=hasTacticalBond(state,hero)?faces.indexOf('strike'):faces.length-1;
+      faces[replace]=SUMMON_FACE;
+    }
     return {...makeDie(hero.key,hero.key,'party',roll(state,faces)),pool:faces};
   });
   for(const enemy of living(battle.enemies)){
@@ -413,9 +437,10 @@ function nextLeadDice(state){
   if(state.talisman==='lantern')pools[2]=['guard','tech-a','tech-b','relic','bulk-up','rotate'];
   if(trial>=3)pools[0]=pools[0].map(face=>face==='idle'?'bulk-up':face);
   if(canOfferSummon(state)){
-    const pool=pools.find(faces=>faces.includes('idle'))??pools[0];
-    const idle=pool.indexOf('idle');
-    pool[idle<0?pool.length-1:idle]=SUMMON_FACE;
+    const bonded=hasTacticalBond(state,active(state.heroes)[0]);
+    const pool=bonded?pools[0]:pools.find(faces=>faces.includes('idle'))??pools[0];
+    const face=pool.indexOf(bonded?'strike':'idle');
+    pool[face<0?pool.length-1:face]=SUMMON_FACE;
   }
   battle.dice=create('party',pools);
   const boss=battle.enemies.find(unit=>unit.behavior==='boss');
@@ -572,8 +597,9 @@ export function describe(state, id, override) {
     const petId=companionForHero(actor);
     if(!petId)return null;
     const pet=companions[petId];
+    const bondTip=hasTacticalBond(state,actor)?' Gain '+BOND_ARRIVAL_DEFENSE+' personal Defense on arrival.':'';
     return {die,reserve:false,enemy:false,actor,key,name:'Summon '+pet.name,
-      action:{type:SUMMON_FACE,petId,text:pet.skill+'. '+pet.text+' Acts on arrival and at the start of the next round. '+(b.summonCount??0)+'/'+SUMMON_LIMIT+' summons used.'},
+      action:{type:SUMMON_FACE,petId,text:pet.skill+'. '+pet.text+' Acts on arrival and at the start of the next round.'+bondTip+' '+(b.summonCount??0)+'/'+SUMMON_LIMIT+' summons used.'},
       targets:[actor],reason:canOfferSummon(state)?'':'A spirit is active or the summon limit was reached.',engraved:false};
   }
   let action=enemy?intent[key]:actions[key];
@@ -592,8 +618,6 @@ export function describe(state, id, override) {
       random:key==='rotate-random'&&targets.length>1};
   }
   if(!enemy&&key==='ranged')action={...actions.strike,text:'The lead attacks a chosen enemy.'};
-  if(!enemy&&key==='idle')action={type:'idle',target:'self',name:'Wait'};
-  if(!enemy&&key==='bulk-up')action={type:'boost',target:'self',name:'Bulk Up',text:'The lead gains 2 attack until the end of the turn.'};
   if(enemy&&die.face==='foe-strike')action={...action,rule:'front'};
   if(enemy&&key==='clash')action={type:'hit',rule:'front',name:'Clash Attack',text:'The two leads exchange attacks.'};
   if(b.lead&&key==='guard')action={...action,text:'Block the next attack.'};
@@ -694,7 +718,13 @@ function rotationBleed(state,team,changes){
 function applyLeadEquipment(state,priorLead,changes){
   const lead=active(state.heroes)[0];
   if(!lead||lead===priorLead||!hasEquipment(lead,'ferryman-cord'))return;
-  changes.push({target:lead.key,text:lead.name+' +'+ward(lead,3)+' Defense · Ferryman’s Cord'});
+  const boundStage = lead.id === 'mara' && lead.equipment[0] === 'ferryman-cord'
+    ? state.nftLoadout?.relicStage : 0;
+  const stage = ferrymanStages[boundStage] ?? ferrymanStages[0];
+  const trigger = stage.window === 'round' ? state.battle.round : stage.window;
+  if (trigger !== null && state.battle.ferrymanTrigger === trigger) return;
+  if (trigger !== null) state.battle.ferrymanTrigger = trigger;
+  changes.push({target:lead.key,text:lead.name+' +'+ward(lead,stage.defense)+' Defense · Ferryman’s Cord'});
 }
 
 function directHit(state, source, target, action, multi, extra=0) {
@@ -765,6 +795,9 @@ export function resolve(state,id,targetKey,override) {
     const id=action.petId,spirit=companions[id];
     b.summonCount=(b.summonCount??0)+1;
     b.companion={id,owner:actor.key,hp:spirit.hp,defense:spirit.def,expiresAfter:b.round+SUMMON_ROUNDS-1,lastPulseRound:b.round};
+    if(hasTacticalBond(state,actor)){
+      changes.push({target:actor.key,text:actor.name+' +'+ward(actor,BOND_ARRIVAL_DEFENSE)+' Defense · Companion Bond'});
+    }
     changes.push(...pulseCompanion(state,b.companion));
   }
   if(action.type==='curse')for(const hero of chosen){
@@ -940,6 +973,7 @@ export function moveEquipment(state,heroKey,slot,index=null,options={}){
   const hero=state.heroes.find(unit=>unit.key===heroKey);
   if(!hero||!Number.isInteger(slot)||slot<0||slot>=hero.equipment.length)return false;
   const equipped=hero.equipment[slot];
+  if(state.nftLoadout?.relicStage && hero.id==='mara' && slot===0 && equipped==='ferryman-cord')return false;
   if(equipment[equipped]?.tag==='Cursed')return false;
   if(index===null){
     if(!equipped||!stashEquipment(state,equipped))return false;

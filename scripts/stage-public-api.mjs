@@ -21,7 +21,7 @@ for (const path of paths) {
   await cp(join(root, path), target, { recursive: true, filter: publicFile });
 }
 if (process.argv.includes('--game')) {
-  const files = ['expedition.html', 'expedition-login.html', 'google-callback.html', 'google-callback.mjs', 'expedition.mjs', 'expedition.css', 'combat-camera.mjs',
+  const files = ['journey-share.html', 'journey-share.mjs', 'expedition.html', 'expedition-login.html', 'google-callback.html', 'google-callback.mjs', 'expedition.mjs', 'expedition.css', 'combat-camera.mjs',
     'boss-encounter-effects.mjs', 'boss-encounter-actions.mjs', 'combat-assets',
     'node_modules/three/build/three.module.js', 'node_modules/three/build/three.core.js',
     ...(await readdir(root)).filter(name => /^expedition-.*\.(?:css|mjs)$/.test(name) && !name.endsWith('.test.mjs'))];
@@ -33,8 +33,10 @@ if (process.argv.includes('--game')) {
   const { build } = await import('esbuild');
   await build({ entryPoints: [join(root, 'expedition-login.mjs')], outfile: join(destination, 'public', 'expedition-login.mjs'),
     bundle: true, format: 'esm' });
-  const dice = join(destination, 'public', 'expedition-dice-vfx.mjs');
-  await writeFile(dice, (await readFile(dice, 'utf8')).replace('./node_modules/three/', './vendor/three/'));
+  for (const name of ['expedition-dice-vfx.mjs', 'expedition-battle-vfx.mjs']) {
+    const effect = join(destination, 'public', name);
+    await writeFile(effect, (await readFile(effect, 'utf8')).replace('./node_modules/three/', './vendor/three/'));
+  }
   const docker = join(destination, 'Dockerfile');
   await writeFile(docker, (await readFile(docker, 'utf8')) +
     '\nCOPY --chown=node:node public/ /app/public/\nENV VEILBOUND_PUBLIC_DIR=/app/public\n');

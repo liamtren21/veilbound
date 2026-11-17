@@ -228,6 +228,22 @@ assert.equal(gearRun.heroes[0].guard,true);
 assert.equal(gearRun.heroes[0].ward,12);
 assert.equal(moveEquipment(gearRun,'rook',0),false);
 const mara=gearRun.heroes.find(hero=>hero.id==='mara');
+for(const [relicStage, bonus, laterRoundBonus] of [[1,5,5],[2,9,0]]){
+  const run=structuredClone(gearRun);
+  run.nftLoadout={relicStage};
+  const initialOrder=[...run.heroes];
+  const wearer=run.heroes.find(hero=>hero.id==='mara');
+  for(const [number, expected] of [[1,bonus],[1,0],[2,laterRoundBonus]]){
+    const savedWard=wearer.ward;
+    run.battle.round=number;
+    run.heroes=[...initialOrder];
+    const die=run.battle.dice.find(die=>die.id==='party1');
+    die.spent=false;
+    face(run,'party1','rotate-left');
+    assert.ok(resolve(run,'party1','mara'));
+    assert.equal(wearer.ward-savedWard,expected);
+  }
+}
 face(gearRun,'party1','rotate-left');
 assert.ok(resolve(gearRun,'party1','mara'));
 assert.equal(mara.ward,7);
@@ -357,4 +373,3 @@ const campaignProgress=freshProgress();
 assert.ok(settleRun(campaignProgress,campaign).xp>60);
 assert.equal(campaignProgress.talismans.gate.wins,1);
 console.log('PASS: five regional bosses, escalating stats, save/resume and one final settlement');
-

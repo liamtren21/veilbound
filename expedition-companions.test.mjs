@@ -132,3 +132,24 @@ test('a legacy active summon restores to its owner bond without refreshing HP or
   assert.equal(restored.battle.companion.owner,owner.key);
   assert.equal(other.ward,otherWard);
 });
+
+test('a finalized Bond replaces Strike on the lead die and grants Defense only on arrival',()=>{
+  const standard=fight();
+  const bonded=structuredClone(standard);
+  bonded.nftLoadout={companionId:'flintback',companionRules:1};
+  advance(standard);
+  advance(bonded);
+  const normalPool=standard.battle.dice[0].pool;
+  const bondPool=bonded.battle.dice[0].pool;
+  assert.ok(normalPool.includes('strike'));
+  assert.ok(bondPool.includes('idle'));
+  assert.equal(new Set(bondPool).size,6);
+  assert.deepEqual(bondPool,normalPool.map(face=>face==='strike'?'summon':face==='summon'?'idle':face));
+  const owner=bonded.heroes[0];
+  const defense=owner.ward;
+  call(bonded);
+  assert.equal(owner.ward-defense,12);
+  advance(bonded);
+  assert.equal(owner.ward-defense,20);
+  assert.equal(bonded.battle.summonCount,1);
+});

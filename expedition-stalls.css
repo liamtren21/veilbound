@@ -1,5 +1,6 @@
 .shopkeeper{position:absolute;inset:auto 4% 4% auto;width:42%;height:83%;object-fit:contain;object-position:center bottom;pointer-events:none}
 body[data-vendor=merrin] .shopkeeper{right:29%}
+.shopkeeper{mask-image:linear-gradient(to bottom,#000 77%,transparent 100%)}
 body[data-vendor] #decision{left:0;right:0;bottom:0;transform:none;width:100%;max-height:calc(100% - 52px);
   padding:16px clamp(16px,4vw,62px);background:none;border:0;border-image:none;box-shadow:none;display:block;pointer-events:none}
 body[data-vendor] #decision :is(button,select,input){pointer-events:auto}

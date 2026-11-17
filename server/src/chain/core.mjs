@@ -142,6 +142,26 @@ export function createCoreClient({ coreId, copperId, transport = fetch }) {
         itemId: order.token_id, grossAtomic: String(gross),
         feeAtomic: String(fee), payoutAtomic: String(gross - fee), blockHash: snapshot.blockHash };
     },
+    async craftQuote(accountId, recipeId) {
+      checkAccount(accountId);
+      if (typeof recipeId !== 'string' || !idPattern.test(recipeId)) throw new Error('invalid_craft');
+      const { value: recipe, blockHash } = await view(coreId, 'get_recipe', { recipe_id: recipeId });
+      if (!blockHash || !recipe) throw new Error('craft_recipe_unavailable');
+      const account = { account_id: accountId };
+      const [balance, ...stock] = await Promise.all([
+        view(coreId, 'get_balance', account, blockHash),
+        ...recipe.input_ids.map(token_id => view(coreId, 'get_item_balance', { ...account, token_id }, blockHash)),
+      ]);
+      if ([balance, ...stock].some(entry => entry.blockHash !== blockHash)) throw new Error('craft_snapshot_mismatch');
+      const inputs = recipe.input_ids.map((itemId, index) => ({
+        itemId, required: recipe.input_amounts[index], available: stock[index].value.available,
+      }));
+      return { recipeId, blockHash, inputs,
+        output: { itemId: recipe.output_id, quantity: recipe.output_amount },
+        copperAtomic: recipe.copper_cost, availableCopperAtomic: balance.value.available,
+        affordable: BigInt(balance.value.available) >= BigInt(recipe.copper_cost) &&
+          inputs.every(item => BigInt(item.available) >= BigInt(item.required)) };
+    },
     prepareCraft({ operationId, recipeId }) {
       if (typeof operationId !== 'string' || typeof recipeId !== 'string' ||
           !idPattern.test(operationId) || !idPattern.test(recipeId)) throw new Error('invalid_craft');
@@ -187,7 +207,7 @@ export function createCoreClient({ coreId, copperId, transport = fetch }) {
           'get_artifact', 'get_nft_sale', 'get_nft_rental', 'get_nft_run_lock',
         ].map(method => view(coreId, method, args, page.blockHash)));
         if (artifact.value?.status !== 'ready' || artifact.value.transfer_pending) return null;
-        return { token, sale: sale.value, locked: Boolean(rental.value || lock.value) };
+        return { token, kind: artifact.value.kind, epoch: artifact.value.epoch, sale: sale.value, locked: Boolean(rental.value || lock.value) };
       }));
       return { items: items.filter(Boolean), nextCursor: page.value.length === limit ? String(BigInt(cursor) + BigInt(limit)) : null };
     },
@@ -207,7 +227,9 @@ export function createCoreClient({ coreId, copperId, transport = fetch }) {
         const use = kind === 'RELIC' ? 'get_relic_usage_holder' : 'get_companion_bond';
         const { value } = await view(coreId, use, args, page.blockHash);
         if (kind === 'RELIC' ? value !== accountId : !value) return null;
-        return { id: token.token_id, title: token.metadata?.title || token.token_id, kind,
+        const stage = kind === 'RELIC'
+          ? (await view(coreId, 'get_artifact_stage', args, page.blockHash)).value : undefined;
+        return { id: token.token_id, title: token.metadata?.title || token.token_id, kind, stage,
           ready: artifact.value.status === 'ready', companion: kind === 'COMPANION_BOND' ? value : undefined };
       }));
       return { items: items.filter(Boolean), next: page.value.length === limit ? String(BigInt(offset) + BigInt(limit)) : null };
@@ -371,6 +393,7 @@ export function createCoreClient({ coreId, copperId, transport = fetch }) {
         if (holder.value !== accountId) throw new Error('relic_unavailable');
         binding.relicToken = relicToken;
         binding.relicEpoch = first.artifact.value?.epoch;
+        if ([1, 2].includes(first.stage?.value)) binding.relicStage = first.stage.value;
       }
       if (companionToken) {
         const snapshot = relicToken ? await this.artifact(companionToken, blockHash) : first;
@@ -379,6 +402,7 @@ export function createCoreClient({ coreId, copperId, transport = fetch }) {
             snapshot.artifact.value?.transfer_pending || snapshot.sale.value || !bond.value) throw new Error('companion_unavailable');
         binding.companionToken = companionToken;
         binding.companionId = bond.value;
+        if (runId) binding.companionRules = 1;
         binding.companionEpoch = snapshot.artifact.value.epoch;
       }
       if (runId) {
@@ -420,6 +444,25 @@ export function createCoreClient({ coreId, copperId, transport = fetch }) {
         return prepared;
       }
       throw new Error('invalid_guild_action');
+    },
+    async charterStock(accountId, charterId) {
+      checkAccount(accountId);
+      const { token, artifact } = await this.artifact(charterId);
+      const shop = artifact.value;
+      if (!token.blockHash || token.value?.owner_id !== accountId ||
+          shop?.kind !== 'SHOP_CHARTER' || shop.status !== 'ready' || shop.transfer_pending) {
+        throw new Error('charter_unavailable');
+      }
+      const account = { account_id: shop.vault_id };
+      const items = ['salt', 'resin', 'iron', 'thread', 'ash', 'salve', 'ward', 'relic-inlay', 'binding'];
+      const [balance, orders, ...stock] = await Promise.all([
+        view(coreId, 'get_balance', account, token.blockHash),
+        view(coreId, 'get_shop_open_order_count', { token_id: charterId }, token.blockHash),
+        ...items.map(token_id => view(coreId, 'get_item_balance', { ...account, token_id }, token.blockHash)),
+      ]);
+      return { epoch: shop.epoch, copper: balance.value, openOrders: orders.value,
+        stock: items.map((id, index) => ({ id, available: stock[index].value.available,
+          reserved: stock[index].value.reserved })) };
     },
     async prepareCharterOrder(accountId, input) {
       checkAccount(accountId);

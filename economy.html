@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Market &amp; Treasury · VEILBOUND</title>
-  <link rel="stylesheet" href="./economy.css?v=market-listings-v1">
+  <link rel="stylesheet" href="./economy.css?v=wallet-actions-v1">
   <link rel="stylesheet" href="./waymark-screens.css?v=1">
 </head>
 <body>
@@ -41,14 +41,7 @@
           <label>Quantity <input name="quantity" required pattern="[1-9][0-9]{0,37}" inputmode="numeric"></label>
           <label>Copper per unit <input name="price" required inputmode="decimal" placeholder="0.00"></label>
           <label>Expires after <select name="hours"><option value="24">24 hours</option><option value="168">7 days</option></select></label>
-          <button>Review order</button>
-        </form></div>
-<div data-market-pane="publish-order" hidden>
-        <button type="button" data-market-action="browse">Back to Orders</button>
-        <h2>Recover Order</h2>
-        <form id="publish-order" class="fields">
-          <label>Transaction hash <input name="transactionHash" required minlength="40" maxlength="50"></label>
-          <button>Recover</button>
+          <button>Place order</button>
         </form></div>
     </section>
     <section id="artifacts" class="market-page" hidden>
@@ -60,7 +53,7 @@
       </div>
       <p id="artifact-no-match" hidden>No matching listings on this page.</p>
       <p id="sale-credit"></p>
-      <button id="withdraw-credit" type="button" hidden>Review credit withdrawal</button>
+      <button id="withdraw-credit" type="button" hidden>Withdraw credit</button>
       <div id="sales"><p>Connect your wallet to load artifact sales.</p></div>
       <button id="more-sales" type="button" hidden>Load more sales</button>
         <summary>List an artifact for sale</summary></div>
@@ -83,34 +76,38 @@
           <label>Relic token ID <input name="tokenId" required maxlength="96"></label>
           <label>Price in testNEAR <input name="price" required inputmode="decimal"></label>
           <label>Rental period <select name="durationHours"><option value="24">24 hours</option><option value="168">7 days</option></select></label>
-          <button>Review rental offer</button>
+          <button>List for rent</button>
         </form></div>
     </section>
     <section id="charter" class="market-page" hidden>
-      <div class="market-actions" role="group" aria-label="Actions"><button type="button" data-market-action="charter-fund">Fund Vault</button><button type="button" data-market-action="charter-place">New Order</button><button type="button" data-market-action="charter-cancel">Cancel Order</button></div>
+      <header class="charter-header"><h2>Shop Charter</h2></header>
+      <p id="charter-stock-status" role="status">Load your Shop Charters to manage their stock.</p>
+      <button id="charter-refresh" type="button">Load My Charters</button>
+      <div class="charter-selector" hidden>
+        <label>Shop Charter <select id="charter-picker"></select></label>
+      </div>
+      <div id="charter-stock" aria-live="polite"></div>
+      <datalist id="charter-item-catalog"></datalist>
+      <div id="charter-actions" class="market-actions" hidden role="group" aria-label="Actions"><button type="button" data-market-action="charter-fund">Fund Vault</button><button type="button" data-market-action="charter-place">New Order</button><button type="button" data-market-action="charter-cancel">Cancel Order</button></div>
+<div id="charter-forms" hidden>
 <div data-market-pane="charter-fund"><form id="charter-fund" class="fields">
-        <label>Charter token ID <input name="charterId" required maxlength="96"></label>
-        <label>Owner epoch <input name="expectedEpoch" required pattern="[0-9]+"></label>
         <label>Copper amount <input name="copper" inputmode="decimal" value="0" required></label>
-        <label>Item ID (optional) <input name="tokenId" maxlength="96"></label>
+        <label>Item ID (optional) <input name="tokenId" list="charter-item-catalog" maxlength="96"></label>
         <label>Item quantity <input name="quantity" inputmode="numeric" pattern="[1-9][0-9]*"></label>
-        <button>Review vault funding</button>
+        <button>Fund vault</button>
       </form></div>
 <div data-market-pane="charter-place" hidden><form id="charter-place" class="fields">
-        <label>Charter token ID <input name="charterId" required maxlength="96"></label>
-        <label>Owner epoch <input name="expectedEpoch" required pattern="[0-9]+"></label>
         <label>Side <select name="side"><option value="buy">Buy</option><option value="sell">Sell</option></select></label>
-        <label>Item ID <input name="tokenId" required maxlength="96"></label>
+        <label>Item ID <input name="tokenId" list="charter-item-catalog" required maxlength="96"></label>
         <label>Quantity <input name="quantity" required pattern="[1-9][0-9]*"></label>
         <label>Copper per unit <input name="price" inputmode="decimal" required></label>
-        <button>Review shop order</button>
+        <button>Place shop order</button>
       </form></div>
 <div data-market-pane="charter-cancel" hidden><form id="charter-cancel" class="fields">
-        <label>Charter token ID <input name="charterId" required maxlength="96"></label>
-        <label>Owner epoch <input name="expectedEpoch" required pattern="[0-9]+"></label>
         <label>Order ID <input name="orderId" required maxlength="96"></label>
-        <button>Review cancellation</button>
+        <button>Cancel order</button>
       </form></div>
+      </div>
     </section>
     <section id="crafting" class="market-page" hidden>
       <div class="market-actions" role="group" aria-label="Actions"><button type="button" data-market-action="browse">Specialties</button><button type="button" data-market-action="craft-item">Craft</button><button type="button" data-market-action="craft-commission">Commission</button><button type="button" data-market-action="craft-action">Manage</button></div>
@@ -129,20 +126,20 @@
 <div data-market-pane="craft-item" hidden><form id="craft-item" class="fields">
         <label>Recipe <select name="recipeId" required></select></label>
         <label>Workshop <select name="workshop"><option value="public">Public workshop</option><option value="specialty">My specialty</option></select></label>
-        <button>Review craft</button>
-      </form></div>
+        <button>Craft</button>
+      </form><ul id="craft-materials" aria-label="Buy recipe ingredients"></ul></div>
 <div data-market-pane="craft-commission" hidden><form id="craft-commission" class="fields">
           <label>Recipe <select name="recipeId" required></select></label>
           <label>Crafter wallet <input name="worker" required maxlength="64"></label>
           <label>Wage in Copper <input name="wage" required inputmode="decimal"></label>
           <label>Deadline <select name="hours"><option value="24">24 hours</option><option value="72">3 days</option></select></label>
-          <button>Review commission</button>
+          <button>Commission</button>
         </form></div>
 <div data-market-pane="craft-action" hidden><form id="craft-action" class="fields">
           <label>Action <select name="action"><option value="fulfill">Fulfill</option><option value="cancel">Cancel</option></select></label>
           <label>Buyer wallet <input name="buyer" required maxlength="64"></label>
           <label>Order ID <input name="orderId" required maxlength="96"></label>
-          <button>Review action</button>
+          <button>Apply action</button>
         </form></div>
     </section>
     <section id="guild" class="market-page" hidden>
@@ -168,7 +165,7 @@
           <label data-guild-for="propose approve release-expired">Payment ID <input name="paymentId" required maxlength="96"></label>
           <label data-guild-for="propose">Recipient wallet <input name="recipient" required maxlength="64"></label>
           <label data-guild-for="propose">Expires after <select name="hours"><option value="24">24 hours</option><option value="72">3 days</option></select></label>
-          <button>Review guild action</button>
+          <button>Apply guild action</button>
         </form></div>
     </section>
   </main>
@@ -178,16 +175,9 @@
     <form id="list-sale" class="fields">
       <label>Price in testNEAR <input name="price" required inputmode="decimal"></label>
       <p id="listing-proceeds" role="status"></p>
-      <div class="actions"><button id="listing-back" type="button">Back</button><button>Complete Listing</button></div>
+      <div class="actions"><button id="listing-back" type="button">Back</button><button>List artifact</button></div>
     </form>
   </dialog>
-  <dialog id="review" aria-labelledby="review-title">
-    <form method="dialog">
-      <h2 id="review-title">Review transaction</h2>
-      <div id="review-details"></div>
-      <div class="actions"><button value="cancel">Back</button><button value="sign">Open wallet to sign</button></div>
-    </form>
-  </dialog>
-  <script type="module" src="./economy.mjs?v=market-listings-v2"></script>
+  <script type="module" src="./economy.mjs?v=wallet-actions-v1"></script>
 </body>
 </html>

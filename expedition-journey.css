@@ -334,37 +334,76 @@ button.loot-slot{background:#f4d692;border-color:#785841;font-size:1.2rem}
   background:linear-gradient(105deg,#72312b,#ba654c 35%);clip-path:polygon(0 18%,90% 0,84% 42%,100% 86%,5% 100%)}
 .loot-board-art{position:absolute;pointer-events:none;bottom:1%;left:8%;width:84%;height:72%;object-fit:contain;
   filter:grayscale(1) sepia(.5) brightness(.45);opacity:.3;mix-blend-mode:multiply}
-.loot-entry{isolation:auto}
 .loot-row{width:100%;display:flex;align-items:center;gap:12px;text-align:left;min-height:clamp(45px,10vh,90px);
   border:2px solid #ac8266;border-radius:1px;color:#43271e;background:#f1d9bc;font-size:clamp(.8rem,1.65vw,1.35rem)}
 .loot-icon{display:inline-grid;place-items:center;flex:none;width:clamp(22px,4vw,55px);aspect-ratio:1}
 .loot-icon-shield{color:#ffe3a6;background:radial-gradient(#73513a,#3b2a23);clip-path:polygon(8% 8%,50% 1%,92% 8%,91% 64%,50% 98%,9% 64%)}
 .loot-icon-salve{background:url('combat-assets/wood-shop-items-v2.png') 0 0/300% 300%}
 .loot-check{margin-left:auto;color:#245942}
-.loot-details{visibility:hidden;opacity:0;position:absolute;z-index:2;right:calc(100% - 24px);top:-11%;width:clamp(165px,23vw,300px);
-  background:#f0dfbd;color:#3b2a21;border:1px solid #997451;padding:9px;box-shadow:2px 5px 10px #150e0b70;pointer-events:none}
-.loot-entry:hover .loot-details,.loot-entry:focus-within .loot-details{visibility:visible;opacity:1}
-.loot-details>*{display:block}
-.loot-details strong,.loot-details small{text-align:center}
-.loot-details b{margin:6px -9px;padding:4px 9px;background:#dbc29d;color:#315849}
-#combat-tokens{
-  display:flex;gap:3px;padding:3px;
-  border:1px solid #825341;background:#29161de8;
+#combat-tokens {
+  --item-slot-size: clamp(20px, 3.6vw, 34px);
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, .4vw, 5px);
+  padding: 3px;
 }
-#combat-tokens button,#combat-tokens .empty-token{
-  display:grid;place-items:center;width:29px;height:29px;padding:0;border:0;border-radius:0;
-  background:var(--orchard-warden-tile) center / 100% 100% no-repeat;
+#combat-tokens[hidden] { display: none; }
+#combat-tokens > :is(button, .empty-token) {
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  flex: 0 0 var(--item-slot-size);
+  width: var(--item-slot-size);
+  height: var(--item-slot-size);
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #a16c48;
+  border-radius: 4px;
+  color: #ead9a6;
+  background: radial-gradient(ellipse at 50% 28%, #634239, #2f1c22 72%);
+  box-shadow: 0 0 0 1px #230f11, inset 0 0 0 1px #321619;
+  overflow: hidden;
 }
-#combat-tokens button{color:#ead9a6}
-#combat-tokens .empty-token{opacity:.5}
-@media(max-width:680px){
-  #combat-tokens{gap:2px;padding:2px}
-  #combat-tokens button,#combat-tokens .empty-token{width:clamp(19px,5.7vw,24px);height:clamp(19px,5.7vw,24px)}
+#combat-tokens > :is(button, .empty-token)::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid #bb805d;
+  border-radius: 2px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 74%, 26% 74%, 26% 100%, 74% 100%, 74% 74%, 100% 74%, 100% 26%, 74% 26%, 74% 0, 26% 0, 26% 26%, 0 26%);
+  pointer-events: none;
+}
+#combat-tokens > .empty-token {
+  background: radial-gradient(ellipse at 50% 36%, #402730, #291821);
+  border-color: #754837;
+}
+#combat-tokens > .empty-token::after { opacity: .4; }
+#combat-tokens .shop-item-frame {
+  width: 70%;
+  height: 70%;
+  border-radius: 0;
+  background: none;
+  pointer-events: none;
+}
+#combat-tokens .shop-item-frame::after { display: none; }
+#combat-tokens .shop-item-frame > :is(.item-icon, .loot-icon, .shop-item-cutout) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: contain;
+}
+#combat-tokens > button:enabled:hover {
+  border-color: #efc288;
+  box-shadow: 0 0 8px #e6a45b8c, inset 0 0 4px #e6a45b66;
 }
 .tutorial-loot #decision .loot-leave{position:relative;align-self:center;margin-top:auto;background:#a3432e;color:#fff0cb;min-width:90px;border:1px solid #3a2119;border-image:none;box-shadow:0 3px #281a16}
 body[data-phase=map] #satchel-menu{position:fixed;bottom:18px;left:18px}
 body[data-phase=map] #satchel-menu .popover{inset:auto auto 100% 0;margin-bottom:8px}
-@media(max-width:600px){.tutorial-loot #loot-diary{width:46%;padding:7px}.tutorial-loot #decision{right:3%;width:46%;padding:5px}.tutorial-loot #decision-title{margin:-25px -5px 5px}.tutorial-loot #decision-title::after{display:none}.loot-warden{gap:4px;padding:4px}.loot-row{gap:4px;padding:4px}.loot-entry{position:relative}.loot-details{top:95%;right:0}.journey-coach[data-page=gear-equip]{--bubble-top:65%}}
+@media(max-width:600px){.tutorial-loot #loot-diary{width:46%;padding:7px}.tutorial-loot #decision{right:3%;width:46%;padding:5px}.tutorial-loot #decision-title{margin:-25px -5px 5px}.tutorial-loot #decision-title::after{display:none}.loot-warden{gap:4px;padding:4px}.loot-row{gap:4px;padding:4px}.journey-coach[data-page=gear-equip]{--bubble-top:65%}}
 .journey-coach[data-page=versus]{top:15%;width:min(65vw,720px);color:#f8dfb2;background:linear-gradient(90deg,transparent,#241712ef 20% 80%,transparent);font-size:clamp(25px,5vw,48px);padding:14px}
 .journey-coach[data-page=versus] p{margin:0}
 .options-menu{background:#231c18f5;border:1px solid #b08c57;padding:clamp(12px,4vw,30px);margin:auto;max-height:90vh;overflow:auto}
@@ -449,3 +488,23 @@ body[data-phase=map] #satchel-menu .popover{inset:auto auto 100% 0;margin-bottom
 @media(max-width:420px){
   .title-menu button{border-inline-width:20px;border-image-width:9px 20px;font-size:.79rem}
 }
+
+.journey-screen.journey-pause {
+  background: #140d10a8;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+.journey-pause .options-menu {
+  width: min(100%, 315px);
+  gap: 9px;
+  margin: auto;
+  text-align: center;
+  padding: 22px 24px;
+  background: linear-gradient(145deg, #4c2625, #28161c);
+  border: 6px solid transparent;
+  border-image: url('combat-assets/expedition-hall-frame-v1.png') 23% / 32px / 0 stretch;
+  background-clip: padding-box;
+  box-shadow: 0 12px 40px #120809b3;
+}
+.journey-pause h2 { margin: 0 0 5px; font-size: 1.25rem; }
+.journey-pause button { width: 100%; }

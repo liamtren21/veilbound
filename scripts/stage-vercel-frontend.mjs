@@ -35,7 +35,7 @@ for (const name of ['expedition-login.mjs', 'online-expedition.mjs', 'economy.mj
   });
 }
 await prepare(destination);
-await rename(join(destination, 'expedition.html'), join(destination, 'index.html'));
+await cp(join(destination, 'expedition.html'), join(destination, 'index.html'));
 await writeFile(join(destination, 'vercel.json'), JSON.stringify({
   framework: null,
   rewrites: [

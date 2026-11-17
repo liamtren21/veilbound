@@ -4,7 +4,7 @@ import { resolve as pathResolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { openRuns } from '../server/src/runs/service.mjs';
 import { active, describe, resolve, canEndRound, shopInventory, tokenCount } from '../expedition-rules.mjs';
-import { equipment, story, regions } from '../expedition-data.mjs';
+import { equipment, storyChoices, storyOffer, regions } from '../expedition-data.mjs';
 
 const clone = state => {
   const copy = structuredClone(state);
@@ -153,7 +153,9 @@ function fieldChoice(snapshot) {
   }
   if (phase === 'event') {
     if (node === 'trainer') return { type: 'trainer', choice: 'rest' };
-    const choices = story[node].choices.map(([choice]) => choice);
+    const offer = storyOffer(state);
+    if (offer?.eligible) return { type: 'event', choice: offer.id };
+    const choices = storyChoices(state).map(([choice]) => choice);
     const choice = choices.includes('rest') ? 'rest' :
       choices.includes('letter') ? 'letter' : choices.includes('leave') ? 'leave' : choices[0];
     return { type: 'event', choice };

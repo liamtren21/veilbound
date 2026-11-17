@@ -65,7 +65,7 @@ export function openNearSocialAuth(file, { walletAuth, clientId, dailyLimit, spo
         typeof deposit === 'string' && /^[1-9][0-9]{0,22}$/.test(deposit) &&
         BigInt(deposit) <= 16_600_000_000_000_000_000_000n && gas === '30000000000000';
       const claim = methodName === 'claim_reward' && args?.receipt?.account_id === signerId &&
-        deposit === '1' && gas === '150000000000000';
+        deposit === '0' && gas === '150000000000000';
       if (transaction?.receiverId !== coreId || transaction.network !== 'testnet' ||
           transaction.actions?.length !== 1 || call.type !== 'FunctionCall' || (!storage && !claim)) {
         throw new Error('NEAR_SOCIAL_TRANSACTION_UNAVAILABLE');

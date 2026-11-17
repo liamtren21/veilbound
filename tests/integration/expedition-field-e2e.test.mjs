@@ -117,11 +117,13 @@ test('authoritative local Expedition clears an elite and a boss before paying Fi
     const progress = runs.verifyProgress(player.playerId, runId);
     assert.ok(progress.observations.some(event => event.kind === 'encounter-clear' && event.node === 'graft'), JSON.stringify(progress.observations));
     let payout;
-    for (let attempt = 0; attempt < 100; attempt++) {
+    const pollDelay = sandbox ? 250 : 20;
+    const timeout = Date.now() + (sandbox ? 30_000 : 2_000);
+    do {
       [payout] = (await api(fieldPath)).contracts;
       if (payout.status === 'paid') break;
-      await new Promise(resolve => setTimeout(resolve, 20));
-    }
+      await setTimeout(pollDelay);
+    } while (Date.now() < timeout);
     assert.equal(payout.status, 'paid');
     assert.equal(payout.receipt.beneficiary, beneficiary);
     assert.ok(payout.evidence.clearSequence < payout.evidence.checkpointSequence);

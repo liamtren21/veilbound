@@ -82,3 +82,27 @@ main > nav a::before{width:23px;height:23px}
 #listing-item{display:flex;align-items:center;gap:14px;margin-block:12px}
 #listing-item img{width:80px;height:80px;object-fit:contain;background:#243633}
 #list-sale{display:grid}
+
+#charter .charter-header{
+  display:grid;align-items:center;justify-items:end;
+  min-height:clamp(90px,17vw,170px);padding:16px clamp(14px,5vw,52px);
+  background:linear-gradient(90deg,transparent,#16130d33 55%,#16130d99),
+    url('combat-assets/market-charter-header-v2.webp') left center/cover no-repeat;
+  color:#f6dfb7;
+}
+#charter .charter-header h2{margin:0;text-shadow:0 2px 7px #16100c}
+
+main > nav a[href="#charter"]{--mark:url('combat-assets/market-charter-mark-v2.webp')}
+
+.charter-selector{margin:8px 0;width:min(100%,22rem)}
+.charter-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr));gap:8px;margin:12px 0}
+.charter-metrics>div,.charter-stock-list li{
+  background:#2b1b24;border:2px solid transparent;
+  border-image:url('combat-assets/expedition-hall-frame-v1.png') 23% / 16px / 0 stretch;
+  padding:8px 12px;
+}
+.charter-metrics dd{margin:0;color:#ffdfab;font-variant-numeric:tabular-nums}
+.charter-stock-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:8px;list-style:none;padding:0}
+.charter-stock-list li{display:grid;align-content:start;gap:4px}
+.charter-stock-list li>span{color:var(--muted)}
+.charter-stock-list button{justify-self:start}

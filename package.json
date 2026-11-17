@@ -1,8 +1,9 @@
 {
-  "name": "veilbound",
+  "name": "mara-three-motion-trial",
   "private": true,
   "type": "module",
   "scripts": {
+    "check": "node check.mjs",
     "start:api": "node server/src/main.mjs",
     "test:backend": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs",
     "test:gameplay": "node --test expedition-*.test.mjs"

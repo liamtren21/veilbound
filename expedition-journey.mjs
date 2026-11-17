@@ -1,7 +1,7 @@
-import {heroes} from './expedition-data.mjs';
+import {heroes,nodes} from './expedition-data.mjs';
 import {openTitleLogin,requestTitleAuth,titleAuthenticated} from './expedition-title-auth.mjs?v=menu-session-v1';
-import {applySettings,resetSettings,settings,cue,setMusicEnabled} from './expedition-options.mjs';
-import {cinematic,motionWindow} from './expedition-cinematics.mjs';
+import {applySettings,resetSettings,settings,cue,setMusicEnabled,setMusicScene} from './expedition-options.mjs?v=sfx-v2';
+import {cinematic} from './expedition-cinematics.mjs';
 import {paintDiceFace} from './expedition-dice-paint.mjs?v=oar-v22';
 import {freshProgress,settleRun,talismanStats,talismanUnlocked,talismans,xpRewards} from './expedition-progression.mjs';
 const PROFILE='veilbound-profile-v1';
@@ -24,14 +24,19 @@ export const lessonPages=[
   ['dark','The dark dice command the beasts.'],
   ['controls','Use either side’s dice in any order. A face with a choice asks you to pick a target.'],
 ];
+const quickLessonPages=[
+  ['versus','Battle Start'],
+  ['controls','Light dice command your wardens. Dark dice command enemies. Resolve either side in any order.'],
+];
 export function lessonPage(state){
   if(state.node!=='road'||state.phase!=='battle')return null;
   const index=state.tutorial?.introPage;
   if(!state.tutorial?.enabled&&index!==0)return null;
-  return Number.isInteger(index)?lessonPages[index]??null:null;
+  const pages=state.tutorial?.quick?quickLessonPages:lessonPages;
+  return Number.isInteger(index)?pages[index]??null:null;
 }
 
-export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy,reduced,wardenPreview,deleteSave}){
+export function createJourney({leaveBattle,getState,saveRun,newJourney,resume,hasSave,isBusy,reduced,wardenPreview,deleteSave}){
   let profile;
   try{profile=JSON.parse(localStorage.getItem(PROFILE));}catch{}
   if(profile?.version!==1)profile={version:1,openingSeen:false,tutorialDone:false};
@@ -106,7 +111,10 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
     }
   },true);
   function el(tag,text,className){const e=document.createElement(tag);e.textContent=text??'';if(className)e.className=className;return e;}
-  function btn(text,fn){const b=el('button',text);b.type='button';b.onclick=()=>{cue('select');fn();};return b;}
+  function btn(text,fn){const b=el('button',text);b.type='button';b.onclick=fn;
+    if(/^(Back|Resume|Quit|Cancel)$/.test(text))b.dataset.sfx='ui-back';
+    else if(/^(Start|New Game|Continue)$/.test(text))b.dataset.sfx='ui-confirm';
+    else if(/^(Options|Settings|Account|Compendium)$/.test(text))b.dataset.sfx='ui-open';return b;}
   function speech(text,advance){
     let complete=reduced();
     const button=btn('',()=>{
@@ -137,11 +145,16 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
   }
   function show(label){
     clearTimeout(timer);returnFocus=document.activeElement;overlay.hidden=false;main.inert=true;coach.hidden=true;spotlight.hidden=true;
-    overlay.classList.remove('journey-title','journey-starter','journey-account','journey-compendium');
+    overlay.classList.remove('journey-title','journey-starter','journey-account','journey-compendium','journey-pause');
     overlay.setAttribute('aria-label',label);overlay.replaceChildren();
+  }
+  function updateJourneyMusic(){
+    const run=getState();
+    setMusicScene(run.phase==='battle'&&nodes.some(node=>node.id===run.node&&node.type==='boss')?'boss':'expedition');
   }
   function close(){
     clearTimeout(timer);overlay.hidden=true;main.inert=false;mode=null;returnFocus?.focus?.();refresh();
+    updateJourneyMusic();
   }
   overlay.addEventListener('keydown',e=>{
     if(e.key==='Escape'&&mode==='opening'){e.preventDefault();overlay.querySelector('[data-skip]')?.click();}
@@ -185,7 +198,7 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
     return receipt;
   }
   function begin(tutorial,starter){
-    newJourney(tutorial,{talisman:starter.id,xp:talismanStats(profile.progress,starter.id).xp});
+    newJourney(tutorial,{talisman:starter.id,xp:talismanStats(profile.progress,starter.id).xp,quickTutorial:tutorial});
     continueJourney();
   }
   function continueJourney(){
@@ -341,7 +354,7 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
     const language=el('select');language.add(new Option('English'));language.disabled=true;row('Language',language);
     for(const [key,name] of [['master','Master Volume'],['effects','Effects Volume'],['music','Music Volume']]){
       const slider=el('input');slider.type='range';slider.min=0;slider.max=100;slider.value=settings[key];
-      slider.oninput=()=>applySettings({[key]:Number(slider.value)});slider.onchange=()=>cue('select');row(name,slider);
+      slider.oninput=()=>applySettings({[key]:Number(slider.value)});slider.onchange=()=>cue('ui-tab');row(name,slider);
     }
     row('Combat Speed',select('speed',[[1,'×1'],[3,'×3']]));
     const motion=el('input');motion.type='checkbox';motion.checked=settings.motion;motion.onchange=()=>applySettings({motion:motion.checked});row('Reduce motion',motion);
@@ -354,9 +367,13 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
   }
   function pause(){
     if(isBusy())return;
-    show('Pause');mode='pause';
-    const panel=el('div','','journey-menu options-menu');panel.append(el('h2','Pause'),btn('Resume',()=>{close();resume();}),btn('Options',()=>options(pause)),btn('Main Menu',title));
-    overlay.append(panel);panel.querySelector('button').focus();
+    show('Settings');mode='pause';
+    overlay.classList.add('journey-pause');
+    const panel=el('div','','journey-menu options-menu');
+    panel.append(el('h2','Settings'),btn('Resume',close),btn('Options',()=>options(pause)),
+      btn(leaveBattle?'Expedition Kit':'Main Menu',leaveBattle??title));
+    overlay.append(panel);
+    panel.querySelector('button').focus();
   }
   function leaveAccount(){
     title();
@@ -488,6 +505,7 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
       status.textContent='Could not load your account. Return to the menu and open Account again.';
     }
   }
+  const guestSessionKey='veilbound-title-guest';
   let signedIn=false;
   function title(boot=false){
     if(!signedIn)return titleLogin(boot);
@@ -518,16 +536,33 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
         cancel.remove();
       }
     };
+    const playGuest=btn('Play as Guest', async ()=>{
+      const buttons=[...panel.querySelectorAll('button')];
+      buttons.forEach(button=>{button.disabled=true;});
+      status.textContent='Preparing your expedition…';
+      try{
+        const guest=await requestTitleAuth('guest',{});
+        if(!guest?.playerId)throw new Error('Guest session unavailable.');
+        localStorage.setItem(guestSessionKey,guest.playerId);
+        signedIn=true;
+        if(hasSave())titleMenu();
+        else selectStarter(true);
+      }catch{
+        status.textContent='Could not open a guest expedition. Try again.';
+        buttons.forEach(button=>{button.disabled=false;});
+      }
+    });
     panel.classList.add('title-login');
     panel.setAttribute('aria-label','Sign in');
     overlay.setAttribute('aria-label','Sign in to VEILBOUND');
-    panel.replaceChildren(btn('Login with Wallet',()=>enter('wallet')),btn('Login with Social',()=>enter('social')),status);
+    panel.replaceChildren(btn('Login with Wallet',()=>enter('wallet')),btn('Login with Social',()=>enter('social')),playGuest,status);
     if(boot)return view;
     view.heading.append(titleLogo);
     panel.inert=false;
   }
   function titleMenu(boot=false){
     if(isBusy())return;
+    setMusicScene('menu');
     setMusicEnabled(true);
     show('VEILBOUND main menu');mode='title';
     overlay.style.backgroundImage='radial-gradient(ellipse at 50% 30%,#17100ecf,#090706fa 75%),url("combat-assets/orchard-expedition-panorama-v2.png")';
@@ -584,31 +619,9 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
       if(page[0]==='versus'){
         const canvas=document.querySelector('#battlefield');
         if(!canvas?.dataset.arena&&!canvas?.dataset.assetError)return;
-        const duration=reduced()?450:cinematic.introEnter+cinematic.introHold/settings.speed+cinematic.introExit;
-        const lead=s.heroes.find(hero=>hero.hp&&!hero.bench);
-        const title=el('p',page[1],'intro-title');
-        const lines=el('div','','intro-lines');
-        for(let i=0;i<12;i++){
-          const line=el('i');line.style.setProperty('--line-y',(i<6?7+i*3:75+(i-6)*3)+'%');
-          line.style.setProperty('--line-delay',(i*43%225)+'ms');lines.append(line);
-        }
-        coach.replaceChildren(lines,title);
-        if(lead)coach.append(wardenPreview(lead.id,{animate:!reduced()}));
-        for(const [side,key] of [['party','strike'],['foe','foe-strike']]){
-          const die=el('span','','intro-die '+side);
-          paintDiceFace(die,lead?.id??'rook',key,side);coach.append(die);
-        }
-        if(!reduced()){
-          const enter=cinematic.introEnter,exit=cinematic.introExit;
-          const move=(node,start,center,end,out=exit)=>motionWindow(node,
-            {opacity:0,transform:start},{opacity:1,transform:center},{opacity:0,transform:end},{enter,exit:out,duration});
-          move(title,'translateX(-22%)','none','translateX(16%)',cinematic.titleExit);
-          move(coach.querySelector('canvas'),'translateX(-115%) scale(.92)','none','translateX(130%)');
-          move(coach.querySelector('.intro-die.party'),'translate(-40vw,20vh) rotate(-360deg)','rotate(-21deg)','translate(29vw,-16vh) rotate(270deg)');
-          move(coach.querySelector('.intro-die.foe'),'translate(-48vw,30vh) rotate(420deg)','rotate(24deg)','translate(24vw,-29vh) rotate(-290deg)');
-        }
+        const duration=reduced()?250:600/settings.speed;
+        coach.replaceChildren(el('p',page[1],'intro-title'));
         allowedSelector='';
-        cue('roll');
         clearTimeout(versusTimer);versusTimer=setTimeout(()=>{if(overlay.hidden&&lessonPage(getState())?.[0]==='versus')advance();},duration);
       }else{
         const bubble=speech(page[1],advance);
@@ -632,6 +645,17 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
     }
     delete coach.dataset.page;
     if(!t?.enabled)return;
+    if(t.quick&&s.phase==='defeat'){
+      coach.replaceChildren(btn('Retry lesson',()=>begin(true,talismans.find(item=>item.id===s.talisman)??talismans[0])),
+        btn('End lesson',finishTutorial));
+      coach.hidden=false;
+      return;
+    }
+    if(t.quick&&s.phase==='map'&&s.node==='road'){
+      finishTutorial();
+      return;
+    }
+    if(t.quick&&s.phase==='reward')return;
     const explain=(id,text,target)=>{
       coach.dataset.page=id;
       const bubble=speech(text,()=>{complete(id);refresh();});
@@ -710,7 +734,9 @@ export function createJourney({getState,saveRun,newJourney,resume,hasSave,isBusy
     main.inert=true;
     const session=requestTitleAuth('session').catch(()=>null);
     await Promise.allSettled([titleArt.decode(),titleLogo.decode(),document.fonts.ready,session]);
-    signedIn=titleAuthenticated(await session);
+    const account=await session;
+    signedIn=titleAuthenticated(account)||Boolean(account?.playerId&&
+      localStorage.getItem(guestSessionKey)===account.playerId);
     const {heading,panel}=title(true);
     const start=titleLogo.getBoundingClientRect();
     heading.append(titleLogo);

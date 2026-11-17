@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Expedition Chronicle · VEILBOUND</title>
+  <link rel="stylesheet" href="/waymark-screens.css?v=1">
+  <style>
+    body { color: #f2dfb9; background: #251a1d url("combat-assets/chronicle-wardens-archive-v1.webp") center / cover fixed; min-height: 100vh; box-sizing: border-box; font: 1rem/1.5 'Bubblegum Sans', system-ui, sans-serif; padding: 2rem 1rem; }
+    main { max-width: 36rem; margin: auto; padding: clamp(1rem, 5vw, 2.5rem); border: 1px solid #ac7352; background: #2b1b20ee; box-shadow: 0 12px 42px #110a0bb0; }
+    h1 { margin: 0; font-size: clamp(1.8rem, 6vw, 2.85rem); }
+    #status, #journey-details { text-align: center; }
+    #journey-details { color: #e5ba8d; }
+    #milestones { display: grid; gap: .45rem; padding: 0; list-style: none; }
+    #milestones li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .2rem .6rem; padding: .6rem; background: #26171c; }
+    #milestones li span { grid-column: 1; }
+    #milestones li button { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+    @media (max-width: 360px) {
+      #milestones li { grid-template-columns: minmax(0, 1fr); }
+      #milestones li button { grid-column: 1; grid-row: auto; justify-self: start; }
+    }
+    #replay { border-block: 1px solid #ac7352; padding: 1rem 0; margin: 1rem 0; }
+    #replay input { width: 100%; accent-color: #dca367; }
+    #units { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    button { padding: .35rem .65rem; cursor: pointer; }
+    a { color: #f3ca8a; } small { overflow-wrap: anywhere; display: block; }
+  </style>
+  <script type="module" src="/journey-share.mjs?v=milestone-seek-v1"></script>
+</head>
+<body>
+  <main>
+    <h1>Expedition Chronicle</h1>
+    <p id="status" role="status">Unfolding the record…</p>
+    <div id="journey-summary" hidden>
+      <p id="journey-details"></p>
+      <h2>Milestones</h2>
+      <p id="milestone-empty" hidden>No regional boss or story milestones recorded.</p>
+      <ol id="milestones"></ol>
+    </div>
+    <section id="replay" hidden>
+      <h2 id="location" tabindex="-1">Replay</h2>
+      <p id="frame"></p>
+      <div id="units">
+        <ul id="party" aria-label="Wardens"></ul>
+        <ul id="enemies" aria-label="Enemies"></ul>
+      </div>
+      <button id="play" type="button">Play</button>
+      <label>Replay position <input id="position" type="range" min="0" value="0"></label>
+    </section>
+    <small id="proof"></small>
+    <p><button id="challenge" type="button" hidden>Try This Route</button></p>
+    <p id="challenge-note" hidden>Same route and encounters. Fresh rolls and a starter loadout. No on-chain payouts or NFT rewards.</p>
+    <p id="challenge-status" role="status"></p>
+    <p><a href="/">Play VEILBOUND</a></p>
+  </main>
+</body>
+</html>

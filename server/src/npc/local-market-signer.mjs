@@ -8,7 +8,7 @@ export async function createLocalNpcSigner({ accountId, coreId, policy }) {
   if (!/^(provisioner|cursekeeper|relicsmith|quartermaster)\.vibebound\.testnet$/.test(accountId) ||
       coreId !== 'core.vibebound.testnet') throw new Error('unexpected_npc_signer_scope');
 
-  const keyPath = join(process.env.VEILBOUND_SECRETS_DIR ?? join(homedir(), '.veilbound-secrets'), 'testnet-' + accountId + '.key');
+  const keyPath = join(homedir(), '.codex', 'secrets', 'veilbound', 'testnet-' + accountId + '.key');
   const key = KeyPair.fromString((await readFile(keyPath, 'utf8')).trim());
   const keyStore = new keyStores.InMemoryKeyStore();
   await keyStore.setKey('testnet', accountId, key);

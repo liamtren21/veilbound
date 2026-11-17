@@ -3,6 +3,7 @@ import { createHash, generateKeyPairSync, verify } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { canExportItem } from '../../shared/inventory-provenance.mjs';
+import { openJourneyShares } from '../../server/src/runs/journey-shares.mjs';
 import { openRuns } from '../../server/src/runs/service.mjs';
 import { createMaterialClaims, materialRewardMessage } from '../../server/src/runs/material-claims.mjs';
 import { validateVaultPurseCarry } from '../../server/src/runs/vault-purse.mjs';
@@ -18,7 +19,7 @@ test('accepted expedition actions bank materials once and sign only a replay-der
     contractId: 'core.vibebound.testnet', ruleset: 'rules-v1', privateKey,
     readBudget: async () => [remaining, '0'], readClaim: async () => finalClaim,
   });
-  const runs = openRuns(':memory:', { rewards, materialClaims, entropy: () => secret });
+  const runs = openRuns(':memory:', { rewards, materialClaims, storyVersion: 0, entropy: () => secret });
   try {
     let snapshot = runs.start('alice', { mode: 'expedition', operationId: 'start' });
     for (const { intent, sequence } of fixture.events) {
@@ -27,6 +28,28 @@ test('accepted expedition actions bank materials once and sign only a replay-der
       });
     }
     assert.equal(snapshot.lifecycle, 'LOST');
+    const shares = openJourneyShares(':memory:', runs);
+    try {
+      await assert.rejects(shares.publish('bob', snapshot.runId), { code: 'RUN_NOT_FOUND' });
+      const published = await shares.publish('alice', snapshot.runId);
+      assert.deepEqual(await shares.publish('alice', snapshot.runId), published);
+      const view = shares.read(new URL(published.path, 'http://localhost').searchParams.get('id'));
+      assert.equal(view.outcome, 'lost');
+      assert.equal(view.digest, snapshot.stateHash);
+      assert.ok(view.highlights.length >= 1);
+      assert.equal(view.frames.length, fixture.events.length);
+      assert.equal(view.frames.at(-1).phase, 'defeat');
+      const id = new URL(published.path, 'http://localhost').searchParams.get('id');
+      const challenge = await shares.challenge('bob', id);
+      assert.equal(challenge.mode, 'journey');
+      assert.equal(challenge.rewardReservation, null);
+      assert.equal(challenge.state.talisman, snapshot.state.talisman);
+      assert.equal((await shares.challenge('bob', id)).runId, challenge.runId);
+      assert.deepEqual(runs.verifyProgress('bob', challenge.runId).graph, runs.verifyProgress('alice', snapshot.runId).graph);
+      assert.deepEqual(Object.keys(view).sort(), ['decisions', 'digest', 'frames', 'highlights', 'outcome', 'talisman', 'version']);
+    } finally {
+      shares.close();
+    }
     assert.deepEqual(snapshot.state.materialRewards.pending, {});
     const bank = runs.materialBank('alice', snapshot.runId);
     assert.deepEqual(bank, runs.materialBank('alice', snapshot.runId));

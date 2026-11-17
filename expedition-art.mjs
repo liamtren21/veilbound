@@ -1,11 +1,12 @@
+import {createBattleVfx} from './expedition-battle-vfx.mjs';
 import {foes} from './expedition-data.mjs';
 import {companions} from './expedition-companions.mjs';
 import {cinematic} from './expedition-cinematics.mjs';
-import {settings,cue} from './expedition-options.mjs';
+import {settings,cue,cueAttack} from './expedition-options.mjs?v=sfx-v2';
 import {focusAmount} from './combat-camera.mjs';
 import {drawEncounterEffect} from './boss-encounter-effects.mjs';
 import {actions as encounterActions} from './boss-encounter-actions.mjs';
-import {actionEffects, beats, combatMotion, impactAt, paintMotion, rotationEase} from './expedition-motion-library.mjs';
+import {actionEffects, beats, combatMotion, impactAt, paintMotion, rotationEase} from './expedition-motion-library.mjs?v=sfx-v2';
 
 export const asset = file => './combat-assets/'+file;
 const imageCache = new Map();
@@ -28,24 +29,24 @@ const json=async file=>{
   return response.json();
 };
 const support=await json('support-assets-v1.json');
-const route=support['route-icons'];
-const routeImage=await loadImage(route.file);
 const monsters=support['wood-bestiary'];
 const monstersImage=loadImage(monsters.file);
 const protection=json('protection-atlases-v2.json');
 const skills=json('skill-icon-tiers-v1.json');
 
+const routeMarks = {
+  Battle:'battle', Elite:'elite', Boss:'boss', Merchant:'merchant', Camp:'camp',
+  Copper:'coin', Story:'story', 'Hidden Trail':'hidden', Crossing:'crossing',
+  'Supply Cache':'merchant',
+};
+
 export function routeIcon(name){
-  const canvas=document.createElement('canvas');
-  canvas.width=canvas.height=64;
-  canvas.setAttribute('aria-hidden','true');
-  const frame=route.frames.find(frame=>frame.name===name);
-  if(frame){
-    const rect=frame.rect, scale=62/Math.max(rect[2],rect[3]);
-    const w=rect[2]*scale,h=rect[3]*scale;
-    canvas.getContext('2d').drawImage(routeImage,...rect,(64-w)/2,(64-h)/2,w,h);
-  }
-  return canvas;
+  const icon=document.createElement('img');
+  icon.className='route-mark';
+  icon.alt='';
+  const mark=routeMarks[name]??routeMarks.Story;
+  icon.src=asset('route-mark-'+mark+'-v2.webp');
+  return icon;
 }
 
 export async function skillArt(){
@@ -75,28 +76,61 @@ const clips=id=>{
   if(!frameClips.has(id))frameClips.set(id,loadClips(id));
   return frameClips.get(id);
 };
+const previewMotions = new WeakMap();
+export function playWardenPreview(canvas, clip) {
+  return previewMotions.get(canvas)?.(clip);
+}
 export function wardenPreview(id,{animate=false,highResolution=false}={}){
   const canvas=document.createElement('canvas');
   canvas.width=highResolution?480:animate?320:160;canvas.height=highResolution?585:animate?390:195;canvas.setAttribute('aria-hidden','true');
   const monster = monsters.frames.find(frame => frame.name === foes[id]?.art);
   if (monster && !isBoss({id}) && !foes[id]?.encounter) {
+    let strikeAt=-Infinity;
+    if(animate) previewMotions.set(canvas,async ()=>{
+      strikeAt=performance.now();
+      await new Promise(resolve=>setTimeout(resolve,440));
+    });
     void monstersImage.then(image => {
       const [x,y,w,h] = monster.rect;
-      const scale = Math.min(canvas.width/w,canvas.height/h);
-      canvas.getContext('2d').drawImage(image,x,y,w,h,(canvas.width-w*scale)/2,canvas.height-h*scale,w*scale,h*scale);
+      const context=canvas.getContext('2d');
+      const scale=Math.min(canvas.width/w,canvas.height/h)*.9;
+      const render=now=>{
+        if(!canvas.isConnected)return;
+        const breath=animate?Math.sin(now/330)*.017:0;
+        const lunge=Math.max(0,1-Math.abs((now-strikeAt)/220-1));
+        const height=h*scale*(1+breath-lunge*.035);
+        context.clearRect(0,0,canvas.width,canvas.height);
+        context.drawImage(image,x,y,w,h,(canvas.width-w*scale)/2-lunge*canvas.width*.09,
+          canvas.height-height,w*scale,height);
+        if(animate)requestAnimationFrame(render);
+      };
+      render(performance.now());
     }).catch(()=>{});
     return canvas;
   }
-  void clips(id).then(({idle})=>{
+  const ready=clips(id);
+  let motion;
+  if(animate) previewMotions.set(canvas,async kind=>{
+    const clip=(await ready.catch(()=>null))?.[kind];
+    if(!clip || !canvas.isConnected) return;
+    const duration=clip.durationMs??(kind==='attack'?620:760);
+    motion={clip,start:performance.now(),duration};
+    await new Promise(resolve=>setTimeout(resolve,duration));
+  });
+  void ready.then(({idle})=>{
     const context=canvas.getContext('2d');
     const start=performance.now();
     const render=now=>{
       if(!canvas.isConnected)return;
-      const frame=animate?Math.floor(Math.max(0,now-start)/105)%idle.frames.length:0;
-      const [x,y,w,h]=idle.frames[frame].rect;
+      const age=motion?now-motion.start:0;
+      const active=motion&&age<motion.duration;
+      const clip=active?motion.clip:idle;
+      const frame=active?Math.min(clip.frames.length-1,Math.floor(Math.max(0,age)/motion.duration*clip.frames.length)):
+        animate?Math.floor(Math.max(0,now-start)/105)%idle.frames.length:0;
+      const [x,y,w,h]=clip.frames[frame].rect;
       const scale=Math.min(canvas.width/w,canvas.height/h);
       context.clearRect(0,0,canvas.width,canvas.height);
-      context.drawImage(idle.image,x,y,w,h,(canvas.width-w*scale)/2,canvas.height-h*scale,w*scale,h*scale);
+      context.drawImage(clip.image,x,y,w,h,(canvas.width-w*scale)/2,canvas.height-h*scale,w*scale,h*scale);
       if(animate)requestAnimationFrame(render);
     };
     render(start);
@@ -223,9 +257,26 @@ export function createArena(canvas, reduced, flash) {
       ctx.fillRect(x-length/2,y+43,length*Math.min(30,unit.ward)/30,3);
     }
   }
+  let battleVfx;
   function strokeMark(x,y,color,radius,alpha=.88){
-    ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=color;ctx.lineWidth=3;
-    ctx.beginPath();ctx.ellipse(x,y,radius,radius*.24,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.scale(1,.25);
+    ctx.globalAlpha=alpha;
+    ctx.strokeStyle='#201614';
+    ctx.lineWidth=10;
+    ctx.beginPath();ctx.arc(0,0,radius,0,Math.PI*2);ctx.stroke();
+    ctx.strokeStyle=color;
+    ctx.lineWidth=5;
+    ctx.beginPath();ctx.arc(0,0,radius,0,Math.PI*2);ctx.stroke();
+    ctx.lineWidth=3;
+    for(const angle of [0,Math.PI/2,Math.PI,Math.PI*1.5]){
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(angle)*(radius-7),Math.sin(angle)*(radius-7));
+      ctx.lineTo(Math.cos(angle)*(radius+7),Math.sin(angle)*(radius+7));
+      ctx.stroke();
+    }
+    ctx.restore();
   }
   function drawArrival(x,y,age){
     const progress=age/cinematic.spawn;
@@ -253,11 +304,25 @@ export function createArena(canvas, reduced, flash) {
     const gap=Math.min(38,distance*.24);
     const a=[from[0]+unitX*gap,from[1]+unitY*gap];
     const b=[to[0]-unitX*gap,to[1]-unitY*gap];
+    const bend=Math.min(34,distance*.15);
+    const color=dx>0?'#ffd19a':'#f4a1a7';
+    function trace(){
+      ctx.beginPath();
+      ctx.moveTo(...a);
+      ctx.quadraticCurveTo((a[0]+b[0])/2,(a[1]+b[1])/2-bend,...b);
+    }
     ctx.save();
-    ctx.strokeStyle='#f3be87d9';ctx.lineWidth=2.5;ctx.setLineDash([6,8]);
-    ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();
-    ctx.translate(...b);ctx.rotate(Math.atan2(dy,dx));ctx.fillStyle='#ffd199';
-    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-13,-7);ctx.lineTo(-13,7);ctx.fill();
+    ctx.lineCap='round';
+    ctx.strokeStyle='#251919';ctx.lineWidth=6;trace();ctx.stroke();
+    ctx.strokeStyle=color;ctx.lineWidth=2.6;
+    ctx.setLineDash([8,7]);
+    ctx.lineDashOffset=reduced()?0:-performance.now()/40;
+    trace();ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.translate(...b);ctx.rotate(Math.atan2(dy+2*bend,dx));
+    ctx.fillStyle=color;ctx.strokeStyle='#251919';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(4,0);ctx.lineTo(-15,-8);ctx.lineTo(-10,0);ctx.lineTo(-15,8);
+    ctx.closePath();ctx.stroke();ctx.fill();
     ctx.restore();
   }
   function draw(now) {
@@ -288,7 +353,10 @@ export function createArena(canvas, reduced, flash) {
     const pivotX=ox+scale*cameraX,pivotY=oy+scale*345;
     ctx.setTransform(dpr*zoom,0,0,dpr*zoom,dpr*pivotX*(1-zoom),dpr*pivotY*(1-zoom));
     const cover=Math.max(w/backdrop.width,h/backdrop.height);
-    ctx.drawImage(backdrop,(w-backdrop.width*cover)/2,(h-backdrop.height*cover)/2,backdrop.width*cover,backdrop.height*cover);
+    const backdropWidth=backdrop.width*cover, backdropHeight=backdrop.height*cover;
+    const groundY=oy+scale*332;
+    const backdropY=clamp(groundY-backdropHeight*.58,h-backdropHeight,0);
+    ctx.drawImage(backdrop,(w-backdropWidth)/2,backdropY,backdropWidth,backdropHeight);
     const shade=ctx.createLinearGradient(0,h*.48,0,h*.98);
     shade.addColorStop(0,'#121a1700');shade.addColorStop(.56,'#121a1748');shade.addColorStop(1,'#121a1773');
     ctx.fillStyle=shade;ctx.fillRect(0,h*.48,w,h*.52);
@@ -325,6 +393,12 @@ export function createArena(canvas, reduced, flash) {
       }
     }
     if(motion&&progress<resultAt+150)strokeMark(...origin,'#ecc783',42,1-clamp((progress-resultAt)/150));
+    if(shown.battle.lead&&!playing?.preview&&!['enemies','allies','traits','versus'].includes(lesson)){
+      for(const team of [shown.heroes,shown.battle.enemies]){
+        const lead=team.find(unit=>unit.hp&&!unit.bench);
+        if(lead)strokeMark(...position(lead),team===shown.heroes?'#e9c37e':'#d7877f',isBoss(lead)?72:40,.82);
+      }
+    }
     for(const unit of roster.sort((a,b)=>position(a)[1]-position(b)[1])){
       if(unit.bench)continue;
       const enemy=isFoe(unit.key,shown);
@@ -357,6 +431,18 @@ export function createArena(canvas, reduced, flash) {
         const rebound=(progress-resultAt)/beats.reaction;
         ctx.translate((enemy?1:-1)*Math.sin(Math.PI*rebound)*9,-Math.sin(Math.PI*rebound)*3);
       }
+      if(!fallen){
+        const shadowWidth=boss?112:enemy?61:36;
+        ctx.save();
+        ctx.translate(x,y-1);
+        ctx.scale(1,.20);
+        const shadow=ctx.createRadialGradient(0,0,shadowWidth*.13,0,0,shadowWidth);
+        shadow.addColorStop(0,'rgba(18, 12, 15, .57)');
+        shadow.addColorStop(1,'rgba(18, 12, 15, 0)');
+        ctx.fillStyle=shadow;
+        ctx.fillRect(-shadowWidth,-shadowWidth,shadowWidth*2,shadowWidth*2);
+        ctx.restore();
+      }
       if(shatter){
         const deathAge=progress-resultAt;
         const windup=reduced()?0:bossDeathWindup;
@@ -377,15 +463,22 @@ export function createArena(canvas, reduced, flash) {
         const frame=active?motionFrame(progress):reduced()?0:Math.floor(now/108)%clip.frames.length;
         sprite(clip.image,clip.frames[Math.min(frame,clip.frames.length-1)],x,y,boss?345:192);
       }else{
-        const frame=monsters.frames.find(frame=>frame.name===foes[unit.id].art);
-        const lunge=active?Math.sin(Math.PI*clamp(progress/800))*15:0;
-        sprite(art.monsters,frame,x-lunge,y,foes[unit.id].art==='The Grafted Bride'?245:179);
+        const species=foes[unit.id].art;
+        const frame=monsters.frames.find(frame=>frame.name===species);
+        const quadruped=species==='Sap Runner';
+        const period=quadruped?1080:1580;
+        const breath=reduced()?0:Math.sin(now/period*(2*Math.PI)+x*.021);
+        const windup=active?Math.sin(Math.PI*clamp(progress/resultAt)):0;
+        const followThrough=active?Math.sin(Math.PI*clamp((progress-resultAt)/280)):0;
+        const lean=breath*(quadruped?.019:.03)+windup*.105-followThrough*.09;
+        ctx.translate(x,y);
+        ctx.rotate(lean);
+        const height=species==='The Grafted Bride'?245:179;
+        sprite(art.monsters,frame,0,0,height*(1+breath*.024-windup*.04));
       }
       ctx.restore();
       if(!reduced()&&arrivalAge>=0&&arrivalAge<cinematic.spawn)drawArrival(x,y,arrivalAge);
       if(!fallen){
-        if(shown.battle.lead&&!['enemies','allies','traits','versus'].includes(lesson)&&
-          (enemy?shown.battle.enemies:shown.heroes).find(other=>other.hp&&!other.bench)===unit)strokeMark(x,y,'#e9c37e',40,.65);
         label(unit,x,y,enemy);
       }
     }
@@ -455,19 +548,92 @@ export function createArena(canvas, reduced, flash) {
       ctx.globalAlpha=1;
     }
     paintActionLayer('front');
-    if(event&&progress>=resultAt&&progress<resultAt+515){
-      const drift=clamp((progress-resultAt)/515);
-      ctx.globalAlpha=1-clamp((drift-.63)/.37);
-      ctx.font='21px "Bubblegum Sans", system-ui';ctx.textAlign='center';ctx.fillStyle='#ffe0a6';ctx.strokeStyle='#1b1711';ctx.lineWidth=4;
-      for(const change of event.changes){
-        const unit=[...shown.heroes,...shown.battle.enemies].find(unit=>unit.key===change.target);
-        const [x,y]=unit?position(unit):slot(change.target,shown),word=change.text.split(/ [−+]/)[1];
-        if(!word&&!change.blocked&&!change.evaded)continue;
-        const text=change.blocked?'BLOCKED':change.evaded?'DODGED':(change.loss!==undefined?'−':'+')+word.split(' ·')[0];
-        const flyY=y-115-(reduced()?0:29*drift);
-        ctx.strokeText(text,x,flyY);ctx.fillText(text,x,flyY);
+    if(battleVfx===undefined)battleVfx=createBattleVfx();
+    if(battleVfx){
+      const clock=reduced()?0:now/1000;
+      const age=progress-resultAt;
+      const positions=new Map(roster.map(unit=>[unit.key,unit]));
+      for(const unit of roster){
+        if(!unit.hp||unit.bench)continue;
+        const enemy=isFoe(unit.key,shown);
+        if(!enemy&&['enemies','versus'].includes(lesson))continue;
+        const [x,y]=position(unit);
+        const large=isBoss(unit);
+        if(unit.curseSources?.some(source=>source.tier>0)){
+          battleVfx.stamp(2,x,y-(large?135:77),large?245:143,large?260:172,'#b659df',clock,.78);
+        }
       }
-      ctx.globalAlpha=1;
+      if(event&&age>=0&&age<420){
+        const impact=clamp(age/420);
+        for(const key of targets){
+          const unit=positions.get(key);
+          if(!unit)continue;
+          const change=event.changes.find(entry=>entry.target===key);
+          const [x,y]=position(unit);
+          const large=isBoss(unit);
+          const defending=event.type==='guard'||event.type==='ward';
+          if(defending||change?.blocked){
+            const shieldX=x+(isFoe(unit.key,shown)?-1:1)*(large?85:37);
+            const expand=1+impact*.22;
+            battleVfx.stamp(0,shieldX,y-(large?136:73),(large?102:60)*expand,(large?130:77)*expand,
+              event.type==='ward'?'#51c6b1':'#91dfff',clock,1-impact,impact);
+          }else if(event.key==='curse'&&change?.changed){
+            battleVfx.stamp(2,x,y-(large?135:77),large?280:180,large?290:190,'#de8df8',clock,1-impact);
+          }else if(striking&&!change?.evaded){
+            const color=stone?'#f1b071':/undertow|oarhook/.test(event.key)?'#7ce3dc':
+              /seam|thorn/.test(event.key)?'#e66a62':/chime|bell/.test(event.key)?'#c7a4ff':
+              bossAction?encounterActions[foes[attacker.id].art].color:'#edbf83';
+            const size=large?198:combo?158:126;
+            battleVfx.stamp(3,x,y-(large?132:81),size,size*.84,color,clock,.94*(reduced()?1-impact:1),reduced()?.26:impact,
+              event.side==='party'?0:Math.PI);
+            if(!reduced()&&!large&&change?.loss>0&&(combo||stone||event.key==='final-delivery')){
+              battleVfx.stamp(1,x,y-168,94,40,'#f9d569',clock,1-impact);
+            }
+          }
+        }
+      }
+      battleVfx.draw(ctx);
+    }
+    if(event&&progress>=resultAt&&progress<resultAt+650){
+      const drift=clamp((progress-resultAt)/650);
+      const still=reduced();
+      const rowsByTarget=new Map();
+      ctx.save();
+      ctx.globalAlpha=1-clamp((drift-.67)/.33);
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      ctx.strokeStyle='#241615';
+      ctx.lineJoin='round';
+      for(const change of event.changes){
+        const unit=roster.find(unit=>unit.key===change.target);
+        const [x,y]=unit?position(unit):slot(change.target,shown);
+        let text,color;
+        if(change.blocked){
+          text='BLOCKED';color='#aee6f4';
+        }else if(change.evaded){
+          text='DODGED';color='#f6e2ab';
+        }else if(change.loss>0){
+          text='+'+change.loss+' DMG';color='#ff9a7b';
+        }else if(change.absorbed>0){
+          text='ABSORBED';color='#aee6f4';
+        }else{
+          const gain=change.text?.match(/ \+(\d+(?:\.\d+)?) (HP|Defense)\b/);
+          if(!gain||Number(gain[1])===0)continue;
+          text='+'+gain[1]+(gain[2]==='HP'?' HP':' DEF');
+          color=gain[2]==='HP'?'#a4e8a1':'#aee6f4';
+        }
+        const row=rowsByTarget.get(change.target)??0;
+        rowsByTarget.set(change.target,row+1);
+        const flyY=y-(isBoss(unit)?151:101)-row*30-(still?0:34*drift);
+        const pop=still?1:1+.2*Math.sin(Math.PI*clamp(drift/.27));
+        const size=(change.loss>0&&!change.blocked&&!change.evaded?29:23)*pop;
+        ctx.font=size+'px "Bubblegum Sans", system-ui';
+        ctx.lineWidth=5;
+        ctx.fillStyle=color;
+        ctx.strokeText(text,x,flyY);
+        ctx.fillText(text,x,flyY);
+      }
+      ctx.restore();
     }
     if(current.battle)tick=requestAnimationFrame(draw);
   }
@@ -475,7 +641,7 @@ export function createArena(canvas, reduced, flash) {
   return {
     show,
     revealAllies(){arrivalAt=performance.now();cue(combatMotion.spawn.sound);},
-    revealEncounter(){arrivalAt=foeArrivalAt=performance.now();cue(combatMotion.spawn.sound);},
+    revealEncounter(){arrivalAt=foeArrivalAt=performance.now();cue('foe-arrival');},
     endTurn(){turnAt=performance.now();cue(combatMotion.turnEnd.sound);},
     projectUnit(key,state){
       const {x,y,scale}=layout();
@@ -502,7 +668,9 @@ export function createArena(canvas, reduced, flash) {
       const effects=actionEffects(result,before,state);
       const playback={before,result,started:performance.now(),speed,effects};
       playing=playback;
-      flash.textContent=result.name;
+      const centered=result.type==='guard'||result.key==='idle';
+      flash.classList.toggle('centered-action-flash',centered);
+      flash.textContent=result.type==='guard'?'GUARD':centered?result.name.toUpperCase():result.name;
       const bossKey=state.battle.enemies.find(isBoss)?.key;
       const bossFell=effects.some(entry=>entry.key==='death'&&entry.target===bossKey);
       const stone=result.key==='stone-answer';
@@ -514,19 +682,29 @@ export function createArena(canvas, reduced, flash) {
       const sounds=new Map();
       for(const {key,clip,delay,target} of effects){
         const offset=key==='death'?(bossFell&&target===bossKey?bossDeathWindup:220):delay;
-        if(!sounds.has(offset))sounds.set(offset,clip.sound);
+        if(!sounds.has(offset))sounds.set(offset,new Set());
+        sounds.get(offset).add(clip.sound);
       }
-      const timers=[...sounds].map(([delay,sound])=>setTimeout(()=>{
-        if(playing===playback)cue(sound,speed);
+      const timers=[...sounds].map(([delay,impacts])=>setTimeout(()=>{
+        if(playing!==playback)return;
+        const actor=[...before.heroes,...before.battle.enemies].find(unit=>unit.key===result.actor);
+        const defended=impacts.has('break')||impacts.has('dodge')||impacts.has('miss');
+        const played=delay===0&&!defended&&cueAttack(result.key,actor?.id,result.side,state.battle.companion?.id,speed);
+        for(const sound of impacts){
+          if(played&&['hit','ui-choice','guard','heal','cleanse'].includes(sound))continue;
+          cue(sound,speed);
+        }
       },(contactTime+delay)/speed));
       await new Promise(resolve=>setTimeout(resolve,duration/speed));
       timers.forEach(clearTimeout);
       if(playing!==playback)return;
       playing=null;
       flash.textContent='';
+      flash.classList.remove('centered-action-flash');
     },
     stop(){
       current=null;ready=false;arenaFile=null;playing=null;queued++;
+      flash.classList.remove('centered-action-flash');
       arrivalAt=-Infinity;
       foeArrivalAt=-Infinity;
       turnAt=-Infinity;

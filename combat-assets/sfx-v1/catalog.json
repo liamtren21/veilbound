@@ -1,0 +1,774 @@
+{
+  "strike": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "guard": {
+    "type": "guard",
+    "material": "bell"
+  },
+  "shift": {
+    "type": "shift",
+    "material": "wood"
+  },
+  "brace": {
+    "type": "ward",
+    "material": "bell"
+  },
+  "salve": {
+    "type": "heal",
+    "material": "bell"
+  },
+  "guard-token": {
+    "type": "guard",
+    "material": "bell"
+  },
+  "purify-token": {
+    "type": "cleanse",
+    "material": "curse"
+  },
+  "heal-all": {
+    "type": "heal",
+    "material": "bell"
+  },
+  "full-heal-all": {
+    "type": "heal",
+    "material": "bell"
+  },
+  "brace-line": {
+    "type": "ward",
+    "material": "bell"
+  },
+  "stone-answer": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "take-weight": {
+    "type": "cover",
+    "material": "bell"
+  },
+  "undertow": {
+    "type": "hit",
+    "material": "water"
+  },
+  "open-seam": {
+    "type": "hit",
+    "material": "blade"
+  },
+  "ferry-line": {
+    "type": "shift",
+    "material": "water"
+  },
+  "mending-note": {
+    "type": "heal",
+    "material": "bell"
+  },
+  "fracture-chime": {
+    "type": "hit",
+    "material": "bell"
+  },
+  "clear-tone": {
+    "type": "cleanse",
+    "material": "bell"
+  },
+  "red-thread": {
+    "type": "mark",
+    "material": "arrow"
+  },
+  "pin-hem": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "final-delivery": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "witness-seal": {
+    "type": "ward",
+    "material": "bell"
+  },
+  "ferrymans-knot": {
+    "type": "ward",
+    "material": "water"
+  },
+  "wayfarers-lamp": {
+    "type": "ward",
+    "material": "bell"
+  },
+  "iron-needle": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "rake": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "lunge": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "thorn": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "pierce": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "pull": {
+    "type": "pull",
+    "material": "wood"
+  },
+  "root": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "bark": {
+    "type": "ward",
+    "material": "bell"
+  },
+  "graft": {
+    "type": "ward",
+    "material": "wood"
+  },
+  "foe-boost": {
+    "type": "boost",
+    "material": "bell"
+  },
+  "foe-purify": {
+    "type": "cleanse",
+    "material": "curse"
+  },
+  "foe-target": {
+    "type": "mark",
+    "material": "curse"
+  },
+  "foe-ranged": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "idle": {
+    "type": "idle",
+    "material": "wood"
+  },
+  "sweep": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "siege": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "anchor-lash": {
+    "type": "pull",
+    "material": "metal"
+  },
+  "toll-mark": {
+    "type": "mark",
+    "material": "bell"
+  },
+  "chain-sweep": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "drowned-surge": {
+    "type": "hit",
+    "material": "water"
+  },
+  "furnace-snap": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "gather-heat": {
+    "type": "boost",
+    "material": "fire"
+  },
+  "vent-burst": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "consume-heat": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "blade-rake": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "guard-reversal": {
+    "type": "ward",
+    "material": "bell"
+  },
+  "front-car-rake": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "final-toll": {
+    "type": "hit",
+    "material": "bell"
+  },
+  "gravestone-claw": {
+    "type": "hit",
+    "material": "bell"
+  },
+  "stay-verdict": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "move-verdict": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "stone-decree": {
+    "type": "hit",
+    "material": "bell"
+  },
+  "party-guard": {
+    "type": "guard",
+    "material": "metal"
+  },
+  "rook-strike": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "mara-strike": {
+    "type": "hit",
+    "material": "water"
+  },
+  "elian-strike": {
+    "type": "hit",
+    "material": "bell"
+  },
+  "tess-strike": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "bark-rake": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "bark-lunge": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "bark-thorn": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "bark-pierce": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "bark-pull": {
+    "type": "pull",
+    "material": "wood"
+  },
+  "bark-root": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "sap-rake": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "sap-lunge": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "sap-thorn": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "sap-pierce": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "sap-pull": {
+    "type": "pull",
+    "material": "wood"
+  },
+  "sap-root": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "thorn-rake": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "thorn-lunge": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "thorn-thorn": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "thorn-pierce": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "thorn-pull": {
+    "type": "pull",
+    "material": "wood"
+  },
+  "thorn-root": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "cradle-rake": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "cradle-lunge": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "cradle-thorn": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "cradle-pierce": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "cradle-pull": {
+    "type": "pull",
+    "material": "wood"
+  },
+  "cradle-root": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "bride-rake": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "bride-lunge": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "bride-thorn": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "bride-pierce": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "bride-pull": {
+    "type": "pull",
+    "material": "wood"
+  },
+  "bride-root": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "reed-drifter-lunge": {
+    "type": "hit",
+    "material": "water"
+  },
+  "reed-drifter-pull": {
+    "type": "pull",
+    "material": "water"
+  },
+  "reed-drifter-rake": {
+    "type": "hit",
+    "material": "water"
+  },
+  "reed-drifter-thorn": {
+    "type": "hit",
+    "material": "water"
+  },
+  "reed-drifter-pierce": {
+    "type": "hit",
+    "material": "water"
+  },
+  "reed-drifter-root": {
+    "type": "hit",
+    "material": "water"
+  },
+  "silt-grasper-rake": {
+    "type": "hit",
+    "material": "water"
+  },
+  "silt-grasper-lunge": {
+    "type": "hit",
+    "material": "water"
+  },
+  "silt-grasper-thorn": {
+    "type": "hit",
+    "material": "water"
+  },
+  "silt-grasper-pierce": {
+    "type": "hit",
+    "material": "water"
+  },
+  "silt-grasper-pull": {
+    "type": "pull",
+    "material": "water"
+  },
+  "silt-grasper-root": {
+    "type": "hit",
+    "material": "water"
+  },
+  "netkeeper-pull": {
+    "type": "pull",
+    "material": "water"
+  },
+  "netkeeper-rake": {
+    "type": "hit",
+    "material": "water"
+  },
+  "netkeeper-lunge": {
+    "type": "hit",
+    "material": "water"
+  },
+  "netkeeper-thorn": {
+    "type": "hit",
+    "material": "water"
+  },
+  "netkeeper-pierce": {
+    "type": "hit",
+    "material": "water"
+  },
+  "netkeeper-root": {
+    "type": "hit",
+    "material": "water"
+  },
+  "kiln-hound-lunge": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "kiln-hound-thorn": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "kiln-hound-rake": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "kiln-hound-pierce": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "kiln-hound-pull": {
+    "type": "pull",
+    "material": "fire"
+  },
+  "kiln-hound-root": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "coal-bearer-rake": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "coal-bearer-lunge": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "coal-bearer-thorn": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "coal-bearer-pierce": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "coal-bearer-pull": {
+    "type": "pull",
+    "material": "fire"
+  },
+  "coal-bearer-root": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "cinder-bailiff-rake": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "cinder-bailiff-lunge": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "cinder-bailiff-thorn": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "cinder-bailiff-pierce": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "cinder-bailiff-pull": {
+    "type": "pull",
+    "material": "fire"
+  },
+  "cinder-bailiff-root": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "rust-hound-pierce": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "rust-hound-rake": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "rust-hound-lunge": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "rust-hound-thorn": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "rust-hound-pull": {
+    "type": "pull",
+    "material": "metal"
+  },
+  "rust-hound-root": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-collector-rake": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-collector-lunge": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-collector-thorn": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-collector-pierce": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-collector-pull": {
+    "type": "pull",
+    "material": "metal"
+  },
+  "toll-collector-root": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-engine-rake": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-engine-lunge": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-engine-thorn": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-engine-pierce": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "toll-engine-pull": {
+    "type": "pull",
+    "material": "metal"
+  },
+  "toll-engine-root": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "shale-crawler-pierce": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "shale-crawler-root": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "shale-crawler-rake": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "shale-crawler-lunge": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "shale-crawler-thorn": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "shale-crawler-pull": {
+    "type": "pull",
+    "material": "stone"
+  },
+  "clay-witness-rake": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "clay-witness-lunge": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "clay-witness-thorn": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "clay-witness-pierce": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "clay-witness-pull": {
+    "type": "pull",
+    "material": "stone"
+  },
+  "clay-witness-root": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "grave-surveyor-rake": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "grave-surveyor-lunge": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "grave-surveyor-thorn": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "grave-surveyor-pierce": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "grave-surveyor-pull": {
+    "type": "pull",
+    "material": "stone"
+  },
+  "grave-surveyor-root": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "weighted-cast": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "anchor-backhand": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "last-crossing": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "root-scythe": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "three-doors-close": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "root-gate": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "graft-link": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "three-door-buds": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "kiln-rake": {
+    "type": "hit",
+    "material": "blade"
+  },
+  "cinder-wake": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "banked-ember": {
+    "type": "hit",
+    "material": "fire"
+  },
+  "writbreaker": {
+    "type": "hit",
+    "material": "metal"
+  },
+  "stay-of-claim": {
+    "type": "hit",
+    "material": "curse"
+  },
+  "counterseal": {
+    "type": "hit",
+    "material": "bell"
+  },
+  "split-the-seal": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "oarhook": {
+    "type": "hit",
+    "material": "water"
+  },
+  "mason-s-blow": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "tuning-strike": {
+    "type": "hit",
+    "material": "bell"
+  },
+  "courier-s-shot": {
+    "type": "hit",
+    "material": "arrow"
+  },
+  "wardbreak": {
+    "type": "hit",
+    "material": "stone"
+  },
+  "summon": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "clash": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "foe-tech": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "foe-strike": {
+    "type": "hit",
+    "material": "wood"
+  },
+  "summon-brinewisp": {
+    "type": "strike",
+    "material": "water"
+  },
+  "summon-flintback": {
+    "type": "ward",
+    "material": "stone"
+  },
+  "summon-chimewing": {
+    "type": "heal",
+    "material": "bell"
+  },
+  "summon-waxwing": {
+    "type": "mark",
+    "material": "arrow"
+  },
+  "summon-cindermoth": {
+    "type": "scorch",
+    "material": "fire"
+  },
+  "summon-scriptfin": {
+    "type": "cleanse",
+    "material": "metal"
+  }
+}

@@ -87,6 +87,7 @@ test('reward reservations are durable, bounded and bind only verified beneficiar
     assert.equal(prepared.receipt.sequence, '80');
     assert.equal(verify(null, rewardMessage(prepared.receipt), publicKey, Buffer.from(prepared.signature, 'base64')), true);
     assert.equal(prepared.transaction.actions[0].params.methodName, 'claim_reward');
+    assert.equal(prepared.transaction.actions[0].params.deposit, '0');
     assert.equal(prepared.status, 'prepared');
     assert.throws(() => rewards.prepare('alice', { ...evidence, mode: 'practice' }, 1), { code: 'INVALID_REWARD_EVIDENCE' });
     rewards.close();

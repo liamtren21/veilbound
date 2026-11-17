@@ -166,3 +166,31 @@ test('final starter custody equips the server run and claim preparation fences f
     starter.close();
   }
 });
+
+test('claim waits for finalized wallet linkage after an ambiguous response', async () => {
+  let grant;
+  let submitted = false;
+  let readsAfterLink = 0;
+  const chain = {
+    issue: async ({ relic_id }) => { grant = { relic_id, claimed: false, linked_account: null }; },
+    getFinalGrant: async () => {
+      if (submitted && ++readsAfterLink >= 2) grant.linked_account = 'alice.testnet';
+      return grant;
+    },
+    link: async () => {
+      submitted = true;
+      throw new Error('rpc_response_lost');
+    },
+    claimTransaction: grantId => ({ grantId }),
+  };
+  const service = openStarterGrants(':memory:', { chain, relicIds: ['starter-001'] });
+  try {
+    const issued = await service.provision('guest');
+    const claim = await service.prepareClaim('guest', 'alice.testnet');
+    assert.equal(claim.linkedAccount, 'alice.testnet');
+    assert.deepEqual(claim.transaction, { grantId: issued.grantId });
+    assert.equal(readsAfterLink, 2);
+  } finally {
+    service.close();
+  }
+});

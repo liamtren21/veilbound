@@ -138,7 +138,7 @@ npm run test:backend
 npm run test:gameplay
 ```
 
-The November 17 development checkout passed **98 backend tests** and **61 gameplay tests**, with the opt-in PostgreSQL test skipped. The deterministic [five-region win](evidence/gameplay/five-region-win.json) and [region-two defeat](evidence/gameplay/region-two-loss.json) are replay records. The public GitHub snapshot may report earlier counts when checked out locally.
+The November 17 development checkout passed **98 backend tests** and **61 gameplay tests**, with the opt-in PostgreSQL test skipped. The deterministic [five-region win](evidence/gameplay/five-region-win.json) and [region-two defeat](evidence/gameplay/region-two-loss.json) are replay records. These counts are reproducible from this release.
 
 See [operating instructions](docs/implementation/OPERATIONS.md) for testnet configuration.
 

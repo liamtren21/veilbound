@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>VEILBOUND · Hollow Orchard</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="expedition.css?v=expedition-scenes-v3-stalls">
-  <link rel="stylesheet" href="expedition-journey.css?v=compendium-v1">
-  <link rel="stylesheet" href="expedition-stalls.css?v=loot-item-frame-v2">
+  <link rel="stylesheet" href="expedition.css?v=opening-dice-v4">
+  <link rel="stylesheet" href="expedition-journey.css?v=loot-inline-v1">
+  <link rel="stylesheet" href="expedition-stalls.css?v=shop-portrait-v2">
   <link rel="preload" as="image" href="combat-assets/veilbound-title-logo.png">
   <link rel="preload" as="image" href="combat-assets/veilbound-title-waymark-v2.webp">
   <link rel="stylesheet" href="expedition-cinematics.css?v=loot-motion-v1">
-  <link rel="stylesheet" href="expedition-map.css?v=route-frames-v1">
+  <link rel="stylesheet" href="expedition-map.css?v=route-marks-v2">
   <link rel="stylesheet" href="expedition-dice-art.css?v=fonts-v1">
 </head>
 <body>
@@ -25,12 +25,24 @@
     <div class="location"><h1 id="region-name">Hollow Orchard</h1><span id="purse"></span></div>
     <div class="run-meta">
       <details id="field-guide" class="utility"><summary title="Route legend" aria-label="Route legend">◇</summary><div id="legend" class="popover"></div></details>
-      <details id="journal" class="utility" hidden><summary title="Battle journal" aria-label="Battle journal">▤</summary><ol class="popover" id="battle-log"></ol></details>
-      <details id="satchel-menu" class="utility"><summary title="Travel Diary" aria-label="Travel Diary">♧</summary><div class="popover"><strong id="satchel"></strong><section id="equipment-pouch" aria-label="Equipment pouch"></section><section id="party-panel" aria-label="Expedition party"></section></div></details>
-      <details id="settings" class="utility"><summary title="Settings" aria-label="Settings">⚙</summary><div class="popover">
-        <label><input id="reduced" type="checkbox"> Reduce motion</label><button id="fullscreen" type="button" class="secondary">Full screen</button>
-        <button id="restart" class="secondary" type="button">New expedition</button><button id="title-menu" class="secondary" type="button">Title screen / Help</button><small id="save-status">Saved on this device</small>
-      </div></details>
+      <details id="journal" class="utility combat-utility" hidden>
+        <summary class="combat-tool" title="Battle Journal" aria-label="Battle Journal"><span class="combat-tool-icon" aria-hidden="true"></span></summary>
+        <section class="popover combat-panel" aria-labelledby="battle-journal-title">
+          <h2 id="battle-journal-title">Battle Journal</h2>
+          <ol id="battle-log"></ol>
+        </section>
+      </details>
+      <details id="satchel-menu" class="utility combat-utility">
+        <summary class="combat-tool" title="Travel Diary" aria-label="Travel Diary"><span class="combat-tool-icon" aria-hidden="true"></span></summary>
+        <section class="popover combat-panel" aria-labelledby="battle-satchel-title">
+          <h2 id="battle-satchel-title">Travel Diary</h2>
+          <p id="satchel"></p>
+          <section id="equipment-pouch" aria-label="Equipment pouch"></section>
+          <section id="party-panel" aria-label="Expedition party"></section>
+        </section>
+      </details>
+      <button id="settings" class="combat-tool" type="button" aria-label="Settings" title="Settings" aria-haspopup="dialog"><span class="combat-tool-icon" aria-hidden="true"></span></button>
+      <small id="save-status" class="sr-only" role="status">Saved on this device</small>
     </div>
   </header>
   <p id="announcement" class="sr-only" role="status"></p>
@@ -49,6 +61,7 @@
       <p id="route-readout" role="status"></p>
     </div>
     <img id="travel-scene" class="travel-scene" alt="" hidden>
+    <figure id="event-actor" class="event-actor" hidden></figure>
     <img id="shopkeeper" class="shopkeeper" alt="" hidden>
     <aside id="loot-diary" aria-label="Travel Diary" hidden></aside>
     <aside id="decision" class="decision" aria-labelledby="decision-title"></aside>
@@ -62,6 +75,10 @@
     <div id="battle-outcome" role="status" hidden></div>
     <header class="battle-heading">
       <h2 id="battle-title" class="sr-only"></h2><p id="battle-meta" class="sr-only"></p><span id="boss-warning" class="warning" hidden></span>
+      <div id="boss-story-cue" role="status" hidden>
+        <img class="route-mark" src="combat-assets/route-mark-story-v2.webp" alt="">
+        <span></span>
+      </div>
       <p id="roll-status" class="roll-status" role="status" hidden></p>
     </header>
     <div class="battle-hud">
@@ -88,6 +105,6 @@
     <div class="button-row"><button value="cancel" class="secondary">Cancel</button><button value="confirm">Confirm</button></div>
   </form>
 </dialog>
-<script type="module" src="expedition.mjs?v=route-frames-v1"></script>
+<script type="module" src="expedition.mjs?v=sfx-v2"></script>
 </body>
 </html>

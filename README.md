@@ -4,7 +4,7 @@
 
 The Waymarks once guided the dead beyond the Quiet Reach. When they broke, the keepers fed them stolen memories. In this tactical dice roguelike, a squad of wardens crosses five haunted regions to return the names the land has kept.
 
-[Open the game](https://veilbound-testnet-web-2441d075.vercel.app/) · [Run locally](#run-locally) · [Inspect the Testnet record](#the-testnet-record)
+[Open the game](https://veilbound-testnet-web-2441d075.vercel.app/) · [Run locally](#run-locally) · [Living Journey](#living-journey) · [Inspect the Testnet record](#the-testnet-record)
 
 *Boss encounter captured in a shortened game preview. Public deployment and on-chain checks are documented below.*
 
@@ -48,6 +48,25 @@ The browser renders combat and handles input. For rewarded online runs, the game
 
 Relic owners sign their own evolution transactions. Core looks up the registered **Ascended** and **Legendary** recipes and checks the required Chronicle milestone, Copper, and materials. The project administrator registers each recipe once.
 
+## Living Journey
+
+The Living Journey plan connects story choices, combat, the player economy, and the record each Expedition leaves behind.
+
+| Feature | What players can do | Release status |
+| --- | --- | --- |
+| Story encounters across five regions | Inspect scenes, talk to NPCs, and take optional actions with a cost or a consequence. In Hollow Orchard, carry the Lost Letter, learn who should receive it, and deliver it before facing the Mother of Closed Doors to weaken her opening defense. | Story effects are wired into boss entry. A deterministic run cleared all five regions. Full browser playthrough and visual review remain open. |
+| NPC memory and dialogue | NPC responses draw on the current Expedition and eligible choices. The rules validate offers and apply their effects. | Contextual dialogue and authored fallback are implemented. Live NEAR AI inference and production budget verification remain pending. |
+| NFT loadout | Pick eligible Relics and Companion Bonds from inventory, compare the dice outcomes, or try the sample loadout. A bonded Companion can replace its warden's Strike with Summon when that warden leads. Relic upgrades follow the staged evolution recipes. | Public preview available. Player-signed NFT rental and reservation still need end-to-end testnet receipts. |
+| Professions and crafting | Unlock Apothecary, Relicsmith, and Binder through Expedition checkpoints. Use recipes or commissions to turn materials into supplies and services. | Profession progression, crafting and craft-order paths have local or sandbox coverage. Live player commission settlement remains open. |
+| Shop Charter and NPC procurement | View Charter stock, fund the shop vault, and place Copper orders. NPC operators can procure materials with scoped keys, finite budgets, and price limits. Field Contracts pay after a verified objective and checkpoint. | Finalized NPC buy orders and cancellations are recorded. Player fills, Charter service and retail transactions, and Field payouts still need public player receipts. |
+| Copper accounting | Rewards draw from capped allocations. Marketplace and Charter orders reserve funds in escrow. Copper, materials, supplies, and settlement are tracked separately. | Reward caps and settlement paths have test coverage. Sustained economy telemetry and live player settlement remain open. |
+| Chronicle and replay | Record eligible milestones, share a run summary, jump to key moments in its replay, and try the same route as a challenge. Chronicle requirements feed into Relic evolution. | Replay verification and sharing are implemented. Player-recorded Chronicle and evolution transactions still need public receipts. |
+| Onboarding and presentation | Use the first-battle guide, preview the loadout, and read story effects as the boss enters. Claim Starter Packs and rewards from the Expedition Kit. Marketplace actions open the wallet directly and material orders publish after confirmation. | The public frontend serves the simplified signing flow. Full new-player usability testing and a fresh wallet-signed end-to-end run remain open. |
+
+Guest sessions and Starter Packs support onboarding. Google sign-in is offered by the public configuration. The checkout can use a direct wallet transaction and preview a Tidepool quote. Public NEAR Auth/MPC signing and NEAR Intents settlement remain pending. Ranked Duel is configurable locally. Custom Duel and Co-op Breach completed local browser matches.
+
+A full release check follows an Expedition from an NPC encounter through supplies or services, a decision, the boss, the Chronicle, and a shared replay. Local tests, sandbox settlements, public UI checks, and finalized testnet transactions each cover parts of that route.
+
 ## The Testnet record
 
 **Network:** NEAR testnet. Contract state was rechecked at finalized blocks **277724718–277724719** on **November 15, 2026 (UTC+7)**. The public API returned healthy, Core was active, Copper metadata returned ticker `COPPER` with two decimals, and both Relic recipe views returned data.
@@ -66,6 +85,7 @@ Core serves the artifact collection. Its reusable Vault template creates per-art
 
 | What to inspect | Verified result | Evidence |
 | --- | --- | --- |
+| Starter Pack wallet link | Core finalized the link for `starter-001`. A separate wallet transaction completes the claim. | [Link transaction](https://testnet.nearblocks.io/txns/B4GoriiJZCwRVucPfdE2MHHrc8YopFuCw2cV8FgSc51g) |
 | NPC procurement | The Provisioner’s `place_market_order` finalized successfully with zero failed receipts. The pilot also recorded the unfilled order’s cancellation. | [Order transaction](https://testnet.nearblocks.io/txns/6Y2Jiq16DYk3Jd9x836pGqPFNmn61tfqos3L1omY36ZR) · [Pilot evidence](evidence/testnet/npc-market-pilot.verified.json) |
 | Relic evolution | Two `register_evolution_recipe` calls finalized successfully with zero failed receipts. Both stages are readable on Core. | [Recipe transaction](https://testnet.nearblocks.io/txns/J8XqiZu1gA5xw1Z9Zr9QnyUsh1CMNs2dJibsZRTfuwAK) · [Receipt](evidence/testnet/evolution-0-J8XqiZu1gA5xw1Z9Zr9QnyUsh1CMNs2dJibsZRTfuwAK.json) |
 | Material reward budgets | Ten material and regional trophy budgets were confirmed after configuration. | [Configuration transaction](https://testnet.nearblocks.io/txns/27GYBK7xBQCFs9WrQQ64CY34CpeoX2zVFUoaTDvXNyeo) · [Budget evidence](deployments/economy/testnet.material-budgets.verified.json) |
@@ -118,7 +138,7 @@ npm run test:backend
 npm run test:gameplay
 ```
 
-The November 15 run passed **97 backend tests** and **57 gameplay tests**. The opt-in PostgreSQL test was skipped. Coverage includes replay verification, five-region progression, reward caps, market receipt binding, crafting, wallet proof, curse remedies and companion limits. A separate deterministic replay records a [five-region win](evidence/gameplay/five-region-win.json) and [a defeat in region two](evidence/gameplay/region-two-loss.json).
+The November 17 development checkout passed **98 backend tests** and **61 gameplay tests**, with the opt-in PostgreSQL test skipped. The deterministic [five-region win](evidence/gameplay/five-region-win.json) and [region-two defeat](evidence/gameplay/region-two-loss.json) are replay records. The public GitHub snapshot may report earlier counts when checked out locally.
 
 See [operating instructions](docs/implementation/OPERATIONS.md) for testnet configuration.
 

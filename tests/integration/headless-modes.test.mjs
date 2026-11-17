@@ -451,9 +451,16 @@ test('Weekly and co-op account rewards survive database reopen and retries', asy
   try {
     const run = route('weekly/start', {});
     combat.complete(run.runId, { objective: true, rounds: 5, faints: 0, consumables: 0 });
-    route('weekly/settle', { runId: run.runId });
+    const settled = route('weekly/settle', { runId: run.runId });
+    assert.equal(settled.entitlement.itemId, 'weekly-oath-cosmetic');
+    assert.deepEqual(route('rewards').rewards, [settled.entitlement]);
     const claim = route('weekly/claim', {});
-    assert.equal(claim.entitlement.itemId, 'weekly-oath-cosmetic');
+    assert.deepEqual(claim.entitlement, settled.entitlement);
+
+    const other = route('weekly/start', {}, 'bob');
+    combat.complete(other.runId, { objective: true, rounds: 5, faints: 0, consumables: 0 });
+    assert.equal(route('weekly/settle', { runId: other.runId }, 'bob').entitlement, undefined);
+    assert.ok(route('weekly/board').some(row => row.accountId === 'bob'));
     for (let attempt = 0; attempt < 2; attempt++) {
       const room = route('coop', {});
       for (const player of ['bob', 'cat']) route('coop/' + room.id + '/join', {}, player);
@@ -477,4 +484,3 @@ test('Weekly and co-op account rewards survive database reopen and retries', asy
     await rm(directory, { recursive: true, force: true });
   }
 });
-

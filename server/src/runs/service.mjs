@@ -192,7 +192,7 @@ function calculateReplay(run, observeFrame) {
 const currentRun = account => Object.values(account.runs).reverse().find(run =>
   ['practice', 'expedition'].includes(run.mode) && !isTerminal(lifecycleFor(run.state)));
 
-export function createRunService({ repository, modeSecret, entropy = randomBytes, rewards, materialClaims, ownedItems, vaultPurse, starter, storyVersion } = {}) {
+export function createRunService({ repository, modeSecret, entropy = randomBytes, rewards, materialClaims, ownedItems, vaultPurse, allowNewVaultPurse = Boolean(vaultPurse), starter, storyVersion } = {}) {
   async function flushStarterSpend(player) {
     const pending = await repository.read(player, account => account.pendingStarterSpend);
     if (!pending) return;
@@ -204,7 +204,7 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
   }
   if (!repository) throw new TypeError('Expected a run repository');
   return {
-    loadoutCapabilities: () => ({ purse: Boolean(vaultPurse), items: Boolean(ownedItems) }),
+    loadoutCapabilities: () => ({ purse: Boolean(vaultPurse) && allowNewVaultPurse, items: Boolean(ownedItems) }),
     expeditionRunId(player, operationId) {
       if (!validOperation(operationId)) fail('INVALID_OPERATION', 400);
       return hash(['rewarded-run', player, operationId]);
@@ -230,6 +230,7 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
         if (run.mode !== 'expedition' || !run.rewardReservation?.beneficiary || run.version !== 0 || run.ownedItems) {
           fail('VAULT_PURSE_PREPARATION_CLOSED', 409);
         }
+        if (!run.vaultPurse && !allowNewVaultPurse) fail("VAULT_PURSE_UNAVAILABLE", 409);
         if (run.vaultPurse && run.vaultPurse.amount !== amount) fail('VAULT_PURSE_CONFLICT', 409);
         run.vaultPurse ??= vaultPurse.receipt(run, amount);
         return vaultPurse.reserve(run.vaultPurse);
@@ -328,7 +329,7 @@ export function createRunService({ repository, modeSecret, entropy = randomBytes
       const purseError = validateVaultPurseCarry(purseAtomic);
       if (purseError === 'INVALID_PURSE_CARRY') fail(purseError, 400);
       const carriesCopper = purseAtomic !== '0';
-      if (carriesCopper && (!vaultPurse || mode !== 'expedition')) fail('VAULT_PURSE_UNAVAILABLE', 409);
+      if (carriesCopper && (!vaultPurse || !allowNewVaultPurse || mode !== 'expedition')) fail('VAULT_PURSE_UNAVAILABLE', 409);
       if (mode !== 'practice' && mode !== 'expedition') fail('INVALID_MODE', 400);
       if (mode === 'expedition' && !rewards) fail('REWARD_RESERVATION_UNAVAILABLE', 409);
       if (mode === 'expedition' && tutorial) fail('INVALID_LOADOUT', 400);

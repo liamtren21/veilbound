@@ -1,3 +1,4 @@
+import { runCurrencyCopy } from './expedition-economy.mjs';
 import { active, canEndRound, canEngrave, describe, rerollableDice, shopInventory } from './expedition-rules.mjs';
 import { actions, equipment, instantItems, foes, heroes, nodes, regionOf, story, tokens, training } from './expedition-data.mjs';
 import { asset, playWardenPreview, wardenPreview } from './expedition-art.mjs?v=sfx-v2';
@@ -26,6 +27,8 @@ const errors = {
   RUN_NOT_FOUND: 'This run is unavailable in your session.',
   SESSION_REQUIRED: 'Your session has expired. Reload this page to reconnect.',
   STALE_VERSION: 'The run has changed. Resume it to refresh the encounter.',
+  ROOM_MISSING: 'This room no longer exists. Ask the host for a new invite.',
+  ROOM_FULL: 'This room is full or the match has already started.',
   ROOM_PARTICIPANT_REQUIRED: 'Join the room before opening it.',
   RANKED_UNAVAILABLE: 'Ranked Veil Duel is unavailable on this server.',
 };
@@ -116,17 +119,17 @@ function submit(form, title, handler) {
     void task(origin, handler, node);
   });
 }
-function idForm(parent, title, placeholder, handler) {
+function joinRoomForm(parent, code, handler) {
   const form = el('form', null, parent);
-  const field = el('label', title, form);
+  const field = el('label', 'Room code', form);
   const input = el('input', null, field);
   input.required = true;
   input.maxLength = 100;
   input.pattern = '[A-Za-z0-9_\\-]{1,100}';
   input.autocomplete = 'off';
   input.spellcheck = false;
-  input.value = placeholder ?? '';
-  submit(form, title.startsWith('Room') ? 'Join room' : 'Open run', () => handler(input.value));
+  input.value = code ?? '';
+  submit(form, 'Join Room', () => handler(input.value.trim()));
 }
 function stash(key, value) {
   const storageKey = 'veilbound-modes:' + account + ':' + key;
@@ -140,9 +143,32 @@ function stash(key, value) {
 function operationId() {
   return [...crypto.getRandomValues(new Uint8Array(16))].map(n => n.toString(16).padStart(2, '0')).join('');
 }
-function openRunControls(kind, target = panel) {
+async function savedRun(kind, read) {
   const id = stash(kind);
-  if (id) button(target, 'Resume', () => loadRun(kind, id));
+  if (!id) return null;
+  try {
+    return await read(id);
+  } catch (error) {
+    if (['RUN_NOT_FOUND', 'RAID_ENTRY_MISSING', 'ROOM_MISSING', 'ROOM_PARTICIPANT_REQUIRED'].includes(error.message)) return null;
+    throw error;
+  }
+}
+
+function showResult(parent, save, describe) {
+  const line = el('p', 'Recording result…', parent);
+  const retry = button(parent, 'Retry saving result', record);
+  retry.hidden = true;
+  async function record() {
+    retry.hidden = true;
+    line.textContent = 'Recording result…';
+    try {
+      line.textContent = describe(await save());
+    } catch (error) {
+      line.textContent = errors[error.message] ?? label(error.message);
+      retry.hidden = false;
+    }
+  }
+  void record();
 }
 async function loadRun(kind, id) {
   const origin = page;
@@ -159,6 +185,11 @@ const actionArt = {
   counter: 'strike', burst: 'stone-answer', mend: 'salve',
 };
 
+function returnToLobby() {
+  history.replaceState(history.state, '', '#' + page.kind);
+  return showPage(true);
+}
+
 function beginEncounter() {
   encounter.replaceChildren();
   document.body.removeAttribute('data-playing');
@@ -171,7 +202,7 @@ function battlefield(title, round, art, allies, opponents, status = '') {
   stage.className = 'mode-battlefield';
   stage.style.setProperty('--arena-art', 'url("' + asset(art) + '")');
   const header = el('header', null, stage);
-  const back = button(header, 'Back to modes', () => showPage(true));
+  const back = button(header, 'Back to modes', returnToLobby);
   back.className = 'mode-battle-back';
   const heading = el('div', null, header);
   el('h3', title, heading);
@@ -356,7 +387,7 @@ function renderRun(kind, run, rerolledIds = []) {
   const battle = state.phase === 'battle' && !['WON', 'LOST'].includes(lifecycle);
   setMusicScene(battle&&node?.type==='boss'?'boss':'expedition');
   if (!battle) el('h3', node?.name ?? 'Expedition', encounter);
-  if (!battle) el('p', (state.report || 'Choose your next action.') + ' · ' + state.copper + ' Copper', encounter);
+  if (!battle) el('p', runCurrencyCopy(state.report || 'Choose your next action.') + ' · ' + state.copper + ' Crowns', encounter);
   let combatView;
   const go = async intent => {
     const rerolled = intent.type === 'reroll' ? rerollableDice(state).map(die => die.id) : [];
@@ -384,19 +415,22 @@ function renderRun(kind, run, rerolledIds = []) {
   if (['WON', 'LOST'].includes(lifecycle)) {
     el('p', lifecycle === 'WON' ? 'Run won' : 'Run lost', encounter);
     const clear = kind === 'trials' && run.mode !== 'trial';
+    button(encounter, 'Back to ' + names[kind], returnToLobby);
     if (clear && lifecycle === 'LOST') return;
-    button(encounter, clear ? 'Import clear' : 'Submit result', async () => {
+    showResult(encounter, async () => {
       const result = await mode(kind + (clear ? '/import-clear' : '/settle'), { runId });
-      if (page !== origin) return;
-      if (kind === 'weekly') {
-        await showWeekly();
-        if (page !== origin) return;
-        feedback((result.ranked ? 'Ranked result recorded' : 'Practice result recorded') + ' · ' + result.rounds + ' rounds');
-      } else {
-        await showTrials();
-        if (page !== origin) return;
-        feedback(clear ? 'Talisman clear recorded.' : 'Trial result recorded.');
+      if (kind === 'weekly' && result.ranked && result.objective && !result.entitlement && !result.milestoneChecked) {
+        try {
+          result.entitlement = (await mode('weekly/claim', {})).entitlement;
+        } catch (error) {
+          if (!['WEEKLY_MILESTONE_UNEARNED', 'WEEKLY_BUDGET_EXHAUSTED'].includes(error.message)) throw error;
+        }
       }
+      return result;
+    }, result => {
+      if (kind === 'trials') return clear ? 'Talisman clear recorded.' : 'Trial result recorded.';
+      const score = (result.ranked ? 'Ranked result recorded' : 'Practice result recorded') + ' · ' + result.rounds + ' rounds';
+      return score + (result.entitlement ? ' · ' + label(result.entitlement.itemId) + ' earned' : '');
     });
     return;
   }
@@ -412,7 +446,7 @@ function renderRun(kind, run, rerolledIds = []) {
     const art = node?.type === 'boss' ? 'boss-arena-' + region.id + '-v1.png'
       : 'expedition-scenes-v2/battle-' + region.id + '.webp';
     const view = combatView = battlefield(node?.name ?? names[kind], round, art, team, enemies, names[kind]);
-    el('p', state.copper + ' Copper', view.header).className = 'mode-battle-meta';
+    el('p', state.copper + ' Crowns', view.header).className = 'mode-battle-meta';
     const stamp = JSON.stringify([runId, state.node, state.visited.length, round]);
     const freshRound = origin.rollStamp !== stamp;
     origin.rollStamp = stamp;
@@ -454,7 +488,7 @@ function renderRun(kind, run, rerolledIds = []) {
     submit(form, 'Train', () => go({ type: 'trainer', choice: trainingOption.value, heroKey: hero.value }));
   } else if (state.phase === 'event' && story[state.node]) {
     const event = story[state.node];
-    el('p', event.copy, encounter);
+    el('p', runCurrencyCopy(event.copy), encounter);
     for (const [choice, name, hint] of event.choices) {
       if (choice === 'bargain') {
         const form = el('form', null, encounter);
@@ -469,12 +503,12 @@ function renderRun(kind, run, rerolledIds = []) {
     }
   }
   if (state.phase === 'shop') {
-    for (const { id, name, price } of shopInventory(state)) pick(controls, name + ' · ' + price + ' Copper', 'buy', { itemId: id });
+    for (const { id, name, price } of shopInventory(state)) pick(controls, name + ' · ' + price + ' Crowns', 'buy', { itemId: id });
     pick(controls, 'Leave shop', 'leave-shop');
   }
   if (state.phase === 'reward') {
     const loot = state.battle.rewardOffer;
-    if (loot?.copper) pick(controls, 'Take ' + loot.copper + ' Copper', 'claim', { choice: 'copper' });
+    if (loot?.copper) pick(controls, 'Take ' + loot.copper + ' Crowns', 'claim', { choice: 'copper' });
     if (loot?.token) pick(controls, 'Take ' + tokens[loot.token].name, 'claim', { choice: 'token' });
     if (loot?.remedy) pick(controls, 'Take ' + label(loot.remedy), 'claim', { choice: 'remedy' });
     for (const item of loot?.gear ?? []) pick(controls, 'Take ' + equipment[item].name, 'claim', { choice: 'equipment', heroKey: item });
@@ -524,15 +558,34 @@ function openLobbyPanel() {
 
 async function showTrials() {
   const origin = page;
-  const [state, history, latest] = await Promise.all([
+  const [progress, history, latest, saved] = await Promise.all([
     mode('trials'),
     request('/api/runs/expedition-history').catch(() => []),
     request('/api/runs/active').catch(() => null),
+    savedRun('trials', id => request('/api/runs/' + id)),
   ]);
+  if (page !== origin) return;
+  let state = progress;
+  const wins = history.filter(run => run.outcome?.toLowerCase() === 'won');
+  if (latest?.mode === 'practice' && latest.lifecycle === 'WON') {
+    wins.unshift({ runId: latest.runId, talisman: latest.state.talisman });
+  }
+  let syncError;
+  for (const { runId, talisman } of wins) {
+    if (page !== origin) return;
+    if (state.clears.includes(talisman)) continue;
+    try { state = await mode('trials/import-clear', { runId }); }
+    catch (error) { syncError = error; }
+  }
   if (page !== origin) return;
   const lobby = openLobbyPanel();
   const challenge = lobbyCard(lobby, 'Select Trial', 'talismans-v3/gate.png');
-  const preparation = lobbyCard(lobby, 'Qualification', 'account-v1/ledger.png');
+  const preparation = lobbyCard(lobby, state.clears.length ? 'Progress' : 'Unlock Trials', 'account-v1/ledger.png');
+  if (saved) button(challenge, ['WON', 'LOST'].includes(saved.lifecycle) ? 'Last result' : 'Resume', () => loadRun('trials', saved.runId));
+  if (syncError) {
+    el('p', 'Some completed runs could not be checked.', preparation);
+    button(preparation, 'Retry progress check', showTrials);
+  }
   if (!state.clears.length) el('p', 'Clear an Expedition or qualifying practice to unlock your first Trial.', challenge);
   else if (!state.available.length) el('p', 'No Trials are currently available.', challenge);
 
@@ -558,33 +611,21 @@ async function showTrials() {
     selected.onchange = showTrial;
     showTrial();
   }
-  button(group(preparation), 'Start qualifying practice', async () => {
+  if (!state.clears.length) button(group(preparation), 'Practice', async () => {
     const result = await request('/api/runs', { mode: 'practice' });
     if (page !== origin) return;
     stash('trials', result.runId);
     renderRun('trials', result);
   });
-  const completed = history.filter(run => run.outcome?.toLowerCase() === 'won');
-  if (latest?.mode === 'practice' && latest.lifecycle === 'WON') {
-    completed.unshift({ runId: latest.runId, talisman: latest.state.talisman });
-  }
-  const eligible = completed.filter(run => !state.clears.includes(run.talisman));
-  if (eligible.length) {
-    const form = el('form', null, preparation);
-    const proof = choose(form, 'Completed run', eligible.map(run => [run.runId, label(run.talisman) + ' · Victory']));
-    submit(form, 'Record clear', async () => {
-      await mode('trials/import-clear', { runId: proof.value });
-      if (page !== origin) return;
-      await showTrials();
-      if (page === origin) feedback('Talisman clear recorded.');
-    });
-  }
-  openRunControls('trials', challenge);
+  if (state.clears.length) el('p', state.completed.length + ' trials cleared', preparation);
 }
 
 async function showWeekly() {
   const origin = page;
-  const board = await mode('weekly/board');
+  const [board, saved] = await Promise.all([
+    mode('weekly/board'), savedRun('weekly', id => request('/api/runs/' + id)),
+  ]);
+
   if (page !== origin) return;
   const lobby = openLobbyPanel();
   const entry = lobbyCard(lobby, 'Enter the Oath', 'talismans-v3/river.png');
@@ -596,7 +637,7 @@ async function showWeekly() {
       if (page === origin) await loadRun('weekly', result.runId);
     });
   }
-  openRunControls('weekly', entry);
+  if (saved) button(entry, ['WON', 'LOST'].includes(saved.lifecycle) ? 'Last result' : 'Resume', () => loadRun('weekly', saved.runId));
   const ranks = lobbyCard(lobby, 'Leaderboard', 'account-v1/ledger.png');
   if (!board.length) el('p', 'No verified attempts yet.', ranks);
   else {
@@ -608,15 +649,14 @@ async function showWeekly() {
       el('span', (row.objective ? 'Cleared' : 'Incomplete') + ' · ' + row.rounds + ' rounds · ' + row.faints + ' faints', item);
     }
   }
-  button(ranks, 'Claim milestone', async () => {
-    const result = await mode('weekly/claim', {});
-    if (page === origin) feedback('Claimed ' + label(result.reward) + '.');
-  });
+  el('p', 'Milestone rewards are added to Rewards after a qualifying ranked run.', ranks);
 }
 
 async function showBreach() {
   const origin = page;
-  const status = await mode('raid/status');
+  const [status, saved] = await Promise.all([
+    mode('raid/status'), savedRun('raid', id => mode('raid/' + id + '/encounter')),
+  ]);
   if (page !== origin) return;
   const lobby = openLobbyPanel();
   const objective = lobbyCard(lobby, 'The Kiln That Hungers', 'region-emblems-v2/fire.png');
@@ -636,8 +676,7 @@ async function showBreach() {
       if (page === origin) await openBreach(result.runId);
     }).disabled = !practice && !status.remainingHp;
   }
-  const previous = stash('raid');
-  if (previous) button(entry, 'Resume', () => openBreach(previous));
+  if (saved) button(entry, saved.phase === 'active' ? 'Resume' : 'Last result', () => openBreach(saved.runId));
 }
 
 async function openBreach(id) {
@@ -674,13 +713,10 @@ function renderBreach(state) {
   }
   if (phase !== 'active') {
     view.hint.textContent = phase === 'won' ? 'Encounter won' : 'Encounter lost';
-    button(controls, 'Submit contribution', async () => {
-      const result = await mode('raid/settle', { runId });
-      if (page !== origin) return;
-      await showBreach();
-      if (page === origin) feedback(result.practice ? 'Practice score · ' + result.personalScore
-        : 'Contribution recorded · ' + result.contribution + ' damage' + (result.entitlement ? ' · Reward earned' : ''));
-    });
+    showResult(controls, () => mode('raid/settle', { runId }), result => result.practice
+      ? 'Practice score · ' + result.personalScore
+      : 'Contribution recorded · ' + result.contribution + ' damage' + (result.entitlement ? ' · Reward earned' : ''));
+    button(controls, 'Back to The Breach', () => showPage(true));
   }
 }
 function roomPath(kind, id) {
@@ -717,7 +753,7 @@ function showRankedEntry(initialRoom) {
     summary.textContent = 'Rating ' + state.rating;
     if (state.id) {
       summary.textContent += ' · Match found';
-      button(controls, 'Resume ranked match', () => resumeMatch(state.id));
+      button(controls, 'Resume Match', () => resumeMatch(state.id));
       if (!initialRoom) void resumeMatch(state.id).catch(problem);
       return;
     }
@@ -758,14 +794,25 @@ function showRankedEntry(initialRoom) {
 
   void refreshRanked();
 }
-function showRoomEntry(kind, initialId) {
+async function showRoomEntry(kind, initialId) {
+  const origin = page;
+  const saved = await savedRun(kind, id => mode(roomPath(kind, id)));
+  if (page !== origin) return;
   openLobbyPanel();
   if (kind === 'duel') showRankedEntry(initialId);
   const lobby = lobbyCard(panel, kind === 'coop' ? 'Co-op Room' : 'Private Duel',
     kind === 'coop' ? 'region-emblems-v2/water.png' : 'talismans-v3/gate.png');
   el('p', kind === 'coop' ? 'Three players choose one action each round.' : 'Use a room code to duel a friend.', lobby);
   const controls = group(lobby);
-  button(controls, 'Create room', async () => {
+  if (saved && !saved.ranked && saved.id !== initialId) {
+    const finished = ['finished', 'won', 'lost'].includes(saved.phase);
+    const resume = saved.practice ? 'Resume Practice' : 'Resume Room';
+    button(controls, finished ? 'Last Result' : resume, async () => {
+      const result = await mode(roomPath(kind, saved.id));
+      if (page === origin) connectRoom(kind, result);
+    });
+  }
+  button(controls, 'Create Room', async () => {
     const origin = page;
     const result = await mode(kind, {});
     if (page === origin) connectRoom(kind, result);
@@ -779,10 +826,10 @@ function showRoomEntry(kind, initialId) {
       if (page === origin) connectRoom('duel', result);
     });
   }
-  idForm(lobby, 'Room code', initialId ?? stash(kind), async id => {
+  joinRoomForm(lobby, initialId, async id => {
     const origin = page;
-    await mode(roomPath(kind, id) + '/join', {});
-    const result = await mode(roomPath(kind, id));
+    const joined = await mode(roomPath(kind, id) + '/join', {});
+    const result = joined.ready ? joined : await mode(roomPath(kind, id));
     if (page === origin) connectRoom(kind, result);
   });
 }
@@ -835,13 +882,19 @@ function followRoom(connection) {
     }, 1600);
   });
 }
-function roomBattleMeta(header, state, path) {
+function showInvite(parent, path) {
+  const href = new URL('#' + path, location.href).href;
+  button(parent, 'Copy Invite Link', async () => {
+    await navigator.clipboard.writeText(href);
+    feedback('Invite link copied.');
+  });
+  const link = el('a', 'Open Invite Link', parent);
+  link.href = href;
+}
+
+function roomBattleMeta(header, state) {
   const meta = el('div', null, header);
   meta.className = 'mode-battle-meta';
-  if (!state.practice && !state.ranked) {
-    const invite = el('a', 'Invite link', meta);
-    invite.href = '#' + path;
-  }
   if (state.deadline) {
     const at = new Date(state.deadline);
     const deadline = el('time', 'Deadline · ' + at.toLocaleTimeString(), meta);
@@ -895,8 +948,8 @@ function renderRoom(connection, state) {
   if (!state.phase) {
     document.body.setAttribute('data-waiting', '');
     const lobby = lobbyCard(encounter, 'Room Lobby', 'account-v1/ledger.png');
-    const invite = el('a', 'Invite link', lobby);
-    invite.href = '#' + path;
+    showInvite(lobby, path);
+    el('p', 'The match starts when all seats are filled and everyone is ready.', lobby);
     el('p', 'Room code · ' + id + '   /   ' + state.players.length + ' of ' + roomLimits[kind] + ' players', lobby);
     const seats = el('div', null, lobby);
     seats.className = 'mode-room-seats';
@@ -914,7 +967,8 @@ function renderRoom(connection, state) {
     }
     const controls = group(lobby);
     if (!state.ready?.includes(account)) button(controls, 'Ready', () => go('ready'));
-    button(controls, 'Back to mode', () => showPage(true));
+    else el('p', 'Ready · Waiting for teammates', controls);
+    button(controls, 'Back to mode', returnToLobby);
     return;
   }
   if (state.phase === 'finished') {
@@ -923,8 +977,8 @@ function renderRoom(connection, state) {
       const { current, delta, repeatedPair } = state.rating;
       el('p', 'Rating ' + current + ' (' + (delta > 0 ? '+' : '') + delta + ')', encounter);
       if (repeatedPair) el('p', 'Rating is capped for repeated opponents.', encounter);
-      button(encounter, 'Return to ranked queue', () => showPage(true));
     }
+    button(encounter, state.ranked ? 'Back to Ranked' : 'Back to Veil Duel', returnToLobby);
     return;
   }
   if (kind === 'duel') {
@@ -939,7 +993,7 @@ function renderRoom(connection, state) {
     const view = combatView = battlefield('Veil Duel', state.round, 'boss-arena-metal-v1.png',
       fighters(mine), fighters(rival, true),
       state.ranked ? 'Ranked match' : state.practice ? 'Bot practice' : 'Private duel');
-    roomBattleMeta(view.header, state, path);
+    roomBattleMeta(view.header, state);
     const stamp = JSON.stringify([id, state.round]);
     const freshRound = origin.rollStamp !== stamp;
     origin.rollStamp = stamp;
@@ -976,7 +1030,7 @@ function renderRoom(connection, state) {
   }));
   const boss = { id: 'bell-drowned', name: foes['bell-drowned'].name, hp: state.bossHp, maxHp: 64 };
   const view = combatView = battlefield('Co-op Breach', state.round, 'boss-arena-water-v1.png', allies, [boss], label(state.phase));
-  roomBattleMeta(view.header, state, path);
+  roomBattleMeta(view.header, state);
   const latest = state.timeline.at(-1);
   if (latest) el('p', latest.actions.map(action => wardenName(action.heroId) + ' · ' + label(action.type) +
     (action.bot ? ' (bot)' : '')).join(' / '), view.header).className = 'mode-battle-meta';
@@ -988,7 +1042,9 @@ function renderRoom(connection, state) {
         [], type === 'salve' && !actor.salves ? 'No salves available' : '');
     }
   } else {
-    view.hint.textContent = state.phase === 'planning' ? 'Waiting for teammates' : label(state.phase);
+    view.hint.textContent = state.phase === 'planning' ? 'Waiting for teammates' :
+      state.phase === 'won' ? 'The Bell-Drowned is defeated' : 'Encounter lost';
+    if (state.phase !== 'planning') button(view.controls, 'Back to Co-op Breach', returnToLobby);
   }
 
 }
@@ -1041,7 +1097,7 @@ async function showPage(focus = false) {
     else if (kind === 'weekly') await showWeekly();
     else if (kind === 'raid') await showBreach();
     else if (kind === 'rewards') await showRewards();
-    else showRoomEntry(kind, match?.[2]);
+    else await showRoomEntry(kind, match?.[2]);
     if (page === origin) feedback();
   } catch (error) {
     if (page === origin) feedback(errors[error.message] ?? label(error.message), true);
@@ -1054,5 +1110,3 @@ window.addEventListener('pagehide', () => {
 });
 window.addEventListener('pageshow', event => { if (event.persisted) void showPage(); });
 void showPage();
-
-

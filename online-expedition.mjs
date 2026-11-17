@@ -1,3 +1,4 @@
+import { runCurrencyCopy } from './expedition-economy.mjs';
 import { openTitleLogin } from './expedition-title-auth.mjs';
 import { Auth0Client } from '@auth0/auth0-spa-js';
 import { NearConnector } from '@hot-labs/near-connect';
@@ -122,10 +123,17 @@ async function signNearAuthTransaction(input) {
     return 'Submitted ' + outcome.transactionHash;
   } finally { popup.close(); }
 }
-async function send(transaction) {
+async function send(transaction, { rewardWithStorage = false, loadoutLocks = false } = {}) {
   if (!identity?.accountId) throw new Error('A NEAR testnet account is required.');
-  if (transaction.network !== 'testnet' || transaction.actions?.length !== 1 ||
-      transaction.actions[0].type !== 'FunctionCall') throw new Error('Unexpected testnet transaction.');
+  const actions = transaction.actions ?? [];
+  const bundled = rewardWithStorage && actions.length === 2 &&
+    actions[0].params?.methodName === 'fund_storage' &&
+    actions[0].params?.args?.account_id === identity.accountId &&
+    actions[1].params?.methodName === 'claim_reward';
+  const lockBatch = loadoutLocks && actions.length === 2 &&
+    actions.every(action => action.params?.methodName === 'reserve_nft_run');
+  if (transaction.network !== 'testnet' || (actions.length !== 1 && !bundled && !lockBatch) ||
+      actions.some(action => action.type !== 'FunctionCall')) throw new Error('Unexpected testnet transaction.');
   if (!wallet) {
     const candidate = await new NearConnector({ network: 'testnet', features: { signAndSendTransaction: true } }).connect();
     const accounts = await candidate.getAccounts({ network: 'testnet' });
@@ -150,6 +158,16 @@ async function start(mode) {
   sessionStorage.setItem(key, id);
   const selections = Object.fromEntries(Object.entries(loadout)
     .filter(([field, token]) => token && (rewarded || field !== 'chronicleToken')));
+  const { relicToken, companionToken } = selections;
+  if (rewarded && loadoutCapabilities.batchedNftLocks && (relicToken || companionToken)) {
+    const prepare = () => api('runs/prepare-nft-lock', { relicToken, companionToken, operationId: id });
+    const { transaction } = await prepare();
+    if (transaction) {
+      const { confirmed } = await signOnce(JSON.stringify(['loadout', id, relicToken, companionToken]), transaction,
+        prepare, result => !result.transaction, { loadoutLocks: true });
+      if (!confirmed) return 'Waiting for loadout confirmation. Press Start again to check.';
+    }
+  }
   snapshot = await api('runs', { mode, talisman: chosenTalisman, operationId: id, ...selections });
   archiveRun = undefined;
   if (rewarded) {
@@ -203,7 +221,7 @@ function renderBattle(state) {
 }
 function renderReward(state) {
   const offer = state.battle.rewardOffer;
-  if (offer?.copper) option('Collect ' + offer.copper + ' Copper', 'claim', { choice: 'copper' });
+  if (offer?.copper) option('Collect ' + offer.copper + ' Crowns', 'claim', { choice: 'copper' });
   if (offer?.token) option('Collect ' + tokens[offer.token].name, 'claim', { choice: 'token' });
   if (offer?.remedy) option('Collect ' + offer.remedy, 'claim', { choice: 'remedy' });
   for (const gear of offer?.gear ?? []) option('Collect ' + equipment[gear].name, 'claim', { choice: 'equipment', heroKey: gear });
@@ -214,7 +232,7 @@ function renderReward(state) {
 }
 function renderEvent(state) {
   const event = story[state.node];
-  if (event?.copy) add(panel, 'p', event.copy);
+  if (event?.copy) add(panel, 'p', runCurrencyCopy(event.copy));
   for (const [choice, label] of event?.choices ?? []) {
     if (choice !== 'bargain') option(label, 'event', { choice });
     else for (const hero of active(state.heroes)) for (const curseId of ['withered', 'brittle', 'blood-debt']) {
@@ -229,16 +247,16 @@ function renderEvent(state) {
   }
 }
 async function waitForChain(read, done) {
-  status.textContent = 'Waiting for NEAR testnet confirmation…';
+  status.textContent = 'Waiting for NEAR testnet confirmationï¿½';
   for (const ms of [0, 700, 1500, 2700, 4000]) {
     if (ms) await new Promise(resolve => setTimeout(resolve, ms));
     const value = await read().catch(() => undefined);
     if (value && done(value)) return value;
   }
 }
-async function signOnce(key, transaction, read, done) {
+async function signOnce(key, transaction, read, done, options) {
   const storageKey = 'veilbound-pending:' + identity.accountId + ':' + key;
-  const submitted = sessionStorage.getItem(storageKey) ?? await send(transaction);
+  const submitted = sessionStorage.getItem(storageKey) ?? await send(transaction, options);
   sessionStorage.setItem(storageKey, submitted);
   const confirmed = await waitForChain(read, done);
   if (confirmed) sessionStorage.removeItem(storageKey);
@@ -248,18 +266,37 @@ async function claimReward(path, input) {
   const prepare = () => api(path, input);
   const claim = await prepare();
   if (!claim.transaction) return 'Reward status: ' + claim.status;
-  const { submitted, confirmed } = await signOnce(path + JSON.stringify(input), claim.transaction,
-    prepare, result => !result.transaction);
-  return confirmed ? 'Reward status: ' + confirmed.status : submitted + ' · Awaiting confirmation.';
+  let transaction = claim.transaction;
+  const method = transaction.actions[0].params.methodName;
+  if (method === 'claim_reward') {
+    rewardStorage = await api('economy/reward-storage');
+    const funding = rewardStorage.transaction;
+    if (funding) {
+      if (funding.network !== transaction.network || funding.receiverId !== transaction.receiverId ||
+          funding.actions.length !== 1 || transaction.actions.length !== 1) {
+        throw new Error('Reward storage could not be added to this claim.');
+      }
+      transaction = { ...transaction, actions: [...funding.actions, ...transaction.actions] };
+    }
+  }
+  const key = path + JSON.stringify(input);
+  const { submitted, confirmed } = await signOnce(method === 'retry_settlement' ? key + ':retry' : key, transaction,
+    prepare, result => !result.transaction || result.transaction.actions[0].params.methodName !== method,
+    { rewardWithStorage: true });
+  return confirmed ? 'Reward status: ' + confirmed.status : submitted + ' ï¿½ Awaiting confirmation.';
 }
 function renderCheckpoints(run = snapshot, container = panel) {
   const { runId, checkpoints } = run;
+  if (!checkpoints?.length) return;
+  add(container, 'p', 'Checkpoint rewards go to your NEAR testnet account. If storage is needed, the wallet approval includes the top-up.');
   for (const checkpoint of checkpoints ?? []) {
     const prefix = 'runs/' + runId + '/';
     const bankInput = { region: checkpoint.region };
-    button(container, 'Bank checkpoint ' + checkpoint.region, () => claimReward(prefix + 'prepare-bank', bankInput));
-    if (socialClient && nearStorageEnabled) {
-      button(container, 'Bank checkpoint ' + checkpoint.region + ' via NEAR Auth',
+    if (BigInt(checkpoint.copperAtomic ?? 0) > 0n) {
+      button(container, 'Claim Copper - Region ' + checkpoint.region, () => claimReward(prefix + 'prepare-bank', bankInput));
+    }
+    if (BigInt(checkpoint.copperAtomic ?? 0) > 0n && socialClient && nearStorageEnabled && rewardStorage && !rewardStorage.transaction) {
+      button(container, 'Claim Region ' + checkpoint.region + ' via NEAR Auth',
         () => signNearAuthTransaction({ runId, ...bankInput }));
     }
     for (const material of checkpoint.materials ?? []) {
@@ -462,6 +499,12 @@ function renderLoadout() {
       add(slot, 'p', stage.text + ' Uses an equipment slot.');
       loadoutComparison(slot, previewLoadout(chosenTalisman, {relicStage:ferrymanStages.indexOf(stage)}));
     }
+    if (selected && key !== 'chronicleToken' && !loadoutCapabilities.batchedNftLocks) {
+      button(slot, 'Reserve ' + name, async () => {
+        const { transaction } = await api('runs/prepare-nft-lock', { tokenId: selected.id, operationId: upcomingOperation() });
+        return send(transaction);
+      });
+    }
     if (selected && key === 'companionToken' && Object.hasOwn(companions, selected.companion)) {
       const companion = companions[selected.companion];
       add(slot, 'p', companion.name + ' Â· ' + companion.bond);
@@ -470,10 +513,6 @@ function renderLoadout() {
       add(slot, 'p', 'When the bonded warden leads, Summon replaces Strike. On arrival the bonded warden gains ' + BOND_ARRIVAL_DEFENSE + ' Defense.');
       loadoutComparison(slot, previewLoadout(chosenTalisman, {companionId:selected.companion}), selected.companion);
     }
-    if (loadout[key] && key !== 'chronicleToken') button(slot, 'Reserve ' + name, async () => {
-      const { transaction } = await api('runs/prepare-nft-lock', { tokenId: loadout[key], operationId: upcomingOperation() });
-      return send(transaction);
-    });
   }
   if (inventory?.next) button(section, 'More items', async () => {
     const next = await api('runs/expedition-inventory?offset=' + encodeURIComponent(inventory.next));
@@ -514,12 +553,12 @@ function renderRunCustody(run = snapshot, container = panel) {
   const update = (label, path) => button(section, label, async () => {
     snapshot = await api(prefix + path, {});
   });
-  if (!loadoutCapabilities.purse && !loadoutCapabilities.items && !chronicleToken) {
+  if (!(purseAtomic || state.vaultPurse) && !loadoutCapabilities.items && !chronicleToken) {
     section.remove();
     return;
   }
   add(section, 'h3', 'Expedition supplies');
-  if (version === 0 && !ownedItems && loadoutCapabilities.purse) {
+  if (version === 0 && !ownedItems && purseAtomic) {
     loadoutCount(section, 'purse', 'Copper to carry', 40, purseAtomic ? String(Number(purseAtomic) / 100) : undefined);
     button(section, 'Reserve Copper', async () => {
       const amountAtomic = purseAtomic ?? String(readLoadoutCount('purse', 40) * 100);
@@ -529,7 +568,7 @@ function renderRunCustody(run = snapshot, container = panel) {
       const { submitted, confirmed } = await signOnce(prefix + 'vault-purse', tx,
         () => api(prefix + 'vault-purse/confirm', {}), result => Boolean(result.runId));
       if (confirmed) snapshot = confirmed;
-      return confirmed ? 'Copper reserved.' : submitted + ' · Awaiting confirmation.';
+      return confirmed ? 'Copper reserved.' : submitted + ' ï¿½ Awaiting confirmation.';
     });
     if (purseAtomic) {
       update('Cancel Copper preparation', 'vault-purse/cancel');
@@ -547,7 +586,7 @@ function renderRunCustody(run = snapshot, container = panel) {
       const { submitted, confirmed } = await signOnce(prefix + 'owned-items', tx,
         () => api(prefix + 'owned-items/confirm', {}), result => Boolean(result.runId));
       if (confirmed) snapshot = confirmed;
-      return confirmed ? 'Items reserved.' : submitted + ' · Awaiting confirmation.';
+      return confirmed ? 'Items reserved.' : submitted + ' ï¿½ Awaiting confirmation.';
     });
     if (ownedItems) {
       update('Cancel item preparation', 'owned-items/cancel');
@@ -565,12 +604,16 @@ function renderRunCustody(run = snapshot, container = panel) {
       });
     }
   }
-  const hasPurse = terminal && state.vaultPurse && loadoutCapabilities.purse;
+  const hasPurse = terminal && (state.vaultPurse || purseAtomic);
   const hasItems = terminal && state.ownedRemaining && loadoutCapabilities.items;
   if (hasPurse || hasItems) {
-    button(section, 'Check finalized supply status', async () => {
-      supplyStatus.set(runId, await api(prefix + 'supply-status'));
-    });
+    if (!supplyStatus.has(runId)) {
+      supplyStatus.set(runId, {});
+      void api(prefix + 'supply-status').then(result => {
+        supplyStatus.set(runId, result);
+        if (section.isConnected && !working) render();
+      }).catch(() => {});
+    }
     const finalized = supplyStatus.get(runId);
     for (const [available, key, label, path] of [
       [hasPurse, 'purse', 'Copper purse', 'vault-purse/close'],
@@ -596,7 +639,7 @@ function renderRunCustody(run = snapshot, container = panel) {
           });
         }
         if (!quote || quote.status === 'loading') {
-          add(section, 'p', 'Checking Relic evolution…');
+          add(section, 'p', 'Checking Relic evolutionï¿½');
           continue;
         }
         if (quote.status === 'unavailable') {
@@ -611,7 +654,7 @@ function renderRunCustody(run = snapshot, container = panel) {
             const { confirmed, submitted } = await signOnce(key + ':milestone', transaction,
               readQuote, result => result.status !== 'milestone_pending');
             if (confirmed) evolutionQuotes.set(key, confirmed);
-            return confirmed ? 'Milestone recorded.' : submitted + ' · Awaiting confirmation.';
+            return confirmed ? 'Milestone recorded.' : submitted + ' ï¿½ Awaiting confirmation.';
           });
         }
         const messages = {
@@ -637,7 +680,7 @@ function renderRunCustody(run = snapshot, container = panel) {
             const { submitted, confirmed } = await signOnce(key + ':evolve', latest.transaction,
               readQuote, result => result.status === 'evolved');
             if (confirmed) evolutionQuotes.set(key, confirmed);
-            return confirmed ? 'Evolution confirmed on chain.' : submitted + ' · Awaiting confirmation.';
+            return confirmed ? 'Evolution confirmed on chain.' : submitted + ' ï¿½ Awaiting confirmation.';
           });
         } else if (messages[quote.status]) add(section, 'p', messages[quote.status]);
       }
@@ -671,7 +714,7 @@ function renderGateSupplies(container, state) {
   const stock = add(container, 'div', '');
   stock.className = 'gate-stock';
   for (const [name, value, icon] of [
-    ['Copper', state.copper, 'copper'],
+    ['Crowns', state.copper, 'copper'],
     ['Reed Salve', state.pack?.salve ?? 0, 'salve'],
     ['Bark Ward', state.pack?.['guard-token'] ?? 0, 'ward'],
   ]) {
@@ -682,7 +725,7 @@ function renderGateSupplies(container, state) {
   }
   const chronicleReady = loadoutCapabilities.chronicle && snapshot.loadoutPreparation?.chronicleToken &&
     snapshot.checkpoints?.some(checkpoint => [3, 5].includes(checkpoint.region));
-  if (identity.accountId && (snapshot.version === 0 && (loadoutCapabilities.purse || loadoutCapabilities.items) || chronicleReady)) {
+  if (identity.accountId && (snapshot.version === 0 && (snapshot.loadoutPreparation?.purseAtomic || loadoutCapabilities.items) || chronicleReady)) {
     renderRunCustody(snapshot, container);
   }
 }
@@ -721,7 +764,7 @@ function renderExpeditionScene(state) {
   stage.style.setProperty('--gate-landscape', 'url("combat-assets/' + locationArtwork(map[state.node]) + '")');
   const heading = add(stage, 'header', '');
   add(heading, 'h2', map[state.node].name);
-  const copper = add(heading, 'span', state.copper + ' Copper');
+  const copper = add(heading, 'span', state.copper + ' Crowns');
   copper.className = 'gate-copper';
   const roster = add(stage, 'div', '');
   roster.className = 'starter-roster gate-roster';
@@ -839,7 +882,7 @@ function render() {
       const { submitted, confirmed } = await signOnce('starter:' + prepared.grantId, prepared.transaction,
         () => api('starter'), result => result.status === 'claimed');
       starterPack = confirmed ?? starterPack;
-      return confirmed ? starterText(starterPack) : submitted + ' · Awaiting confirmation.';
+      return confirmed ? starterText(starterPack) : submitted + ' ï¿½ Awaiting confirmation.';
     });
   } else if (!identity.accountId && !['issued', 'claimed'].includes(starterPack?.status)) {
     button(account, 'Get Starter Pack', async () => {
@@ -864,27 +907,15 @@ function render() {
     renderLoadoutSample();
     const actions = add(panel, 'div', '');
     actions.className = 'hall-actions';
-    if (identity.accountId) button(actions, 'Start', () => start('expedition'));
+    if (identity.accountId) {
+      button(actions, loadout.relicToken || loadout.companionToken ? 'Start with Loadout' : 'Start', () => start('expedition'));
+      add(panel, 'p', 'Spend Crowns at expedition shops. Claim testnet rewards after clearing a region.');
+    }
     else add(panel, 'p', 'Verify your NEAR testnet wallet to unlock Rewarded Expedition and reward storage.');
   }
   if (identity.accountId) {
-    if (!rewardStorage) button(account, 'Retry storage check', async () => {
-      rewardStorage = await api('economy/reward-storage');
-    });
-    if (rewardStorage?.transaction) {
-      const deposit = rewardStorage.deposit.padStart(25, '0');
-      const amount = deposit.slice(0, -24) + '.' + deposit.slice(-24).replace(/0+$/, '');
-      if (socialClient && nearStorageEnabled) {
-        button(account, 'Fund reward storage via NEAR Auth (' + amount + ' testNEAR)', () => signNearAuthTransaction({}));
-      }
-      button(account, 'Fund reward storage (' + amount + ' testNEAR)', async () => {
-        const { submitted, confirmed } = await signOnce('reward-storage', rewardStorage.transaction,
-          () => api('economy/reward-storage'), value => !value.transaction);
-        rewardStorage = confirmed ?? rewardStorage;
-        return confirmed ? 'Reward storage is funded.' : submitted + ' · Awaiting confirmation.';
-      });
-    } else if (rewardStorage) {
-      add(account, 'p', 'Reward storage is funded.');
+    if (socialClient && nearStorageEnabled && rewardStorage?.transaction) {
+      button(account, 'Set Up Rewards for Social Sign-in', () => signNearAuthTransaction({}));
     }
     renderExpeditionHistory();
   }
@@ -895,14 +926,14 @@ function render() {
     return;
   }
   add(panel, 'h2', map[state.node]?.name ?? state.node);
-  add(panel, 'p', state.report ?? state.phase);
+  add(panel, 'p', runCurrencyCopy(state.report ?? state.phase));
   add(panel, 'p', state.heroes.map(hero => hero.name + ' ' + hero.hp + '/' + hero.maxHp + ' HP').join(' / '));
-  add(panel, 'p', state.copper + ' Copper');
+  add(panel, 'p', state.copper + ' Crowns');
   if (state.starterInventory && !['WON', 'LOST'].includes(snapshot.lifecycle)) {
     const pack = state.starterInventory;
     const items = Object.entries(pack.remaining).filter(([, quantity]) => quantity > 0)
       .map(([id, quantity]) => quantity + ' Ã— ' + (starterItemNames[id] ?? id));
-    add(panel, 'p', 'Starter Pack in this run: ' + [pack.copper + ' Copper', ...items].join(' / '));
+    add(panel, 'p', 'Starter Pack in this run: ' + [pack.copper + ' Crowns', ...items].join(' / '));
   }
   if (['event', 'map', 'shop'].includes(state.phase) && state.pack.salve > 0) {
     for (const hero of state.heroes.filter(hero => hero.hp > 0 && hero.hp < hero.maxHp)) {
@@ -939,4 +970,3 @@ void api('auth/near/config').then(config => {
   socialClient = new Auth0Client({ domain: 'login.testnet.fast-auth.com', clientId: config.clientId });
   render();
 }).catch(() => {});
-

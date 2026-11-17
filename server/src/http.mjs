@@ -370,9 +370,14 @@ export function createGameServer({ sessions, runs, journeys, modes, field, profe
       if (path === '/api/runs/prepare-nft-lock' && method === 'POST') {
         const accountId = walletAuth?.accountForPlayer(playerId);
         if (!economy || !accountId) return reply(response, 409, { error: 'NFT_LOADOUT_UNAVAILABLE' });
-        const { tokenId, operationId } = await readBody(request);
+        const { tokenId, operationId, relicToken, companionToken } = await readBody(request);
         const runId = runs.expeditionRunId(playerId, operationId);
-        try { return reply(response, 200, { runId, transaction: await economy.prepareNftRunLock(accountId, tokenId, runId) }); }
+        try {
+          const transaction = tokenId === undefined
+            ? await economy.prepareNftRunLoadout(accountId, { relicToken, companionToken }, runId)
+            : await economy.prepareNftRunLock(accountId, tokenId, runId);
+          return reply(response, 200, { runId, transaction });
+        }
         catch { return reply(response, 409, { error: 'NFT_LOADOUT_UNAVAILABLE' }); }
       }
       if (path === '/api/runs' && method === 'POST') {
@@ -395,7 +400,7 @@ export function createGameServer({ sessions, runs, journeys, modes, field, profe
         return reply(response, 200, await runs.start(playerId, { mode, talisman, operationId, chronicleBinding, purseAtomic, nftBinding }));
       }
       if (path === '/api/runs/loadout-capabilities' && method === 'GET') {
-        return reply(response, 200, { ...runs.loadoutCapabilities?.(), chronicle: Boolean(chronicle) });
+        return reply(response, 200, { ...runs.loadoutCapabilities?.(), chronicle: Boolean(chronicle), batchedNftLocks: Boolean(economy?.prepareNftRunLoadout) });
       }
       if (path === '/api/runs/expedition-inventory' && method === 'GET') {
         const accountId = walletAuth?.accountForPlayer(playerId);
@@ -483,6 +488,3 @@ export function createGameServer({ sessions, runs, journeys, modes, field, profe
   }
   return server;
 }
-
-
-

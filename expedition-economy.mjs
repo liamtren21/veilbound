@@ -16,3 +16,8 @@ export function mergeLegacyWallet(state){
   delete state.marks;
   if(state.battle)delete state.battle.marksEarned;
 }
+
+// Save files and replay hashes retain the original currency field and event text.
+export function runCurrencyCopy(text = ''){
+  return text.replace(/\b(?:Run )?Copper\b/g,'Crowns');
+}

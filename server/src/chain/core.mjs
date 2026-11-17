@@ -383,6 +383,21 @@ export function createCoreClient({ coreId, copperId, transport = fetch }) {
       return transaction('reserve_nft_run', { token_id: tokenId, run_id: runId,
         expected_epoch: binding.relicEpoch ?? binding.companionEpoch });
     },
+    async prepareNftRunLoadout(accountId, { relicToken, companionToken }, runId) {
+      const tokens = [relicToken, companionToken].filter(id => id !== undefined);
+      if (!tokens.length || tokens.some(id => typeof id !== 'string' || !id) ||
+          new Set(tokens).size !== tokens.length) throw new Error('invalid_loadout');
+      const binding = await this.bindRunNfts(accountId, { relicToken, companionToken });
+      const actions = await Promise.all(tokens.map(async token_id => {
+        const { value } = await view(coreId, 'get_nft_run_lock', { token_id });
+        if (value?.holder === accountId && value.run_id === runId &&
+            BigInt(value.expires_at_ns) > BigInt(Date.now()) * 1000000n) return null;
+        const expected_epoch = token_id === relicToken ? binding.relicEpoch : binding.companionEpoch;
+        return transaction('reserve_nft_run', { token_id, run_id: runId, expected_epoch }).actions[0];
+      }));
+      const outstanding = actions.filter(Boolean);
+      return outstanding.length ? { network: 'testnet', receiverId: coreId, actions: outstanding } : null;
+    },
     async bindRunNfts(accountId, { relicToken, companionToken, runId }) {
       checkAccount(accountId);
       const first = await this.artifact(relicToken ?? companionToken);

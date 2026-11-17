@@ -118,9 +118,15 @@ export function openGameModes(file, { combat, runs, week, raid, now = Date.now, 
           const result = id === 'start' ? service.start(accountId, { practice })
             : id === 'settle' ? service.settle(accountId, body.runId)
             : service[id](accountId);
-          if (mode === 'weekly' && id === 'claim') {
-            result.entitlement = grant({ accountId, mode, milestone: pinned.id, kind: 'cosmetic',
-              itemId: result.reward, evidenceId: result.replayId, earnedAt: now() });
+          if (mode === 'weekly' && (id === 'claim' || id === 'settle' && result.ranked)) {
+            if (id === 'settle') result.milestoneChecked = true;
+            try {
+              const reward = id === 'claim' ? result : service.claim(accountId);
+              result.entitlement = grant({ accountId, mode, milestone: pinned.id, kind: 'cosmetic',
+                itemId: reward.reward, evidenceId: reward.replayId, earnedAt: now() });
+            } catch (error) {
+              if (id === 'claim' || !['weekly_milestone_unearned', 'weekly_budget_exhausted'].includes(error.message)) throw error;
+            }
           }
           if (mode === 'raid' && id === 'settle' && result.rewardId) {
             result.entitlement = grant({ accountId, mode, milestone: pinned.id, kind: 'cosmetic',
@@ -138,9 +144,3 @@ export function openGameModes(file, { combat, runs, week, raid, now = Date.now, 
     close: db.close,
   };
 }
-
-
-
-
-
-

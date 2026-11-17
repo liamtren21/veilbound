@@ -121,7 +121,7 @@ const vaultPurse = process.env.VEILBOUND_VAULT_PURSE_ENABLED === 'true' && rewar
   privateKey: await loadRewardSigningKey(),
   readPurse: (accountId, runId) => economy.runPurse(accountId, runId),
 }) : undefined;
-const runs = openRuns(resolve(directory, 'runs.sqlite'), { modeSecret, rewards, ownedItems, materialClaims, vaultPurse, starter });
+const runs = openRuns(resolve(directory, 'runs.sqlite'), { modeSecret, rewards, ownedItems, materialClaims, vaultPurse, allowNewVaultPurse: false, starter });
 const chronicle = process.env.VEILBOUND_CHRONICLE_ENABLED === 'true' && rewards && economy ? createChronicle({
   coreId: process.env.VEILBOUND_CORE_ID,
   ruleset: JSON.parse(await readFile(process.env.VEILBOUND_REWARD_CONFIG_PATH ??
@@ -185,6 +185,3 @@ const shutdown = () => {
 };
 process.once('SIGINT', shutdown);
 process.once('SIGTERM', shutdown);
-
-
-
